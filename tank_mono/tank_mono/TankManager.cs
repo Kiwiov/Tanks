@@ -29,7 +29,6 @@ namespace tank_mono
         {
             Tanks.Add(new Tank(Position, TankType, HeavyTankBody, StandardTankBody, LightTankBody, TankCannon, Colour, IsBot));
         }
-        
 
         public List<Tank> Tanks
         {
