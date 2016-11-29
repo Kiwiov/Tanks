@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -11,6 +12,7 @@ namespace tank_mono
     class Tank
     {
         private Vector2 _position;
+        private Color _colour;
 
         private string _tankType;
 
@@ -19,39 +21,59 @@ namespace tank_mono
         private float _speed;
         private float _fuel;
 
-        private Dictionary<Weapon, int> _weapons;
+        private bool _isBot;
+        
+        //private Dictionary<Weapon, int> _weapons;
 
         private Texture2D _spriteMain;
         private Texture2D _cannon;
 
 
-        Tank(Vector2 Position, String TankType)
+        Tank(Vector2 Position, String TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
         {
             this.Position = Position;
             this.TankType = TankType;
-            SetStats(this.TankType);
+            SetStats(this.TankType, HeavyTankBody, StandardTankBody, LightTankBody, TankCannon);
         }
-
-        private void SetStats(string tankType)
+        
+        private void SetStats(string tankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon)
         {
             switch (tankType)
             {
                 case "Heavy":
-                    //Tank stats
+                    //tank stats
                     //Add weapons
-                    //Tank sprites
+                    SpriteMain = HeavyTankBody;
+                    Cannon = TankCannon;
                     break;
                 case "Standard":
                     //tank stats
                     //Add weapons
-                    //Tank sprites
+                    SpriteMain = StandardTankBody;
+                    Cannon = TankCannon;
                     break;
                 case "Light":
                     //tank stats
                     //Add weapons
-                    //Tank sprites
+                    SpriteMain = LightTankBody;
+                    Cannon = TankCannon;
                     break;
             }
+        }
+
+        
+
+        public bool IsBot
+        {
+            get { return _isBot; }
+            set { _isBot = value; }
+        }
+
+
+        public Color Colour
+        {
+            get { return _colour; }
+            set { _colour = value; }
         }
 
         public float Fuel
@@ -75,11 +97,11 @@ namespace tank_mono
         }
 
 
-        public Dictionary<Weapon, int> Weapons
-        {
-            get { return _weapons; }
-            set { _weapons = value; }
-        }
+        //public Dictionary<Weapon, int> Weapons
+        //{
+        //    get { return _weapons; }
+        //    set { _weapons = value; }
+        //}
 
 
         public float Speed
