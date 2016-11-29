@@ -13,6 +13,13 @@ namespace tank_mono
         SpriteBatch spriteBatch;
 
         TankManager _tankManager;
+
+        Vector2 position;
+
+        float fuel;
+        float speed;
+        float acceleration;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,8 +34,11 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
-            
+            position = new Vector2(300,300);
             base.Initialize();
+            fuel = 300;
+            speed = 0;
+            acceleration = 1;
             
         }
 
@@ -64,6 +74,33 @@ namespace tank_mono
 
             // TODO: Add your update logic here
 
+            KeyboardState ks = Keyboard.GetState();
+
+            if (ks.IsKeyUp(Keys.A) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.D) && ks.IsKeyUp(Keys.Right))
+            {
+                speed = 0;
+            }
+
+            if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && fuel > 0)
+            {
+                if (speed < 30)
+                {
+                    speed += acceleration;
+                }
+                position.X -= speed / 10;
+                fuel -= 1;
+            }
+            if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && fuel > 0)
+            {
+
+                if (speed < 30)
+                {
+                    speed += acceleration;
+                }
+                position.X += speed / 10;
+                fuel -= 1;
+            }
+
             base.Update(gameTime);
         }
 
@@ -76,6 +113,10 @@ namespace tank_mono
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(standardTankMain,position,Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
