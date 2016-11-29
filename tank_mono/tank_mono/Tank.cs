@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace tank_mono
 {
@@ -13,6 +14,7 @@ namespace tank_mono
     {
         private Vector2 _position;
         private Color _colour;
+        
 
         private string _tankType;
 
@@ -20,6 +22,7 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
+
 
         private bool _isBot;
         
@@ -29,13 +32,13 @@ namespace tank_mono
         private Texture2D _cannon;
 
 
-        Tank(Vector2 Position, String TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
+        public Tank(Vector2 Position, String TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
         {
             this.Position = Position;
             this.TankType = TankType;
             SetStats(this.TankType, HeavyTankBody, StandardTankBody, LightTankBody, TankCannon);
         }
-        
+
         private void SetStats(string tankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon)
         {
             switch (tankType)
