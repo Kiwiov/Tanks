@@ -12,7 +12,7 @@ namespace tank_mono
 {
     class Tank
     {
-        private Vector2 _position;
+        public Vector2 Position;
         private Color _colour;
         
 
@@ -22,8 +22,8 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
-        private float _cannonRotation = 180;
-        private float _tankRotation = 180;
+        private float _cannonRotation;
+        private float _tankRotation;
 
 
         private bool _isBot;
@@ -34,37 +34,15 @@ namespace tank_mono
         private Texture2D _cannon;
 
 
-        public Tank(Vector2 Position, string TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
+        public Tank(Vector2 Position, string TankType, Color Colour, bool IsBot)
         {
             this.Position = Position;
             this.TankType = TankType;
-            SetStats(this.TankType, HeavyTankBody, StandardTankBody, LightTankBody, TankCannon);
+            this.IsBot = IsBot;
+            this.Colour = Colour;
         }
 
-        private void SetStats(string tankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon)
-        {
-            switch (tankType)
-            {
-                case "Heavy":
-                    //tank stats
-                    //Add weapons
-                    SpriteMain = HeavyTankBody;
-                    Cannon = TankCannon;
-                    break;
-                case "Standard":
-                    //tank stats
-                    //Add weapons
-                    SpriteMain = StandardTankBody;
-                    Cannon = TankCannon;
-                    break;
-                case "Light":
-                    //tank stats
-                    //Add weapons
-                    SpriteMain = LightTankBody;
-                    Cannon = TankCannon;
-                    break;
-            }
-        }
+        
         
         public float TankRotaion
         {
@@ -145,12 +123,5 @@ namespace tank_mono
             set { _tankType = value; }
         }
         
-
-        public Vector2 Position
-        {
-            get { return _position; }
-            set { _position = value; }
-        }
-
     }
 }

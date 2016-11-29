@@ -13,13 +13,9 @@ namespace tank_mono
         SpriteBatch spriteBatch;
 
         TankManager _tankManager;
-
-        Vector2 position;
-
-        float fuel;
-        float speed;
-        float acceleration;
-
+        Tank _currentTank;
+        
+        bool _done = false;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,12 +30,7 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
-            position = new Vector2(300,300);
             base.Initialize();
-            fuel = 300;
-            speed = 0;
-            acceleration = 1;
-            
         }
 
         /// <summary>
@@ -50,7 +41,7 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankStandardCannon"));
+            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"));
         }
 
         /// <summary>
@@ -69,37 +60,16 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
-            // TODO: Add your update logic here
-
-            KeyboardState ks = Keyboard.GetState();
-
-            if (ks.IsKeyUp(Keys.A) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.D) && ks.IsKeyUp(Keys.Right))
+            if (_done == false)
             {
-                speed = 0;
+                _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
+                _tankManager.SetStats();
+                _done = true;
+                _currentTank = _tankManager.Tanks[0];
             }
 
-            if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && fuel > 0)
-            {
-                if (speed < 30)
-                {
-                    speed += acceleration;
-                }
-                position.X -= speed / 10;
-                fuel -= 1;
-            }
-            if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && fuel > 0)
-            {
-
-                if (speed < 30)
-                {
-                    speed += acceleration;
-                }
-                position.X += speed / 10;
-                fuel -= 1;
-            }
+            _tankManager.MoveTank(_currentTank);
 
             base.Update(gameTime);
         }
@@ -114,8 +84,13 @@ namespace tank_mono
 
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(standardTankMain,position,Color.White);
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                                BlendState.AlphaBlend,
+                                SamplerState.PointClamp,
+                                DepthStencilState.Default,
+                                RasterizerState.CullNone);
+            _tankManager.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
