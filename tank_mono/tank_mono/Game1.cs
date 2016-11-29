@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
@@ -11,11 +13,12 @@ namespace tank_mono
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private int width = 1920;
         private int height = 1080;
         private Texture2D background;
+
 
 
         MainMenu main = new MainMenu();
@@ -26,7 +29,8 @@ namespace tank_mono
             graphics.PreferredBackBufferHeight = height;
             graphics.PreferredBackBufferWidth = width;
             this.IsMouseVisible = true;
-
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
         }
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace tank_mono
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = Content.Load<Texture2D>("bg"); // change these names to the names of your images
+            background = Content.Load<Texture2D>("menu/bg"); // change these names to the names of your images
 
         }
 

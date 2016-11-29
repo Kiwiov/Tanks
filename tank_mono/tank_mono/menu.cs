@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
@@ -15,6 +16,8 @@ namespace tank_mono
         private Texture2D GUITexture;
         private Rectangle GUIRect;
         private string assetName;
+        private Song song;
+
 
         public string AssetName
         {
@@ -34,8 +37,13 @@ namespace tank_mono
 
         public void LoadContent(ContentManager content)
         {
-            GUITexture = content.Load<Texture2D>(AssetName);
+            GUITexture = content.Load<Texture2D>("menu/"+AssetName);
             GUIRect = new Rectangle(0, 0, GUITexture.Width, GUITexture.Height);
+            Song song = content.Load<Song>("menu/bgmusic");
+            MediaPlayer.Play(song); // this will start the song playing
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 1f;
+
 
 
         }
@@ -45,6 +53,7 @@ namespace tank_mono
             if (GUIRect.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)) && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 clickEvent(AssetName);
+
             } 
         }
 
