@@ -13,6 +13,7 @@ namespace tank_mono
     {
         private Dictionary<string, Texture2D> _backgrounds = new Dictionary<string, Texture2D>();
         private ContentManager _content;
+        private bool isDrawn = false;
         public Texture2D CurrentBackground { get; private set; }
         public BackgroundManager(ContentManager Content)
         {
@@ -38,8 +39,12 @@ namespace tank_mono
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var dest = new Rectangle(0, 0, GameSettings.Width, GameSettings.Height);
-            spriteBatch.Draw(GetThemeBackground(), Vector2.Zero, dest, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //if(!isDrawn)
+            //{
+              //  isDrawn = true;
+                var dest = new Rectangle(0, 0, GameSettings.Width, GameSettings.Height);
+                spriteBatch.Draw(GetThemeBackground(), Vector2.Zero, dest, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //}
         }
 
         public void Unload(GraphicsDevice Device, object Source)

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace tank_mono
 {
@@ -17,6 +18,7 @@ namespace tank_mono
         public Texture2D standardTankCannon;
 
         private BackgroundManager backgroundManager;
+        private TerrainManager terrainManager;
 
         public Game1()
         {
@@ -52,12 +54,19 @@ namespace tank_mono
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            terrainManager = new TerrainManager(GraphicsDevice, spriteBatch);
+
             standardTankMain = Content.Load<Texture2D>("TankStandardBody");
             standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
 
             backgroundManager.Load(GraphicsDevice);
+
+            bgImage = backgroundManager.GetThemeBackground();
+
+            terrainManager.Generate();
         }
 
+        Texture2D bgImage;
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -94,7 +103,13 @@ namespace tank_mono
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
 
-            backgroundManager.Draw(spriteBatch);
+            //backgroundManager.Draw(spriteBatch);
+
+            var dest = new Rectangle(0, 0, GameSettings.Width, GameSettings.Height);
+            spriteBatch.Draw(bgImage, Vector2.Zero, dest, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            //terrainManager.Generate();
+            terrainManager.Draw();
 
             spriteBatch.End();
 
