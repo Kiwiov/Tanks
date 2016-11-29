@@ -23,7 +23,7 @@ namespace tank_mono
 
         private bool _isBot;
         
-        //private Dictionary<Weapon, int> _weapons;
+        private Dictionary<Weapon, int> _weapons;
 
         private Texture2D _spriteMain;
         private Texture2D _cannon;
@@ -97,11 +97,11 @@ namespace tank_mono
         }
 
 
-        //public Dictionary<Weapon, int> Weapons
-        //{
-        //    get { return _weapons; }
-        //    set { _weapons = value; }
-        //}
+        public Dictionary<Weapon, int> Weapons
+        {
+            get { return _weapons; }
+            set { _weapons = value; }
+        }
 
 
         public float Speed
