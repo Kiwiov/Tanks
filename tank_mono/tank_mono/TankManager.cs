@@ -94,6 +94,15 @@ namespace tank_mono
                 tank.Position.X += tank.Speed / 50;
                 tank.Fuel -= 1;
             }
+            
+            if ((ks.IsKeyDown(Keys.Up) | ks.IsKeyDown(Keys.W)) && ks.IsKeyUp(Keys.Down) && ks.IsKeyUp(Keys.S))
+            {
+                tank.CannonRotation -= 1;
+            }
+            if ((ks.IsKeyDown(Keys.Down) | ks.IsKeyDown(Keys.S)) && ks.IsKeyUp(Keys.Up) && ks.IsKeyUp(Keys.W))
+            {
+                tank.CannonRotation += 1;
+            }
         } 
 
         public void Draw(SpriteBatch spriteBatch)
