@@ -14,6 +14,8 @@ namespace tank_mono
 
         public Texture2D standardTankMain;
         public Texture2D standardTankCannon;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);

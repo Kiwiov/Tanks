@@ -29,7 +29,7 @@ namespace tank_mono
         private Texture2D _cannon;
 
 
-        Tank(Vector2 Position, String TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
+        public Tank(Vector2 Position, string TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
         {
             this.Position = Position;
             this.TankType = TankType;
