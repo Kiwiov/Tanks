@@ -12,12 +12,7 @@ namespace tank_mono
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Texture2D standardTankMain;
-        public Texture2D lightTankMain;
-        public Texture2D heavyTankMain;
-        public Texture2D standardTankCannon;
-
-
+        TankManager _tankManager;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,10 +40,7 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            standardTankMain = Content.Load<Texture2D>("TankStandardBody");
-            lightTankMain = Content.Load<Texture2D>("TankLightBody");
-            heavyTankMain = Content.Load<Texture2D>("TankHeavyBody");
-            standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
+            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankStandardCannon"));
         }
 
         /// <summary>
