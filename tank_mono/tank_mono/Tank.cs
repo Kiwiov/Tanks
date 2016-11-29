@@ -20,6 +20,8 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
+        private float _cannonRotation = 180;
+        private float _tankRotation = 180;
 
         private bool _isBot;
         
@@ -60,8 +62,19 @@ namespace tank_mono
                     break;
             }
         }
-
         
+        public float TankRotaion
+        {
+            get { return _tankRotation; }
+            set { _tankRotation = value; }
+        }
+
+        public float CannonRotation
+        {
+            get { return _cannonRotation; }
+            set { _cannonRotation = value; }
+        }
+
 
         public bool IsBot
         {

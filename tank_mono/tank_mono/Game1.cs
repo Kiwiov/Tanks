@@ -43,8 +43,8 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            standardTankMain = Content.Load<Texture2D>("StandardTankBody");
-            standardTankCannon = Content.Load<Texture2D>("StandardTankCannon");
+            standardTankMain = Content.Load<Texture2D>("TankStandardBody");
+            standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
         }
 
         /// <summary>
