@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 
 namespace tank_mono
@@ -11,11 +13,20 @@ namespace tank_mono
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private int width = 1920;
+        private int height = 1080;
+        private Texture2D background;
 
+
+        MainMenu main = new MainMenu();
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferHeight = height;
+            graphics.PreferredBackBufferWidth = width;
+            this.IsMouseVisible = true;
+
         }
 
         /// <summary>
@@ -41,6 +52,12 @@ namespace tank_mono
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            main.LoadContent(Content);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            background = Content.Load<Texture2D>("bg"); // change these names to the names of your images
+
         }
 
         /// <summary>
@@ -63,8 +80,9 @@ namespace tank_mono
                 Exit();
 
             // TODO: Add your update logic here
-
+            main.Update();
             base.Update(gameTime);
+
         }
 
         /// <summary>
@@ -76,8 +94,16 @@ namespace tank_mono
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, width,height), Color.White);
+            main.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+        public void Quit()
+        {
+            this.Exit();
         }
     }
 }
