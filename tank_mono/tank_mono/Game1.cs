@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace tank_mono
 {
@@ -15,11 +16,18 @@ namespace tank_mono
         public Texture2D standardTankMain;
         public Texture2D standardTankCannon;
 
+        private BackgroundManager backgroundManager;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = GameSettings.Width;
+            graphics.PreferredBackBufferHeight = GameSettings.Height;
+            graphics.ApplyChanges();
+
             Content.RootDirectory = "Content";
+
+            backgroundManager = new BackgroundManager(Content);
         }
 
         /// <summary>
@@ -32,7 +40,7 @@ namespace tank_mono
         {
             
             base.Initialize();
-            
+            Window.Title = GameSettings.Title;
         }
 
         /// <summary>
@@ -43,8 +51,11 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
             standardTankMain = Content.Load<Texture2D>("TankStandardBody");
             standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
+
+            backgroundManager.Load(GraphicsDevice);
         }
 
         /// <summary>
@@ -80,6 +91,12 @@ namespace tank_mono
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+
+            backgroundManager.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
