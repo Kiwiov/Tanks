@@ -97,11 +97,39 @@ namespace tank_mono
             
             if ((ks.IsKeyDown(Keys.Up) | ks.IsKeyDown(Keys.W)) && ks.IsKeyUp(Keys.Down) && ks.IsKeyUp(Keys.S))
             {
-                tank.CannonRotation -= 1;
+                if (tank.TankType == "Light")
+                {
+                    if (tank.CannonRotation > -1.5f)
+                    {
+                        tank.CannonRotation -= 0.01f;
+                    }
+                }
+                else
+                {
+                    if (tank.CannonRotation < 1.45f)
+                    {
+                        tank.CannonRotation += 0.01f;
+                    }
+                }
             }
             if ((ks.IsKeyDown(Keys.Down) | ks.IsKeyDown(Keys.S)) && ks.IsKeyUp(Keys.Up) && ks.IsKeyUp(Keys.W))
             {
-                tank.CannonRotation += 1;
+                if (tank.TankType == "Light")
+                {
+                    if (tank.CannonRotation < 1.5f)
+                    {
+                        tank.CannonRotation += 0.01f;
+                    }
+                }
+                else
+                {
+                    if (tank.CannonRotation < 1.45f)
+                    {
+                        tank.CannonRotation += 0.01f;
+                    }
+                }
+                
+                
             }
         } 
 
@@ -109,7 +137,7 @@ namespace tank_mono
         {
             foreach (var tank in Tanks)
             {
-                spriteBatch.Draw(tank.Cannon, tank.Position, null, color: tank.Colour, rotation: tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
+                spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
             }
         }

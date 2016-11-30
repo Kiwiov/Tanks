@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -63,12 +64,12 @@ namespace tank_mono
 
             if (_done == false)
             {
-                _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(300,300),"Standard",Color.OliveDrab,false);
                 _tankManager.SetStats();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];
             }
-
+            Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
             _tankManager.MoveTank(_currentTank);
 
             base.Update(gameTime);
