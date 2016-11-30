@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace tank_mono
 {
-    class Tank
+    public class Tank
     {
         public Vector2 Position;
         private Color _colour;

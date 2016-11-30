@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace tank_mono
 {
-    class TankManager
+    public class TankManager
     {
         private Texture2D _heavyTankMain;
         private Texture2D _lightTankMain;
@@ -99,9 +99,9 @@ namespace tank_mono
             {
                 if (tank.TankType == "Light")
                 {
-                    if (tank.CannonRotation > -1.5f)
+                    if (tank.CannonRotation < 1.5f)
                     {
-                        tank.CannonRotation -= 0.01f;
+                        tank.CannonRotation += 0.01f;
                     }
                 }
                 else
@@ -116,16 +116,16 @@ namespace tank_mono
             {
                 if (tank.TankType == "Light")
                 {
-                    if (tank.CannonRotation < 1.5f)
+                    if (tank.CannonRotation > -1.5f)
                     {
-                        tank.CannonRotation += 0.01f;
+                        tank.CannonRotation -= 0.01f;
                     }
                 }
                 else
                 {
-                    if (tank.CannonRotation < 1.45f)
+                    if (tank.CannonRotation > -1.45f)
                     {
-                        tank.CannonRotation += 0.01f;
+                        tank.CannonRotation -= 0.01f;
                     }
                 }
                 
