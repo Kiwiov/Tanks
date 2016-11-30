@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,7 +16,11 @@ namespace tank_mono
 
         TankManager _tankManager;
         Tank _currentTank;
-        
+        Tank _secondTank;
+        Kollision _kollision;
+
+        Rectangle koll;
+
         bool _done = false;
         public Game1()
         {
@@ -31,6 +36,7 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
+            _kollision = new Kollision();
             base.Initialize();
         }
 
@@ -65,13 +71,23 @@ namespace tank_mono
             if (_done == false)
             {
                 _tankManager.CreateTank(new Vector2(300,300),"Standard",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(300, 400), "Heavy", Color.AliceBlue, false);
                 _tankManager.SetStats();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];
+                _secondTank = _tankManager.Tanks[1];
             }
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
             _tankManager.MoveTank(_currentTank);
 
+            Rectangle player1Box = new Rectangle((int)_currentTank.Position.X, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height);
+            Rectangle player2Box =  new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y,_secondTank.SpriteMain.Width, _secondTank.SpriteMain.Height);
+
+            if (koll.Width == 0)
+            {
+                _currentTank.Position.Y += 1.5f;
+            }
+            koll = Intersection(player1Box, player2Box);
             base.Update(gameTime);
         }
 
@@ -91,10 +107,27 @@ namespace tank_mono
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
             _tankManager.Draw(spriteBatch);
-
+            //if (koll.Width > 0)
+            //{
+            //    _currentTank.Position.Y -= 1.5f;
+            //}
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+        public static Rectangle Intersection(Rectangle r1, Rectangle r2)
+        {
+            int x1 = Math.Max(r1.Left, r2.Left);
+            int y1 = Math.Max(r1.Top, r2.Top);
+            int x2 = Math.Min(r1.Right, r2.Right);
+            int y2 = Math.Min(r1.Bottom, r2.Bottom);
+
+            if ((x2 >= x1) && (y2 >= y1))
+            {
+                return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+            }
+            return Rectangle.Empty;
+        }
+
     }
 }
