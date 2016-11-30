@@ -17,9 +17,9 @@ namespace tank_mono
         TankManager _tankManager;
         Tank _currentTank;
         Tank _secondTank;
-        Kollision _kollision;
-
-        Rectangle koll;
+        Kollision _kollision = new Kollision();
+        
+        Rectangle _koll;
 
         bool _done = false;
         public Game1()
@@ -36,7 +36,7 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
-            _kollision = new Kollision();
+            
             base.Initialize();
         }
 
@@ -83,11 +83,11 @@ namespace tank_mono
             Rectangle player1Box = new Rectangle((int)_currentTank.Position.X, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height);
             Rectangle player2Box =  new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y,_secondTank.SpriteMain.Width, _secondTank.SpriteMain.Height);
 
-            if (koll.Width == 0)
+            if (_koll.Width == 0)
             {
                 _currentTank.Position.Y += 1.5f;
             }
-            koll = Intersection(player1Box, player2Box);
+            _koll = Kollision.Intersection(player1Box, player2Box);
             base.Update(gameTime);
         }
 
@@ -107,7 +107,7 @@ namespace tank_mono
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
             _tankManager.Draw(spriteBatch);
-            //if (koll.Width > 0)
+            //if (_koll.Width > 0)
             //{
             //    _currentTank.Position.Y -= 1.5f;
             //}
@@ -115,19 +115,5 @@ namespace tank_mono
 
             base.Draw(gameTime);
         }
-        public static Rectangle Intersection(Rectangle r1, Rectangle r2)
-        {
-            int x1 = Math.Max(r1.Left, r2.Left);
-            int y1 = Math.Max(r1.Top, r2.Top);
-            int x2 = Math.Min(r1.Right, r2.Right);
-            int y2 = Math.Min(r1.Bottom, r2.Bottom);
-
-            if ((x2 >= x1) && (y2 >= y1))
-            {
-                return new Rectangle(x1, y1, x2 - x1, y2 - y1);
-            }
-            return Rectangle.Empty;
-        }
-
     }
 }
