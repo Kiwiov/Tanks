@@ -41,6 +41,11 @@
     <Compile Include="Game1.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="menu.cs" />
+    <Compile Include="menu.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>menu.settings</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,8 +65,13 @@
     </MonoGameContentReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Content\menu\MyFont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="menu.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>menu.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

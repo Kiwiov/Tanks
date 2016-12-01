@@ -279,7 +279,8 @@ namespace tank_mono
         public void OnClick1920(string element)
         {
 
-            Game1.graphics.IsFullScreen = true;
+            Game1.graphics.PreferredBackBufferHeight = 1080;
+            Game1.graphics.PreferredBackBufferWidth = 1920;
             Game1.graphics.ApplyChanges();
             RecalcMenu();
 
@@ -287,10 +288,10 @@ namespace tank_mono
 
         public void OnClick1280(string element)
         {
-                Game1.graphics.PreferredBackBufferHeight = 720;
-                Game1.graphics.PreferredBackBufferWidth = 1280;
-                Game1.graphics.ApplyChanges();
-                RecalcMenu();
+            Game1.graphics.PreferredBackBufferHeight = 720;
+            Game1.graphics.PreferredBackBufferWidth = 1280;
+            Game1.graphics.ApplyChanges();
+            RecalcMenu();
 
 
         }
