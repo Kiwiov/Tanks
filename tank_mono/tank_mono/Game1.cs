@@ -95,7 +95,7 @@ namespace tank_mono
             //}
             _tankManager.MoveTank(_currentTank);
 
-            Rectangle player1Box = new Rectangle((int)_currentTank.Position.X, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width/2, _currentTank.SpriteMain.Height/2);
+            Rectangle player1Box = new Rectangle((int)_currentTank.Position.X - _currentTank.SpriteMain.Width/2, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height/2);
             Rectangle player2Box = new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y, _bkgrnd.Width, _bkgrnd.Height);
             Rectangle mapBox = new Rectangle((int)_bkPos.X, (int)_bkPos.Y, _bkgrnd.Width,_bkgrnd.Height);
 
@@ -144,7 +144,7 @@ namespace tank_mono
                                 RasterizerState.CullNone);
             spriteBatch.Draw(_bkgrnd,_bkPos,Color.White);
             _tankManager.Draw(spriteBatch);
-            spriteBatch.Draw(_currentTank.SpriteMain,_currentTank.Position,Color.White);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
