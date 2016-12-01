@@ -86,16 +86,23 @@ namespace tank_mono
         {
             width = graphics.PreferredBackBufferWidth;
             height = graphics.PreferredBackBufferHeight;
-            if (_done == false)
+
+            if (MainMenu.gameState != GameState.inGame)
             {
-                _tankManager.CreateTank(new Vector2(300,300),"Heavy",Color.OliveDrab,false);
-                _tankManager.SetStats();
-                _done = true;
-                _currentTank = _tankManager.Tanks[0];
+                main.Update();
             }
-            Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
-            _tankManager.MoveTank(_currentTank);
-            main.Update();
+            else
+            {
+                if (_done == false)
+                {
+                    _tankManager.CreateTank(new Vector2(300, 300), "Heavy", Color.OliveDrab, false);
+                    _tankManager.SetStats();
+                    _done = true;
+                    _currentTank = _tankManager.Tanks[0];
+                }
+                Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
+                _tankManager.MoveTank(_currentTank);
+            }
             base.Update(gameTime);
 
         }
@@ -110,24 +117,27 @@ namespace tank_mono
 
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin(SpriteSortMode.Deferred,
-                                BlendState.AlphaBlend,
-                                SamplerState.PointClamp,
-                                DepthStencilState.Default,
-                                RasterizerState.CullNone);
-            _tankManager.Draw(spriteBatch);
-            spriteBatch.End();
-            spriteBatch.Begin();
+            if (MainMenu.gameState == GameState.inGame)
+            {
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                          BlendState.AlphaBlend,
+                          SamplerState.PointClamp,
+                          DepthStencilState.Default,
+                          RasterizerState.CullNone);
+                
+                _tankManager.Draw(spriteBatch);
+                spriteBatch.End();
+            }
 
+            if (MainMenu.gameState == GameState.mainMenum || MainMenu.gameState == GameState.enterName || MainMenu.gameState == GameState.settings)
+            {
 
+                spriteBatch.Begin();
+                spriteBatch.Draw(background, new Rectangle(0, 0, width, height), Color.White);
+                main.Draw(spriteBatch);
+                spriteBatch.End();
 
-            spriteBatch.Draw(background, new Rectangle(0, 0, width,height), Color.White);
-            main.Draw(spriteBatch);
-
-
-            spriteBatch.End();
-
-
+            }
 
             base.Draw(gameTime);
         }

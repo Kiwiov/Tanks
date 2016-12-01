@@ -18,7 +18,7 @@ namespace tank_mono
         private GraphicsDevice graphics;
         
 
-        private GameState gameState;
+        public static GameState gameState;
         List<Menu> main = new List<Menu>();
         List<Menu> enterName = new List<Menu>();
         List<Menu> resolution = new List<Menu>();
@@ -125,8 +125,10 @@ namespace tank_mono
             {
                 element.LoadContent(content);
                 element.CenterElement(Game1.width / 2, Game1.height/ 2);
-                element.clickEvent += OnClick;
             }
+            main[0].ClickEvent += onClickStart;
+            main[1].ClickEvent += onClicketting;
+            main[2].ClickEvent += onClickQuit;
             main.Find(x => x.AssetName == "start").MoveElement(0, moverange);
             moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "settings").MoveElement(0, moverange);
@@ -137,9 +139,8 @@ namespace tank_mono
             {
                 element.LoadContent(content);
                 element.CenterElement(Game1.width / 4, Game1.height/4);
-                element.clickEvent += OnClick;
             }
-
+            enterName[1].ClickEvent += onClickDone;
             moverange -= 75;
             enterName.Find(x => x.AssetName == "done").MoveElement(0, moverange);
 
@@ -147,12 +148,11 @@ namespace tank_mono
             {
                 element.LoadContent(content);
                 element.CenterElement(Game1.width / 4, Game1.height/4);
-                //element.clickEvent += OnClick;
 
             }
-            resolution[1].clickEvent += OnClick1920;
-            resolution[2].clickEvent += OnClick1280;
-            resolution[3].clickEvent += OnClick800;
+            resolution[1].ClickEvent += OnClick1920;
+            resolution[2].ClickEvent += OnClick1280;
+            resolution[3].ClickEvent += OnClick800;
             moverange = 0;
             resolution.Find(x => x.AssetName == "resolution").MoveElement(moverange, 0);
             moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
@@ -166,7 +166,7 @@ namespace tank_mono
             {
                 element.LoadContent(content);
                 element.CenterElement(Game1.width / 4, Game1.height / 4);
-                element.clickEvent += OnClick;
+                element.ClickEvent += OnClick;
             }
             volume.Find(x => x.AssetName == "volume").MoveElement(0, 75);
             volume.Find(x => x.AssetName == "muted").MoveElement(moverangeleft, 75);
@@ -182,7 +182,7 @@ namespace tank_mono
             {
                 element.LoadContent(content);
                 element.CenterElement(Game1.width / 4, Game1.height / 4);
-                element.clickEvent += OnClick;
+                element.ClickEvent += OnClick;
             }
             confirm.Find(x => x.AssetName == "apply").MoveElement(0, 150);
         }
@@ -251,7 +251,7 @@ namespace tank_mono
                     {
                         element.Draw(spriteBatch);
                     }
-                    spriteBatch.DrawString(sf,myName, new Vector2(450,650), Color.Black,0,Vector2.Zero,0.5f,SpriteEffects.None,0);
+                    spriteBatch.DrawString(sf,myName, new Vector2(450,550), Color.Black,0,Vector2.Zero,1f,SpriteEffects.None,0);
                     break;
                 case GameState.inGame:
                     break;
@@ -304,29 +304,29 @@ namespace tank_mono
             RecalcMenu();
         }
 
+        public void onClickDone(string element)
+        {
+            gameState = GameState.inGame;
+        }
+
+        public void onClickStart(string element)
+        {
+                gameState = GameState.enterName;
+        }
+
+        public void onClicketting(string element)
+        {
+                gameState = GameState.settings;
+        }
+
+        public void onClickQuit(string element)
+        {
+                System.Environment.Exit(1);
+        }
+
 
     public void OnClick(string element)
         {
-            if (element == "start")
-            {
-                gameState = GameState.enterName;
-                
-            }
-
-            if (element == "settings")
-            {
-                gameState = GameState.settings;
-            }
-
-            if (element == "done")
-            {
-                gameState = GameState.inGame;
-            }
-
-            if (element == "quit")
-            {
-                System.Environment.Exit(1);
-            }
 
             if (element == "muted")
             {
@@ -391,10 +391,6 @@ namespace tank_mono
 
         public void OnKeyDown(Keys key)
         {
-            if (key != Keys.Back || key == Keys.Space)
-            {
-
-            }
 
             if (key == Keys.Back && myName.Length > 0)
             {

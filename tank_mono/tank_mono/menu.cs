@@ -30,7 +30,7 @@ namespace tank_mono
 
         public delegate void ElementClicked(string element);
 
-        public event ElementClicked clickEvent;
+        public event ElementClicked ClickEvent;
 
         public Menu(string assetName)
         {
@@ -53,7 +53,7 @@ namespace tank_mono
             var mouseState = Mouse.GetState();
             if (GUIRect.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)) && Mouse.GetState().LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
             {
-                clickEvent(AssetName);
+                ClickEvent?.Invoke(AssetName);
             }
             previousMouseState = mouseState;
         }
