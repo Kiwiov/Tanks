@@ -14,6 +14,7 @@ namespace tank_mono
         SpriteBatch spriteBatch;
 
         TankManager _tankManager;
+        WeaponCreator _weaponCreator;
         Tank _currentTank;
         
         bool _done = false;
@@ -42,7 +43,8 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"));
+            _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
+            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace tank_mono
 
             if (_done == false)
             {
-                _tankManager.CreateTank(new Vector2(300,300),"Standard",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(300,300),"Heavy",Color.OliveDrab,false);
                 _tankManager.SetStats();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];

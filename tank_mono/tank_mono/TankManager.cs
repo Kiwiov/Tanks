@@ -18,9 +18,11 @@ namespace tank_mono
         private Texture2D _standardCannon;
         private Texture2D _lightCannon;
 
+        private WeaponCreator _weaponCreator;
+
         private List<Tank> _tanks;
 
-        public TankManager(Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody,Texture2D HeavyCannon, Texture2D StandardCannon, Texture2D LightCannon)
+        public TankManager(Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody,Texture2D HeavyCannon, Texture2D StandardCannon, Texture2D LightCannon, WeaponCreator WeaponCreator)
         {
             _heavyTankMain = HeavyTankBody;
             _lightTankMain = LightTankBody;
@@ -28,7 +30,8 @@ namespace tank_mono
             _heavyCannon = HeavyCannon;
             _standardCannon = StandardCannon;
             _lightCannon = LightCannon;
-            _tanks = new List<Tank>();
+            Tanks = new List<Tank>();
+            _weaponCreator = WeaponCreator;
         }
 
         public void CreateTank(Vector2 Position, string TankType, Color Colour, bool IsBot)
@@ -44,35 +47,50 @@ namespace tank_mono
                 switch (tank.TankType)
                 {
                     case "Heavy":
+                        //stats
                         tank.Health = 200;
                         tank.Speed = 20;
                         tank.Fuel = 400;
-                        tank.Armour = 200;
-                        
-                        //Add weapons
+                        tank.Armour = 300;
 
+                        //weapons
+                        tank.Weapons.Add(_weaponCreator.MachineGun(),int.MaxValue);
+                        tank.Weapons.Add(_weaponCreator.Missile(),5);
+                        tank.Weapons.Add(_weaponCreator.AntiArmour(),5);
+
+                        //Textures
                         tank.SpriteMain = _heavyTankMain;
                         tank.Cannon = _heavyCannon;
                         break;
                     case "Standard":
+                        //stats
                         tank.Health = 150;
                         tank.Speed = 40;
                         tank.Fuel = 400;
                         tank.Armour = 150;
 
-                        //Add weapons
+                        //weapons
+                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
 
+                        //Textures
                         tank.SpriteMain = _standardTankMain;
                         tank.Cannon = _standardCannon;
                         break;
                     case "Light":
+                        //stats
                         tank.Health = 100;
                         tank.Speed = 60;
                         tank.Fuel = 400;
                         tank.Armour = 100;
 
-                        //Add weapons
+                        //weapons
+                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
 
+                        //Textures
                         tank.SpriteMain = _lightTankMain;
                         tank.Cannon = _lightCannon;
                         break;
@@ -147,10 +165,5 @@ namespace tank_mono
             get { return _tanks; }
             set { _tanks = value; }
         }
-
-
-
-
-
     }
 }

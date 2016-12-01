@@ -3,38 +3,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    public class Weapon : WeaponEntity
+    public class Weapon
     {
-        public AmmoType AmmoType { get; private set; }
-        public WeaponType WeaponType { get; private set; }
-        public WeaponVisibility WeaponVisibility { get; private set; }
-
-        public string Name { get; private set; }
-
-        public int Cost { get; private set; }
-        public int Damage { get; private set; }
-        public int Test { get; private set; }
-
-        public Weapon(string name, int damage, int cost, WeaponType weaponType, AmmoType ammoType, WeaponVisibility weaponVisibility = WeaponVisibility.Stock)
+        private float _power;
+        private int _radius;
+        private bool _isExploding;
+        private string _type;
+        private Texture2D _texture;
+        private float _armourDamage;
+        private string _name;
+        private int _shotFired;
+        public Weapon(string Name, float Power, int Radius, bool IsExploding, string Type, Texture2D Texture, float ArmourDamage, int ShotsFired)
         {
-            this.Name = name;
-            this.Damage = damage;
-            this.Cost = cost;
-            this.WeaponType = weaponType;
-            this.AmmoType = ammoType;
-            this.WeaponVisibility = weaponVisibility;
+            this.Name = Name;
+            this.Power = Power;
+            this.Radius = Radius;
+            this.IsExploding = IsExploding;
+            this.Type = Type;
+            this.Texture = Texture;
+            this.ArmourDamage = ArmourDamage;
+            this.ShotsFired = ShotsFired;
+        }
+        
+        public int ShotsFired
+        {
+            get { return _shotFired; }
+            set { _shotFired = value; }
         }
 
-        public bool IsBuyAble()
+        public string Name
         {
-            return base.IsBuyAble(Cost, this.WeaponVisibility);
+            get { return _name; }
+            set { _name = value; }
         }
-        public bool IsStock()
+
+        public float ArmourDamage
         {
-            return base.IsStock(Cost, this.WeaponVisibility);
+            get { return _armourDamage; }
+            set { _armourDamage = value; }
+        }
+
+
+        public Texture2D Texture
+        {
+            get { return _texture; }
+            set { _texture = value; }
+        }
+        public string Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+        public bool IsExploding
+        {
+            get { return _isExploding; }
+            set { _isExploding = value; }
+        }
+        public int Radius
+        {
+            get { return _radius; }
+            set { _radius = value; }
+        }
+        public float Power
+        {
+            get { return _power; }
+            set { _power = value; }
         }
     }
 }

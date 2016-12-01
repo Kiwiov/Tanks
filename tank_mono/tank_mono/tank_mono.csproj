@@ -44,7 +44,7 @@
     <Compile Include="Tank.cs" />
     <Compile Include="TankManager.cs" />
     <Compile Include="Weapon.cs" />
-    <Compile Include="WeaponEntity.cs" />
+    <Compile Include="WeaponCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

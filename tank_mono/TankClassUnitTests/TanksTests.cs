@@ -66,7 +66,7 @@ namespace TankClassUnitTests
             public void CrateTankTest1()
             {
                 //Arrange
-                var tankManager = new TankManager(null,null,null,null,null,null);
+                var tankManager = new TankManager(null,null,null,null,null,null,null);
                 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Heavy", Color.OliveDrab, false);
@@ -79,7 +79,7 @@ namespace TankClassUnitTests
             public void CrateTankTest2()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null,null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Heavy", Color.OliveDrab, false);
@@ -92,7 +92,7 @@ namespace TankClassUnitTests
             public void CrateTankTest3()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null,null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Heavy", Color.OliveDrab, false);
@@ -105,7 +105,7 @@ namespace TankClassUnitTests
             public void CrateTankTest4()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null,null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Heavy", Color.OliveDrab, false);
@@ -118,7 +118,7 @@ namespace TankClassUnitTests
             public void CrateTankTest5()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null,null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Heavy", Color.OliveDrab, false);
@@ -131,7 +131,7 @@ namespace TankClassUnitTests
             public void SetStatsTestHeavy()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null, null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Heavy", Color.OliveDrab, false);
@@ -148,7 +148,7 @@ namespace TankClassUnitTests
             public void SetStatsTestStandard()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null, null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Standard", Color.OliveDrab, false);
@@ -165,7 +165,7 @@ namespace TankClassUnitTests
             public void SetStatsTestLight()
             {
                 //Arrange
-                var tankManager = new TankManager(null, null, null, null, null, null);
+                var tankManager = new TankManager(null, null, null, null, null, null, null);
 
                 //Act
                 tankManager.CreateTank(new Vector2(1, 1), "Light", Color.OliveDrab, false);
