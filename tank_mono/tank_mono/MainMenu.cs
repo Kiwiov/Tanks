@@ -12,11 +12,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
-
+    enum GameState { mainMenum, enterName, inGame, settings }
     class MainMenu : DrawableGameComponent
     {
         private GraphicsDevice graphics;
-        enum GameState { mainMenum, enterName, inGame, settings}
+        
 
         private GameState gameState;
         List<Menu> main = new List<Menu>();

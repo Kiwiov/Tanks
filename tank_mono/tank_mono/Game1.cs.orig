@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 ﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
+=======
+﻿using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+>>>>>>> origin/menu-branch
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
@@ -22,12 +26,15 @@ namespace tank_mono
         public static int height = 1080;
 
 
-        private MainMenu main;
+<<<<<<< HEAD
         TankManager _tankManager;
         WeaponCreator _weaponCreator;
         Tank _currentTank;
         
         bool _done = false;
+=======
+        private MainMenu main;
+>>>>>>> origin/menu-branch
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,7 +52,11 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
+<<<<<<< HEAD
+=======
+            // TODO: Add your initialization logic here
              main = new MainMenu(this);
+>>>>>>> origin/menu-branch
             base.Initialize();
         }
 
@@ -57,8 +68,12 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+<<<<<<< HEAD
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
+=======
+
+            // TODO: use this.Content to load your game content here
             main.LoadContent(Content);
             
 
@@ -66,6 +81,7 @@ namespace tank_mono
 
             
 
+>>>>>>> origin/menu-branch
         }
 
         /// <summary>
@@ -84,8 +100,8 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            width = graphics.PreferredBackBufferWidth;
-            height = graphics.PreferredBackBufferHeight;
+<<<<<<< HEAD
+
             if (_done == false)
             {
                 _tankManager.CreateTank(new Vector2(300,300),"Heavy",Color.OliveDrab,false);
@@ -95,7 +111,15 @@ namespace tank_mono
             }
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
             _tankManager.MoveTank(_currentTank);
+
+=======
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+            width = graphics.PreferredBackBufferWidth;
+            height = graphics.PreferredBackBufferHeight;
+            // TODO: Add your update logic here
             main.Update();
+>>>>>>> origin/menu-branch
             base.Update(gameTime);
 
         }
@@ -109,14 +133,6 @@ namespace tank_mono
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            spriteBatch.Begin(SpriteSortMode.Deferred,
-                                BlendState.AlphaBlend,
-                                SamplerState.PointClamp,
-                                DepthStencilState.Default,
-                                RasterizerState.CullNone);
-            _tankManager.Draw(spriteBatch);
-            spriteBatch.End();
             spriteBatch.Begin();
 
 
@@ -128,6 +144,15 @@ namespace tank_mono
             spriteBatch.End();
 
 
+
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                                BlendState.AlphaBlend,
+                                SamplerState.PointClamp,
+                                DepthStencilState.Default,
+                                RasterizerState.CullNone);
+            _tankManager.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
