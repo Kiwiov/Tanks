@@ -14,12 +14,20 @@ namespace tank_mono
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D _bkgrnd;
+
         TankManager _tankManager;
         Tank _currentTank;
         Tank _secondTank;
 
         Rectangle _norm;
         Rectangle _koll;
+        Rectangle _coll;
+        Rectangle player1box;
+        Rectangle _r1;
+        Rectangle _r2;
+
+        Vector2 _bkPos;
         
         bool _falling;
         bool _bHit = false;
@@ -38,7 +46,7 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
-            
+            _bkPos = new Vector2(200,400);
             base.Initialize();
         }
 
@@ -50,6 +58,7 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            _bkgrnd = Content.Load<Texture2D>("BackGroundTest");
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"));
         }
 
@@ -72,7 +81,7 @@ namespace tank_mono
 
             if (_done == false)
             {
-                _tankManager.CreateTank(new Vector2(300,300),"Standard",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(250,300),"Standard",Color.OliveDrab,false);
                 _tankManager.CreateTank(new Vector2(300, 315), "Heavy", Color.AliceBlue, false);
                 _tankManager.SetStats();
                 _done = true;
@@ -80,21 +89,24 @@ namespace tank_mono
                 _secondTank = _tankManager.Tanks[1];
             }
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
-            if (!_falling)
+            //if (!_falling)
+            //{
+            //    _tankManager.MoveTank(_currentTank);
+            //}
+            _tankManager.MoveTank(_currentTank);
+
+            Rectangle player1Box = new Rectangle((int)_currentTank.Position.X, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width/2, _currentTank.SpriteMain.Height/2);
+            Rectangle player2Box = new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y, _bkgrnd.Width, _bkgrnd.Height);
+            Rectangle mapBox = new Rectangle((int)_bkPos.X, (int)_bkPos.Y, _bkgrnd.Width,_bkgrnd.Height);
+
+            _koll = Collision.Intersection(player1Box, player2Box);
+            var _coll = Collision.Intersection(player1Box, mapBox);
+
+            if (_coll.Width > 0 && _coll.Height > 0)
             {
-                _tankManager.MoveTank(_currentTank);
-            }
-
-            Rectangle player1Box = new Rectangle((int)_currentTank.Position.X, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height);
-            Rectangle player2Box = new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y, _secondTank.SpriteMain.Width, _secondTank.SpriteMain.Height);
-
-            _koll = Kollision.Intersection(player1Box, player2Box);
-
-            if (_koll.Width > 0 && _koll.Height > 0)
-            {
-                Rectangle _r1 = Kollision.Normalize(player1Box, _koll);
-                Rectangle _r2 = Kollision.Normalize(player2Box, _koll);
-                _bHit = Kollision.TestCollision(_currentTank.SpriteMain, _r1, _secondTank.SpriteMain, _r2);
+                Rectangle _r1 = Collision.Normalize(player1Box, _coll);
+                Rectangle _r2 = Collision.Normalize(mapBox, _coll);
+                _bHit = Collision.TestCollision(_currentTank.SpriteMain, _r1, _bkgrnd, _r2);
             }
             else
             {
@@ -107,6 +119,7 @@ namespace tank_mono
             }
             else
             {
+                _currentTank.Position.Y -= 1f;
                 _falling = false;
             }
             
@@ -129,8 +142,9 @@ namespace tank_mono
                                 SamplerState.PointClamp,
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
+            spriteBatch.Draw(_bkgrnd,_bkPos,Color.White);
             _tankManager.Draw(spriteBatch);
-            
+            spriteBatch.Draw(_currentTank.SpriteMain,_currentTank.Position,Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

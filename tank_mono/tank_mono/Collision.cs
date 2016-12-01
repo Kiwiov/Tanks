@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    public class Kollision
+    public class Collision
     {
 
         public static Rectangle Intersection(Rectangle r1, Rectangle r2)
