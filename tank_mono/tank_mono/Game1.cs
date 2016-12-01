@@ -17,8 +17,6 @@ namespace tank_mono
         public Texture2D standardTankMain;
         public Texture2D standardTankCannon;
 
-        public Texture2D backgroundImage;
-
         private BackgroundManager backgroundManager;
         private TerrainManager terrainManager;
 
@@ -68,7 +66,6 @@ namespace tank_mono
             standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
 
             backgroundManager.Load(GraphicsDevice);
-            backgroundImage = backgroundManager.GetThemeBackground();
 
             terrainManager.Load(GraphicsDevice);
             terrainManager.Generate();
