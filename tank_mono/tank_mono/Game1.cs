@@ -17,8 +17,12 @@ namespace tank_mono
         public Texture2D standardTankMain;
         public Texture2D standardTankCannon;
 
+        public Texture2D backgroundImage;
+
         private BackgroundManager backgroundManager;
         private TerrainManager terrainManager;
+
+        private ScrollingLayers scrollingLayers;
 
         public Game1()
         {
@@ -40,9 +44,8 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
-            
-            base.Initialize();
             Window.Title = GameSettings.Title;
+            base.Initialize();
         }
 
         /// <summary>
@@ -54,19 +57,22 @@ namespace tank_mono
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            terrainManager = new TerrainManager(GraphicsDevice, spriteBatch);
+            terrainManager = new TerrainManager(GraphicsDevice, Content, spriteBatch);
+
+            scrollingLayers = new ScrollingLayers(GraphicsDevice, Content, spriteBatch);
+
+            scrollingLayers.AddLayer("cloud1");
+            scrollingLayers.AddLayer("cloud2");
 
             standardTankMain = Content.Load<Texture2D>("TankStandardBody");
             standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
 
             backgroundManager.Load(GraphicsDevice);
+            backgroundImage = backgroundManager.GetThemeBackground();
 
-            bgImage = backgroundManager.GetThemeBackground();
-
+            terrainManager.Load(GraphicsDevice);
             terrainManager.Generate();
         }
-
-        Texture2D bgImage;
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -88,6 +94,13 @@ namespace tank_mono
 
             // TODO: Add your update logic here
 
+            scrollingLayers.Update(gameTime,
+                delegate { scrollingLayers.GetLayerByName("cloud1").UpdateAxis(0.8f, 0.35f); },
+                delegate { scrollingLayers.GetLayerByName("cloud2").UpdateAxis(-0.5f, -0.35f); }
+            );
+
+            terrainManager.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -101,15 +114,13 @@ namespace tank_mono
 
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
 
-            //backgroundManager.Draw(spriteBatch);
+            backgroundManager.Draw(gameTime, spriteBatch);
 
-            var dest = new Rectangle(0, 0, GameSettings.Width, GameSettings.Height);
-            spriteBatch.Draw(bgImage, Vector2.Zero, dest, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            scrollingLayers.DrawLayers(gameTime, "cloud1", "cloud2");
 
-            //terrainManager.Generate();
-            terrainManager.Draw();
+            terrainManager.Draw(gameTime);
 
             spriteBatch.End();
 

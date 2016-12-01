@@ -13,7 +13,8 @@ namespace tank_mono
     {
         private Dictionary<string, Texture2D> _backgrounds = new Dictionary<string, Texture2D>();
         private ContentManager _content;
-        private bool isDrawn = false;
+        private GraphicsDevice _device;
+
         public Texture2D CurrentBackground { get; private set; }
         public BackgroundManager(ContentManager Content)
         {
@@ -22,9 +23,13 @@ namespace tank_mono
 
         public void Load(GraphicsDevice Device)
         {
+            _device = Device;
+
             Register("Mountain", "MountainBackground");
             Register("Snow", "SnowBackground");
             Register("Desert", "SandBackground");
+
+            CurrentBackground = GetThemeBackground();
         }
 
         private void Register(string key, string background)
@@ -37,14 +42,9 @@ namespace tank_mono
             return _backgrounds[GameSettings.Theme];
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            //if(!isDrawn)
-            //{
-              //  isDrawn = true;
-                var dest = new Rectangle(0, 0, GameSettings.Width, GameSettings.Height);
-                spriteBatch.Draw(GetThemeBackground(), Vector2.Zero, dest, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            //}
+            spriteBatch.Draw(CurrentBackground, _device.Viewport.Bounds, _device.Viewport.Bounds, Color.White);
         }
 
         public void Unload(GraphicsDevice Device, object Source)
