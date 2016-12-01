@@ -33,6 +33,7 @@ namespace tank_mono
 
         public MainMenu(Game game): base (game)
         {
+            
             main.Add(new Menu("start"));
             main.Add(new Menu("settings"));
             main.Add(new Menu("quit"));

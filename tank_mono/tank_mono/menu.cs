@@ -20,6 +20,7 @@ namespace tank_mono
         private Song song;
         private float scale = 0f;
         private MouseState previousMouseState;
+
         public string AssetName
         {
             get { return assetName; }
