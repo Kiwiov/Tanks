@@ -52,12 +52,7 @@ namespace tank_mono
                         tank.Speed = 20;
                         tank.Fuel = 400;
                         tank.Armour = 300;
-
-                        //weapons
-                        tank.Weapons.Add(_weaponCreator.MachineGun(),int.MaxValue);
-                        tank.Weapons.Add(_weaponCreator.Missile(),5);
-                        tank.Weapons.Add(_weaponCreator.AntiArmour(),5);
-
+                        
                         //Textures
                         tank.SpriteMain = _heavyTankMain;
                         tank.Cannon = _heavyCannon;
@@ -68,11 +63,6 @@ namespace tank_mono
                         tank.Speed = 40;
                         tank.Fuel = 400;
                         tank.Armour = 150;
-
-                        //weapons
-                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
 
                         //Textures
                         tank.SpriteMain = _standardTankMain;
@@ -85,14 +75,38 @@ namespace tank_mono
                         tank.Fuel = 400;
                         tank.Armour = 100;
 
+                        //Textures
+                        tank.SpriteMain = _lightTankMain;
+                        tank.Cannon = _lightCannon;
+                        break;
+                }
+            }
+        }
+
+        public void SetWeapons()
+        {
+            foreach (var tank in Tanks)
+            {
+                switch (tank.TankType)
+                {
+                    case "Heavy":
                         //weapons
                         tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
                         tank.Weapons.Add(_weaponCreator.Missile(), 5);
                         tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
-
-                        //Textures
-                        tank.SpriteMain = _lightTankMain;
-                        tank.Cannon = _lightCannon;
+                        
+                        break;
+                    case "Standard":
+                        //weapons
+                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+                        break;
+                    case "Light":
+                        //weapons
+                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
                         break;
                 }
             }

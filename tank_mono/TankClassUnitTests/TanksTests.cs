@@ -141,7 +141,7 @@ namespace TankClassUnitTests
                 Assert.AreEqual(200, tankManager.Tanks[0].Health);
                 Assert.AreEqual(20, tankManager.Tanks[0].Speed);
                 Assert.AreEqual(400, tankManager.Tanks[0].Fuel);
-                Assert.AreEqual(200, tankManager.Tanks[0].Armour);
+                Assert.AreEqual(300, tankManager.Tanks[0].Armour);
             }
 
             [TestMethod]
