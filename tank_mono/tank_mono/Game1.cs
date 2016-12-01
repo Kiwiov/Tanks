@@ -1,18 +1,28 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Texture2D background;
+        public static int width = 1920;
+        public static int height = 1080;
 
+
+        private MainMenu main;
         TankManager _tankManager;
         WeaponCreator _weaponCreator;
         Tank _currentTank;
@@ -21,7 +31,10 @@ namespace tank_mono
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = height;
+            graphics.PreferredBackBufferWidth = width;
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -32,6 +45,7 @@ namespace tank_mono
         /// </summary>
         protected override void Initialize()
         {
+             main = new MainMenu(this);
             base.Initialize();
         }
 
@@ -45,6 +59,13 @@ namespace tank_mono
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
+            main.LoadContent(Content);
+            
+
+            background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
+
+            
+
         }
 
         /// <summary>
@@ -63,7 +84,8 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            width = graphics.PreferredBackBufferWidth;
+            height = graphics.PreferredBackBufferHeight;
             if (_done == false)
             {
                 _tankManager.CreateTank(new Vector2(300,300),"Heavy",Color.OliveDrab,false);
@@ -73,8 +95,9 @@ namespace tank_mono
             }
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
             _tankManager.MoveTank(_currentTank);
-
+            main.Update();
             base.Update(gameTime);
+
         }
 
         /// <summary>
@@ -93,10 +116,23 @@ namespace tank_mono
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
             _tankManager.Draw(spriteBatch);
+            spriteBatch.Begin();
+
+
+
+            spriteBatch.Draw(background, new Rectangle(0, 0, width,height), Color.White);
+            main.Draw(spriteBatch);
+
 
             spriteBatch.End();
 
+
+
             base.Draw(gameTime);
+        }
+        public void Quit()
+        {
+            this.Exit();
         }
     }
 }
