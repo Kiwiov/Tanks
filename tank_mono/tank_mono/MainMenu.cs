@@ -12,135 +12,198 @@ using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
-    class MainMenu
+
+    class MainMenu : DrawableGameComponent
     {
-        private GraphicsDeviceManager graphics;
+        private GraphicsDevice graphics;
         enum GameState { mainMenum, enterName, inGame, settings}
 
         private GameState gameState;
-        List<menu> main = new List<menu>();
-        List<menu> enterName = new List<menu>();
-        List<menu> resolution = new List<menu>();
-        List<menu> confirm = new List<menu>();
-        List<menu> volume = new List<menu>();
+        List<Menu> main = new List<Menu>();
+        List<Menu> enterName = new List<Menu>();
+        List<Menu> resolution = new List<Menu>();
+        List<Menu> confirm = new List<Menu>();
+        List<Menu> volume = new List<Menu>();
 
         public float Volume { get; set; }
-        public Game1 game; //Reference to your main class
 
         private Keys[] lastpressedKeys = new Keys[5];
         private string myName = string.Empty;
         private SpriteFont sf;
 
-        public MainMenu()
+        public MainMenu(Game game): base (game)
         {
-            main.Add(new menu("start"));
-            main.Add(new menu("settings"));
-            main.Add(new menu("quit"));
+            main.Add(new Menu("start"));
+            main.Add(new Menu("settings"));
+            main.Add(new Menu("quit"));
 
-            enterName.Add(new menu("name"));
-            enterName.Add(new menu("done"));
-
-
-            resolution.Add(new menu("resolution"));
-            resolution.Add(new menu("1920"));
-            resolution.Add(new menu("720"));
-            resolution.Add(new menu("800"));
+            enterName.Add(new Menu("name"));
+            enterName.Add(new Menu("done"));
 
 
-            volume.Add(new menu("volume"));
-            volume.Add(new menu("33"));
-            volume.Add(new menu("66"));
-            volume.Add(new menu("100"));
-            volume.Add(new menu("muted"));
+            resolution.Add(new Menu("resolution"));
+            resolution.Add(new Menu("1920"));
+            resolution.Add(new Menu("720"));
+            resolution.Add(new Menu("800"));
 
 
-            confirm.Add(new menu("apply"));
+            volume.Add(new Menu("volume"));
+            volume.Add(new Menu("33"));
+            volume.Add(new Menu("66"));
+            volume.Add(new Menu("100"));
+            volume.Add(new Menu("muted"));
+
+
+            confirm.Add(new Menu("apply"));
+
         }
 
+        public void loadmenu()
+        {
+            int moverange = 0;
+
+            int moverangeleft = 0;
+            foreach (Menu element in main)
+            {
+                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 2, Game1.graphics.PreferredBackBufferHeight/ 2);
+            }
+            main.Find(x => x.AssetName == "start").MoveElement(0, moverange);
+            moverange += (int)(100/1920.0* Game1.graphics.PreferredBackBufferWidth);
+            main.Find(x => x.AssetName == "settings").MoveElement(0, moverange);
+            moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            main.Find(x => x.AssetName == "quit").MoveElement(0, moverange);
+
+            foreach (Menu element in enterName)
+            {
+                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 1, Game1.graphics.PreferredBackBufferHeight / 2);
+            }
+
+            moverange -= (int)(75 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            enterName.Find(x => x.AssetName == "done").MoveElement(0, moverange);
+
+            foreach (Menu element in resolution)
+            {
+                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 4);
+            }
+            moverange = 0;
+            resolution.Find(x => x.AssetName == "resolution").MoveElement(moverange, 0);
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            resolution.Find(x => x.AssetName == "1920").MoveElement(moverange, 0);
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); ;
+            resolution.Find(x => x.AssetName == "720").MoveElement(moverange, 0);
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); ;
+            resolution.Find(x => x.AssetName == "800").MoveElement(moverange, 0);
+
+            foreach (Menu element in volume)
+            {
+                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 4);
+            }
+            volume.Find(x => x.AssetName == "volume").MoveElement(0, 75);
+            volume.Find(x => x.AssetName == "muted").MoveElement(moverangeleft, 75);
+            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            volume.Find(x => x.AssetName == "33").MoveElement(moverangeleft, 75);
+            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            volume.Find(x => x.AssetName == "66").MoveElement(moverangeleft, 75);
+            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            volume.Find(x => x.AssetName == "100").MoveElement(moverangeleft, 75);
+
+
+            foreach (Menu element in confirm)
+            {
+                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 4);
+            }
+            confirm.Find(x => x.AssetName == "apply").MoveElement(0, 150);
+        }
         public void LoadContent(ContentManager content)
         {
-            
-            sf = content.Load<SpriteFont>("menu/MyFont");
+                
+            sf = content.Load<SpriteFont>("Menu/MyFont");
             int moverange = 0;
-            int moverangeleft = 200;
-            foreach (menu element in main)
+            int moverangeleft = 0;
+            foreach (Menu element in main)
             {
                 element.LoadContent(content);
-                element.CenterElement(960, 1080);
+                element.CenterElement(Game1.width / 2, Game1.height/ 2);
                 element.clickEvent += OnClick;
             }
             main.Find(x => x.AssetName == "start").MoveElement(0, moverange);
-            moverange += 100;
+            moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "settings").MoveElement(0, moverange);
-            moverange += 100;
+            moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "quit").MoveElement(0, moverange);
 
-            foreach (menu element in enterName)
+            foreach (Menu element in enterName)
             {
                 element.LoadContent(content);
-                element.CenterElement(960, 1080);
+                element.CenterElement(Game1.width / 4, Game1.height/4);
                 element.clickEvent += OnClick;
             }
 
             moverange -= 75;
             enterName.Find(x => x.AssetName == "done").MoveElement(0, moverange);
 
-
-
-            foreach (menu element in resolution)
+            foreach (Menu element in resolution)
             {
                 element.LoadContent(content);
-                element.CenterElement(960, 1080);
-                element.clickEvent += OnClick;
+                element.CenterElement(Game1.width / 4, Game1.height/4);
+                //element.clickEvent += OnClick;
+
             }
+            resolution[1].clickEvent += OnClick1920;
+            resolution[2].clickEvent += OnClick1280;
+            resolution[3].clickEvent += OnClick800;
             moverange = 0;
             resolution.Find(x => x.AssetName == "resolution").MoveElement(moverange, 0);
-            moverange += 200;
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             resolution.Find(x => x.AssetName == "1920").MoveElement(moverange, 0);
-            moverange += 200;
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); ;
             resolution.Find(x => x.AssetName == "720").MoveElement(moverange, 0);
-            moverange += 200;
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); ;
             resolution.Find(x => x.AssetName == "800").MoveElement(moverange, 0);
 
-            foreach (menu element in volume)
+            foreach (Menu element in volume)
             {
                 element.LoadContent(content);
-                element.CenterElement(960, 1080);
+                element.CenterElement(Game1.width / 4, Game1.height / 4);
                 element.clickEvent += OnClick;
             }
             volume.Find(x => x.AssetName == "volume").MoveElement(0, 75);
             volume.Find(x => x.AssetName == "muted").MoveElement(moverangeleft, 75);
-            moverangeleft += 200;
+            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             volume.Find(x => x.AssetName == "33").MoveElement(moverangeleft, 75);
-            moverangeleft += 200;
+            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             volume.Find(x => x.AssetName == "66").MoveElement(moverangeleft, 75);
-            moverangeleft += 200;
+            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             volume.Find(x => x.AssetName == "100").MoveElement(moverangeleft, 75);
 
 
-            foreach (menu element in confirm)
+            foreach (Menu element in confirm)
             {
                 element.LoadContent(content);
-                element.CenterElement(960, 1080);
+                element.CenterElement(Game1.width / 4, Game1.height / 4);
                 element.clickEvent += OnClick;
             }
             confirm.Find(x => x.AssetName == "apply").MoveElement(0, 150);
+        }
 
-
+        public void RecalcMenu()
+        {
+            loadmenu();
         }
 
         public void Update()
         {
+            
             switch (gameState)
             {
                 case GameState.mainMenum:
-                    foreach (menu element in main)
+                    foreach (Menu element in main)
                     {
                         element.Update();
                     }
                     break;
                 case GameState.enterName:
-                    foreach (menu element in enterName)
+                    foreach (Menu element in enterName)
                     {
                         element.Update();
                     }
@@ -149,28 +212,26 @@ namespace tank_mono
                 case GameState.inGame:
                     break;
                 case GameState.settings:
-                    foreach (menu element in resolution)
+                    foreach (Menu element in resolution)
                     {
                         element.Update();
                     }
 
-                    foreach (menu element in volume)
+                    foreach (Menu element in volume)
                     {
                         element.Update();
                     }
 
-                    foreach (menu element in confirm)
+                    foreach (Menu element in confirm)
                     {
                         element.Update();
                     }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+
+
             }
-
-
-
-
 
         }
 
@@ -179,32 +240,32 @@ namespace tank_mono
             switch (gameState)
             {
                 case GameState.mainMenum:
-                    foreach (menu element in main)
+                    foreach (Menu element in main)
                     {
                         element.Draw(spriteBatch);
                     }
                     break;
                 case GameState.enterName:
-                    foreach (menu element in enterName)
+                    foreach (Menu element in enterName)
                     {
                         element.Draw(spriteBatch);
                     }
-                    spriteBatch.DrawString(sf,myName, new Vector2(450,650), Color.Black);
+                    spriteBatch.DrawString(sf,myName, new Vector2(450,650), Color.Black,0,Vector2.Zero,0.5f,SpriteEffects.None,0);
                     break;
                 case GameState.inGame:
                     break;
                 case GameState.settings:
-                    foreach (menu element in resolution)
+                    foreach (Menu element in resolution)
                     {
                         element.Draw(spriteBatch);
                     }
 
-                    foreach (menu element in volume)
+                    foreach (Menu element in volume)
                     {
                         element.Draw(spriteBatch);
                     }
 
-                    foreach (menu element in confirm)
+                    foreach (Menu element in confirm)
                     {
                         element.Draw(spriteBatch);
                     }
@@ -214,7 +275,35 @@ namespace tank_mono
             }
         }
 
-        public void OnClick(string element)
+        public void OnClick1920(string element)
+        {
+
+            Game1.graphics.IsFullScreen = true;
+            Game1.graphics.ApplyChanges();
+            RecalcMenu();
+
+        }
+
+        public void OnClick1280(string element)
+        {
+                Game1.graphics.PreferredBackBufferHeight = 720;
+                Game1.graphics.PreferredBackBufferWidth = 1280;
+                Game1.graphics.ApplyChanges();
+                RecalcMenu();
+
+
+        }
+
+        public void OnClick800(string element)
+        {
+            Game1.graphics.PreferredBackBufferHeight = 600;
+            Game1.graphics.PreferredBackBufferWidth = 800;
+            Game1.graphics.ApplyChanges();
+            RecalcMenu();
+        }
+
+
+    public void OnClick(string element)
         {
             if (element == "start")
             {
@@ -261,27 +350,6 @@ namespace tank_mono
                 MediaPlayer.Volume = 1f;
             }
 
-            if (element == "1080")
-            {
-                Game1.graphics.PreferredBackBufferHeight = 1080;
-                Game1.graphics.PreferredBackBufferWidth = 1920;
-                Game1.graphics.ApplyChanges();
-
-            }
-
-            if (element == "720")
-            {
-                Game1.graphics.PreferredBackBufferHeight = 720;
-                Game1.graphics.PreferredBackBufferWidth = 1280;
-                Game1.graphics.ApplyChanges();
-            }
-
-            if (element == "800")
-            {
-                Game1.graphics.PreferredBackBufferHeight = 600;
-                Game1.graphics.PreferredBackBufferWidth = 800;
-                Game1.graphics.ApplyChanges();
-            }
 
             if (element == "apply")
             {

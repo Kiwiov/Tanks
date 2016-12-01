@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -15,22 +16,19 @@ namespace tank_mono
     {
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private int width = 1920;
-        private int height = 1080;
         private Texture2D background;
+        public static int width = 1920;
+        public static int height = 1080;
 
 
-
-        MainMenu main = new MainMenu();
+        private MainMenu main;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
             graphics.PreferredBackBufferHeight = height;
             graphics.PreferredBackBufferWidth = width;
+            Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.PreferredBackBufferWidth = 1920;
         }
 
         /// <summary>
@@ -42,7 +40,7 @@ namespace tank_mono
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+             main = new MainMenu(this);
             base.Initialize();
         }
 
@@ -57,10 +55,11 @@ namespace tank_mono
 
             // TODO: use this.Content to load your game content here
             main.LoadContent(Content);
+            
 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
 
-            background = Content.Load<Texture2D>("menu/bg"); // change these names to the names of your images
+            
 
         }
 
@@ -82,7 +81,8 @@ namespace tank_mono
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            width = graphics.PreferredBackBufferWidth;
+            height = graphics.PreferredBackBufferHeight;
             // TODO: Add your update logic here
             main.Update();
             base.Update(gameTime);
@@ -99,9 +99,16 @@ namespace tank_mono
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+
+
             spriteBatch.Draw(background, new Rectangle(0, 0, width,height), Color.White);
             main.Draw(spriteBatch);
+
+
             spriteBatch.End();
+
+
 
             base.Draw(gameTime);
         }
