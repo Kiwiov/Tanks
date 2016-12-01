@@ -91,22 +91,28 @@ namespace tank_mono
                 {
                     case "Heavy":
                         //weapons
-                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
-                        
+                        //tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        //tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        //tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+
+                        tank.CurrentWeapon = _weaponCreator.MachineGun();
+
                         break;
                     case "Standard":
                         //weapons
-                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+                        //tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        //tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        //tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+
+                        tank.CurrentWeapon = _weaponCreator.MachineGun();
                         break;
                     case "Light":
                         //weapons
-                        tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+                        //tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
+                        //tank.Weapons.Add(_weaponCreator.Missile(), 5);
+                        //tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+
+                        tank.CurrentWeapon = _weaponCreator.MachineGun();
                         break;
                 }
             }
@@ -160,8 +166,6 @@ namespace tank_mono
                         tank.CannonRotation -= 0.01f;
                     }
                 }
-                
-                
             }
         } 
 

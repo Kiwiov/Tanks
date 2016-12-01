@@ -24,7 +24,7 @@ namespace tank_mono
         private float _fuel;
         private float _cannonRotation;
         private float _tankRotation;
-
+        private Weapon _currentWeapon;
 
         private bool _isBot;
         
@@ -122,6 +122,11 @@ namespace tank_mono
             get { return _tankType; }
             set { _tankType = value; }
         }
-        
+
+        public Weapon CurrentWeapon
+        {
+            get { return _currentWeapon; }
+            set { _currentWeapon = value; }
+        }
     }
 }

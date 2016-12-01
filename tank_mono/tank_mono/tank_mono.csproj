@@ -40,6 +40,8 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Projectile.cs" />
+    <Compile Include="ProjectileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="TankManager.cs" />

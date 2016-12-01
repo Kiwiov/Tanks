@@ -15,6 +15,7 @@ namespace tank_mono
 
         TankManager _tankManager;
         WeaponCreator _weaponCreator;
+        ProjectileManager _projectileManager;
         Tank _currentTank;
         
         bool _done = false;
@@ -43,6 +44,7 @@ namespace tank_mono
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            _projectileManager = new ProjectileManager();
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
         }
@@ -68,11 +70,13 @@ namespace tank_mono
             {
                 _tankManager.CreateTank(new Vector2(300,300),"Heavy",Color.OliveDrab,false);
                 _tankManager.SetStats();
+                _tankManager.SetWeapons();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];
             }
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
             _tankManager.MoveTank(_currentTank);
+            _projectileManager.Shoot(_currentTank);
 
             base.Update(gameTime);
         }
@@ -93,7 +97,7 @@ namespace tank_mono
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
             _tankManager.Draw(spriteBatch);
-
+            _projectileManager.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

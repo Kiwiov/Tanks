@@ -22,7 +22,7 @@ namespace tank_mono
 
         public Weapon MachineGun()
         {
-            Weapon machineGun = new Weapon("MachineGun",20,1,false,"Bullet",_bulletTexture,2,10);
+            Weapon machineGun = new Weapon("MachineGun",20,1,false,"Bullet",_bulletTexture,2,5);
             return machineGun;
         }
 
