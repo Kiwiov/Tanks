@@ -17,10 +17,12 @@ namespace tank_mono
         TankManager _tankManager;
         Tank _currentTank;
         Tank _secondTank;
-        Kollision _kollision = new Kollision();
-        
-        Rectangle _koll;
 
+        Rectangle _norm;
+        Rectangle _koll;
+        
+        bool _falling;
+        bool _bHit = false;
         bool _done = false;
         public Game1()
         {
@@ -71,23 +73,44 @@ namespace tank_mono
             if (_done == false)
             {
                 _tankManager.CreateTank(new Vector2(300,300),"Standard",Color.OliveDrab,false);
-                _tankManager.CreateTank(new Vector2(300, 400), "Heavy", Color.AliceBlue, false);
+                _tankManager.CreateTank(new Vector2(300, 315), "Heavy", Color.AliceBlue, false);
                 _tankManager.SetStats();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];
                 _secondTank = _tankManager.Tanks[1];
             }
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
-            _tankManager.MoveTank(_currentTank);
+            if (!_falling)
+            {
+                _tankManager.MoveTank(_currentTank);
+            }
 
             Rectangle player1Box = new Rectangle((int)_currentTank.Position.X, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height);
-            Rectangle player2Box =  new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y,_secondTank.SpriteMain.Width, _secondTank.SpriteMain.Height);
+            Rectangle player2Box = new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y, _secondTank.SpriteMain.Width, _secondTank.SpriteMain.Height);
 
-            if (_koll.Width == 0)
-            {
-                _currentTank.Position.Y += 1.5f;
-            }
             _koll = Kollision.Intersection(player1Box, player2Box);
+
+            if (_koll.Width > 0 && _koll.Height > 0)
+            {
+                Rectangle _r1 = Kollision.Normalize(player1Box, _koll);
+                Rectangle _r2 = Kollision.Normalize(player2Box, _koll);
+                _bHit = Kollision.TestCollision(_currentTank.SpriteMain, _r1, _secondTank.SpriteMain, _r2);
+            }
+            else
+            {
+                _bHit = false;
+            }
+            if (!_bHit)
+            {
+                _currentTank.Position.Y += 1f;
+                _falling = true;
+            }
+            else
+            {
+                _falling = false;
+            }
+            
+
             base.Update(gameTime);
         }
 
@@ -107,10 +130,7 @@ namespace tank_mono
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
             _tankManager.Draw(spriteBatch);
-            //if (_koll.Width > 0)
-            //{
-            //    _currentTank.Position.Y -= 1.5f;
-            //}
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
