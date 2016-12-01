@@ -20,7 +20,12 @@ namespace tank_mono
         private BackgroundManager backgroundManager;
         private TerrainManager terrainManager;
 
+        private RandomObjectManager randomObjectManager;
+
         private ScrollingLayers scrollingLayers;
+        private Camera2D camera2D;
+
+        private int previousScrollValue;
 
         public Game1()
         {
@@ -30,8 +35,6 @@ namespace tank_mono
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
-
-            backgroundManager = new BackgroundManager(Content);
         }
 
         /// <summary>
@@ -43,6 +46,13 @@ namespace tank_mono
         protected override void Initialize()
         {
             Window.Title = GameSettings.Title;
+
+            backgroundManager = new BackgroundManager(Content);
+
+            camera2D = new Camera2D(GraphicsDevice);
+
+            previousScrollValue = Mouse.GetState().ScrollWheelValue;
+
             base.Initialize();
         }
 
@@ -52,23 +62,30 @@ namespace tank_mono
         /// </summary>
         protected override void LoadContent()
         {
+            standardTankMain = Content.Load<Texture2D>("TankStandardBody");
+            standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            TextManager.Init(GraphicsDevice, Content, spriteBatch);
+
             terrainManager = new TerrainManager(GraphicsDevice, Content, spriteBatch);
 
-            scrollingLayers = new ScrollingLayers(GraphicsDevice, Content, spriteBatch);
+            randomObjectManager = new RandomObjectManager(GraphicsDevice, Content, spriteBatch, terrainManager);
 
+            scrollingLayers = new ScrollingLayers(GraphicsDevice, Content, spriteBatch);
             scrollingLayers.AddLayer("cloud1");
             scrollingLayers.AddLayer("cloud2");
 
-            standardTankMain = Content.Load<Texture2D>("TankStandardBody");
-            standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
+            TextManager.Load(GraphicsDevice);
 
             backgroundManager.Load(GraphicsDevice);
 
             terrainManager.Load(GraphicsDevice);
             terrainManager.Generate();
+
+            randomObjectManager.Load(GraphicsDevice);
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -89,6 +106,50 @@ namespace tank_mono
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var keyboardState = Keyboard.GetState();
+            var currentMouseState = Mouse.GetState();
+
+            // rotation
+            if (keyboardState.IsKeyDown(Keys.Q))
+                camera2D.Rotation -= deltaTime;
+
+            if (keyboardState.IsKeyDown(Keys.W))
+                camera2D.Rotation += deltaTime;
+
+            if (keyboardState.IsKeyDown(Keys.R))
+                camera2D.Rotation = 0;
+
+            /*
+             if (keyboardState.IsKeyDown(Keys.Up))
+                camera2D.Position -= new Vector2(0, 250) * deltaTime;
+
+             if (keyboardState.IsKeyDown(Keys.Down))
+                camera2D.Position += new Vector2(0, 250) * deltaTime;
+            */
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+                camera2D.Position -= new Vector2(250, 0) * deltaTime;
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+                camera2D.Position += new Vector2(250, 0) * deltaTime;
+
+
+            float thisZoom = camera2D.Zoom;
+
+            if (currentMouseState.ScrollWheelValue < previousScrollValue)
+            {
+                if ((!GameSettings.Debug && thisZoom > 0.8f) || GameSettings.Debug)
+                    camera2D.Zoom -= 0.1f;
+            }
+            else if (currentMouseState.ScrollWheelValue > previousScrollValue)
+            {
+                if((!GameSettings.Debug && thisZoom < 1.5f) || GameSettings.Debug)
+                    camera2D.Zoom += 0.1f;
+            }
+
+            previousScrollValue = currentMouseState.ScrollWheelValue;
+
             // TODO: Add your update logic here
 
             scrollingLayers.Update(gameTime,
@@ -97,6 +158,8 @@ namespace tank_mono
             );
 
             terrainManager.Update(gameTime);
+
+            randomObjectManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -107,17 +170,26 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera2D.GetViewMatrix());
 
             backgroundManager.Draw(gameTime, spriteBatch);
 
-            scrollingLayers.DrawLayers(gameTime, "cloud1", "cloud2");
+            scrollingLayers.Draw(
+                gameTime, 
+                "cloud1",
+                "cloud2"
+            );
 
             terrainManager.Draw(gameTime);
+
+            randomObjectManager.Draw(gameTime);
+
+            if(GameSettings.Debug)
+                TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 310), Color.Purple);
 
             spriteBatch.End();
 

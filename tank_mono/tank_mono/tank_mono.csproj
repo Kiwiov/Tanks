@@ -39,15 +39,21 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BackgroundManager.cs" />
+    <Compile Include="Entities\LayerEntity.cs" />
+    <Compile Include="Entities\RandomObjectEntity.cs" />
+    <Compile Include="Entities\VectorGroupEntity.cs" />
+    <Compile Include="Managers\BackgroundManager.cs" />
+    <Compile Include="Camera2D.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Managers\RandomObjectManager.cs" />
     <Compile Include="ScrollingLayers.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="TankManager.cs" />
-    <Compile Include="TerrainManager.cs" />
+    <Compile Include="Managers\TerrainManager.cs" />
+    <Compile Include="Managers\TextManager.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="WeaponEntity.cs" />
   </ItemGroup>

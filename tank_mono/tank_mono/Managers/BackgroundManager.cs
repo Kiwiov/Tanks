@@ -44,7 +44,8 @@ namespace tank_mono
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(CurrentBackground, _device.Viewport.Bounds, _device.Viewport.Bounds, Color.White);
+            //spriteBatch.Draw(CurrentBackground, _device.Viewport.Bounds, _device.Viewport.Bounds, Color.White);
+            spriteBatch.Draw(CurrentBackground, new Rectangle(0, 0, GameSettings.ExtendedWidth, GameSettings.Height), Color.White);
         }
 
         public void Unload(GraphicsDevice Device, object Source)

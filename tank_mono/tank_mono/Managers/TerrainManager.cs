@@ -9,44 +9,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    public class VectorGroup
-    {
-        private Vector2 v1;
-        private Vector2 v2;
-
-        public VectorGroup(Vector2 v1, Vector2 v2)
-        {
-            this.v1 = v1;
-            this.v2 = v2;
-        }
-
-        public Vector2 GetFirst()
-        {
-            return v1;
-        }
-
-        public Vector2 GetSecond()
-        {
-            return v2;
-        }
-    }
     public class TerrainManager
     {
         private List<double> HeightMap = new List<double>();
 
         //Randomerare för slumptal
-        private Random rnd = new Random();
+        private static Random rnd = new Random();
 
         private Texture2D _texture; //base for the line texture
 
         private SpriteBatch _spriteBatch;
-        private SpriteFont _font;
-
         private ContentManager _content;
 
-        internal List<VectorGroup> Vectors = new List<VectorGroup>();
+        private List<VectorGroupEntity> Vectors = new List<VectorGroupEntity>();
 
-        private int Iterations = 5;
+        private int Iterations = 3;
+        private double MaxRandomNess = GetRandomDouble(-1, 2);
 
         int currentTime; // for testing only
 
@@ -55,9 +33,9 @@ namespace tank_mono
             _spriteBatch = spriteBatch;
             _content = content;
 
-            _texture = new Texture2D(device, GameSettings.Width, GameSettings.Height);
+            _texture = new Texture2D(device, GameSettings.ExtendedWidth, GameSettings.Height);
 
-            Color[] tData = new Color[GameSettings.Width * GameSettings.Height];
+            Color[] tData = new Color[GameSettings.ExtendedWidth * GameSettings.Height];
 
             for (int i = 0; i < tData.Length; i++)
             {
@@ -67,14 +45,13 @@ namespace tank_mono
             _texture.SetData(tData);
         }
 
-        public List<VectorGroup> GetVectorGroup()
+        public List<VectorGroupEntity> GetVectorGroup()
         {
             return Vectors;
         }
 
         public void Load(GraphicsDevice device)
         {
-            _font = _content.Load<SpriteFont>("TimerFont");
         }
 
         public void Generate()
@@ -82,15 +59,18 @@ namespace tank_mono
             //Nollställer listan med punkter
             HeightMap.Clear();
 
+            //Rensar nuvarande vektorer
+            Vectors.Clear();
+
             //Lägger till start- och stop-punkt
-            HeightMap.Add(GetRandomDouble(-0.89, 1.666));
-            HeightMap.Add(GetRandomDouble(-0.89, 1.666));
+            HeightMap.Add(GetRandomDouble(-0.33, 1.33));
+            HeightMap.Add(GetRandomDouble(-0.33, 1.33));
 
             //Börjar algoritmen med slump +- 1.0
-            double Max = GetRandomDouble(-1, 2);
+            double Max = MaxRandomNess;
 
             //Bestämmer ojämnheten i terrängen
-            double Roughness = ((double)16.666 / 100.0);
+            double Roughness = ((double)23 / 100.0);
 
             //Uprepa enligt angivet antal iterationer
             for (int j = 0; j < Iterations; j++)
@@ -100,9 +80,9 @@ namespace tank_mono
                 for (int i = 0; i < count - 1; i++)
                 {
                     //Medelvärdet mellan två punkter
-                    double tmp = (HeightMap[i * 2] + HeightMap[i * 2 + 1]) / 2.0;
+                    double tmp = (HeightMap[i * 2] + HeightMap[i * 2 + 1]) / 4.0;
                     //Beräkna en slumpvis förskjutning +-Max
-                    double offset = (rnd.NextDouble() * 2.0 - 1.0) * Max;
+                    double offset = (rnd.NextDouble() * 2.0 - 1.0) * Max / 0.85;
 
                     //Skapa ny punkt med medelvärde + slumvis förskjutning
                     HeightMap.Insert(i * 2 + 1, tmp + offset);
@@ -111,12 +91,10 @@ namespace tank_mono
                 Max = Max * Math.Pow(2, -Roughness);
             }
 
-            Vectors.Clear();
-
-            for (int x = 0; x < GameSettings.Width; x++)
+            for (int x = 0; x < GameSettings.ExtendedWidth; x++)
             {
                 //Beräkna vilken punkt på linjen som ligger närmast
-                double index = (x / (double)GameSettings.Width) * (HeightMap.Count - 1);
+                double index = (x / (double)GameSettings.ExtendedWidth) * (HeightMap.Count - 1);
                 int start = (int)Math.Floor(index);
 
                 //Interpolera mellan beräknad punkt och nästa punkt
@@ -125,14 +103,12 @@ namespace tank_mono
                 double height = HeightMap[start] * r1 + HeightMap[start + 1] * r2;
 
                 //Ge linjen en offset på 300 pixlar och en amplitud på 150 pixlar
-                Point p1 = new Point(x, (int)(300 + 150.0 * height));
-                Point p2 = new Point(x, 0);
 
-                Vectors.Add(
-                new VectorGroup(
-                    new Vector2(p1.X, p1.Y),
-                    new Vector2(p2.X, p2.Y)
-                ));
+                int randomHeight = Convert.ToInt32(GetRandomDouble(150, 155));
+                Vector2 v1 = new Vector2(x, (int)(randomHeight + 150 * height));
+                Vector2 v2 = new Vector2(x, 0);
+
+                Vectors.Add(new VectorGroupEntity(v1, v2));
             }
         }
 
@@ -145,20 +121,23 @@ namespace tank_mono
                     this.Generate();
         }
 
-        public double GetRandomDouble(double minimum, double maximum)
+        public static double GetRandomDouble(double minimum, double maximum)
         {
             return rnd.NextDouble() * (maximum - minimum) + minimum;
         }
 
         public void Draw(GameTime gameTime)
         {
-            _spriteBatch.DrawString(_font, gameTime.TotalGameTime.Seconds.ToString(), new Vector2(10, 10), Color.White);
+            if(GameSettings.Debug)
+                TextManager.Draw(gameTime.TotalGameTime.Seconds.ToString(), new Vector2(10, 10), Color.White);
 
             foreach (var item in GetVectorGroup())
             {
+                var vectors = item.GetAll();
+
                 DrawLine(
-                    item.GetFirst(),
-                    item.GetSecond()
+                    vectors[0],
+                    vectors[1]
                 );
             }
         }

@@ -85,12 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:hm.png
 
-#begin TimerFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:TimerFont.spritefont
-
 #begin cloud2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -114,4 +108,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:cloud1.png
+
+#begin palm.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:palm.png
+
+#begin DefaultFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:DefaultFont.spritefont
 

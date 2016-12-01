@@ -9,48 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    public class LayerEntity
-    {
-        public float _scrollX = 0f;
-        public float _scrollY = 0f;
-
-        public int Width;
-        public int Height;
-
-        private Texture2D _texture;
-
-        public LayerEntity(Texture2D texture)
-        {
-            _texture = texture;
-
-            Width  = texture.Width;
-            Height = texture.Height;
-        }
-
-        public void UpdateAxis(float x = 0.5f, float y = 0.5f)
-        {
-            if (x < 0)
-                _scrollX -= (x * -1);
-            else
-                _scrollX += x;
-
-            if(y < 0)
-                _scrollY -= (y * -1);
-            else
-                _scrollY += y;
-        }
-
-        public void ResetAxis()
-        {
-            _scrollX = 0;
-            _scrollY = 0;
-        }
-
-        public Texture2D GetTexture()
-        {
-            return _texture;
-        }
-    }
     public class ScrollingLayers
     {
         private GraphicsDevice _device;
@@ -92,7 +50,7 @@ namespace tank_mono
                 _delegate();
         }
 
-        public void DrawLayers(GameTime gameTime, params string[] layers)
+        public void Draw(GameTime gameTime, params string[] layers)
         {
             foreach(var layer in layers)
             {
@@ -104,7 +62,7 @@ namespace tank_mono
                     new Rectangle(
                     (int) (-_layer._scrollX),
                     (int) (-_layer._scrollY),
-                    _device.Viewport.Width,
+                    GameSettings.ExtendedWidth,
                     _device.Viewport.Height),
                     Color.White
                 );
