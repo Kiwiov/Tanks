@@ -17,7 +17,7 @@ namespace tank_mono
         public static int ExtendedHeight = 1920;
 
         public static string Title = "Topkek Tanks v1";
-        public static string Theme = "Snow";
+        public static string Theme = "Desert";
 
         public static float DefaultCameraZoom = 1;
     }

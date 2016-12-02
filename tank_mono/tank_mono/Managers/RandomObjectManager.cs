@@ -31,12 +31,12 @@ namespace tank_mono
 
         public void Load(GraphicsDevice device)
         {
-            AddObject("palm", new Vector2(300, 300));
+            //AddObject("palm", new Vector2(300, 300));
         }
 
         public void Update(GameTime gameTime)
         {
-            GetObjectByName("palm").UpdateAxis(0.0001, 0.001);
+            //GetObjectByName("palm").UpdateAxis(0.1f, -0.15f);
         }
 
         public void Draw(GameTime gameTime)

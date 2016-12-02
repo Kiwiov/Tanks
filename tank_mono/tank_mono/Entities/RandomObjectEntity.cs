@@ -39,25 +39,23 @@ namespace tank_mono
             return null;
         }
 
-        public void UpdateAxis(double x, double y = double.NaN)
+        public void UpdateAxis(float x, float y = float.NaN)
         {
-            if (!double.IsNaN(x))
+            if (!float.IsNaN(x))
             {
                 if (x < 0)
-                    _posX -= (x * -1);
+                    _position.X -= (x * -1);
                 else
-                    _posX += x;
+                    _position.X += x;
             }
 
-            if (!double.IsNaN(y))
+            if (!float.IsNaN(y))
             {
                 if (y < 0)
-                    _posY -= (y * -1);
+                    _position.Y -= (y * -1);
                 else
-                    _posY += y;
+                    _position.Y += y;
             }
-
-            _position = new Vector2((float)_posX, (float)_posY);
         }
 
         public bool SetPosition(object position)

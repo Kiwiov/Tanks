@@ -70,7 +70,7 @@ namespace tank_mono
             double Max = MaxRandomNess;
 
             //Bestämmer ojämnheten i terrängen
-            double Roughness = ((double)23 / 100.0);
+            double Roughness = ((double)0 / 100.0);
 
             //Uprepa enligt angivet antal iterationer
             for (int j = 0; j < Iterations; j++)
@@ -105,7 +105,7 @@ namespace tank_mono
                 //Ge linjen en offset på 300 pixlar och en amplitud på 150 pixlar
 
                 int randomHeight = Convert.ToInt32(GetRandomDouble(150, 155));
-                Vector2 v1 = new Vector2(x, (int)(randomHeight + 150 * height));
+                Vector2 v1 = new Vector2(x, (int)(300 + 150 * height));
                 Vector2 v2 = new Vector2(x, 0);
 
                 Vectors.Add(new VectorGroupEntity(v1, v2));
