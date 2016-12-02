@@ -19,11 +19,9 @@ namespace tank_mono
         TankManager _tankManager;
         Tank _currentTank;
         Tank _secondTank;
-
-        Rectangle _norm;
-        Rectangle _koll;
+        
         Rectangle _coll;
-        Rectangle player1box;
+        Rectangle player1Box;
         Rectangle _r1;
         Rectangle _r2;
 
@@ -81,7 +79,7 @@ namespace tank_mono
 
             if (_done == false)
             {
-                _tankManager.CreateTank(new Vector2(250,300),"Standard",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(250,300),"Light",Color.OliveDrab,false);
                 _tankManager.CreateTank(new Vector2(300, 315), "Heavy", Color.AliceBlue, false);
                 _tankManager.SetStats();
                 _done = true;
@@ -95,17 +93,17 @@ namespace tank_mono
             //}
             _tankManager.MoveTank(_currentTank);
 
-            Rectangle player1Box = new Rectangle((int)_currentTank.Position.X - _currentTank.SpriteMain.Width/2, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height/2);
+            player1Box = new Rectangle((int)_currentTank.Position.X - _currentTank.SpriteMain.Width/2, (int)_currentTank.Position.Y, _currentTank.SpriteMain.Width, _currentTank.SpriteMain.Height/2);
             Rectangle player2Box = new Rectangle((int)_secondTank.Position.X, (int)_secondTank.Position.Y, _bkgrnd.Width, _bkgrnd.Height);
             Rectangle mapBox = new Rectangle((int)_bkPos.X, (int)_bkPos.Y, _bkgrnd.Width,_bkgrnd.Height);
 
-            _koll = Collision.Intersection(player1Box, player2Box);
-            var _coll = Collision.Intersection(player1Box, mapBox);
+            
+            _coll = Collision.Intersection(player1Box, mapBox);
 
             if (_coll.Width > 0 && _coll.Height > 0)
             {
-                Rectangle _r1 = Collision.Normalize(player1Box, _coll);
-                Rectangle _r2 = Collision.Normalize(mapBox, _coll);
+                _r1 = Collision.Normalize(player1Box, _coll);
+                _r2 = Collision.Normalize(mapBox, _coll);
                 _bHit = Collision.TestCollision(_currentTank.SpriteMain, _r1, _bkgrnd, _r2);
             }
             else
@@ -117,6 +115,7 @@ namespace tank_mono
                 _currentTank.Position.Y += 1f;
                 _falling = true;
             }
+               
             else
             {
                 _currentTank.Position.Y -= 1f;
