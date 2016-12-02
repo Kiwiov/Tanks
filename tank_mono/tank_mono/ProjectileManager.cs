@@ -22,7 +22,7 @@ namespace tank_mono
         public void Shoot(Tank tank)
         {
             KeyboardState ks = Keyboard.GetState();
-
+            
             if (ks.IsKeyDown(Keys.Space))
             {
                 for (int i = 0; i < tank.CurrentWeapon.ShotsFired; i++)
@@ -30,7 +30,14 @@ namespace tank_mono
                     Projectiles.Add(new Projectile(tank.CurrentWeapon.Type, tank.Position - new Vector2(0, 2), tank, tank.CurrentWeapon.Texture, 0));
                 }
             }
-            
+        }
+
+        public void MoveProjectiles()
+        {
+            foreach (var projectile in Projectiles)
+            {
+                projectile.Position += new Vector2(2, 2);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
