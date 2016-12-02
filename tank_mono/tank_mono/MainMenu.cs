@@ -76,7 +76,7 @@ namespace tank_mono
 
             foreach (Menu element in enterName)
             {
-                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 1, Game1.graphics.PreferredBackBufferHeight / 2);
+                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 2);
             }
 
             moverange -= (int)(75 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
