@@ -9,7 +9,7 @@ namespace tank_mono
     /// Perlin Noise
     ///
 
-    static class PerlinNoise
+    public static class PerlinNoise
     {
         public static int Seed { get; private set; }
 
@@ -21,7 +21,7 @@ namespace tank_mono
 
         public static double Frequency { get; set; }
 
-        static PerlinNoise()
+        public static void Init()
         {
             Random r = new Random();
             //LOOOL

@@ -23,8 +23,8 @@ namespace tank_mono
 
         private List<VectorGroupEntity> Vectors = new List<VectorGroupEntity>();
 
-        private int Iterations = 3;
-        private double MaxRandomNess = GetRandomDouble(-1, 2);
+        private int Iterations = 9;
+        private double MaxRandomNess = 1;
 
         int currentTime; // for testing only
 
@@ -70,7 +70,7 @@ namespace tank_mono
             double Max = MaxRandomNess;
 
             //Bestämmer ojämnheten i terrängen
-            double Roughness = ((double)0 / 100.0);
+            double Roughness = ((double)100 / 100.0);
 
             //Uprepa enligt angivet antal iterationer
             for (int j = 0; j < Iterations; j++)
@@ -80,9 +80,9 @@ namespace tank_mono
                 for (int i = 0; i < count - 1; i++)
                 {
                     //Medelvärdet mellan två punkter
-                    double tmp = (HeightMap[i * 2] + HeightMap[i * 2 + 1]) / 4.0;
+                    double tmp = (HeightMap[i * 2] + HeightMap[i * 2 + 1]) / 2.0;
                     //Beräkna en slumpvis förskjutning +-Max
-                    double offset = (rnd.NextDouble() * 2.0 - 1.0) * Max / 0.85;
+                    double offset = (rnd.NextDouble() * 2.0 - 1.0) * Max; /// 0.85;
                     //Skapa ny punkt med medelvärde + slumvis förskjutning
                     HeightMap.Insert(i * 2 + 1, tmp + offset);
                 }
@@ -104,7 +104,7 @@ namespace tank_mono
                 //Ge linjen en offset på 300 pixlar och en amplitud på 150 pixlar
 
                 int randomHeight = Convert.ToInt32(GetRandomDouble(150, 155));
-                Vector2 v1 = new Vector2(x, (int)(300 + 150 * height));
+                Vector2 v1 = new Vector2(x, (int)(250 + 350 * height));
                 Vector2 v2 = new Vector2(x, 0);
 
                 Vectors.Add(new VectorGroupEntity(v1, v2));
