@@ -91,28 +91,28 @@ namespace tank_mono
                 {
                     case "Heavy":
                         //weapons
-                        //tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        //tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        //tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+                        tank.Weapons.Add(_weaponCreator.MachineGun().Name, _weaponCreator.MachineGun());
+                        tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
+                        tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = _weaponCreator.MachineGun();
+                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
 
                         break;
                     case "Standard":
                         //weapons
-                        //tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        //tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        //tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+                        tank.Weapons.Add(_weaponCreator.MachineGun().Name, _weaponCreator.MachineGun());
+                        tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
+                        tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = _weaponCreator.MachineGun();
+                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
                         break;
                     case "Light":
                         //weapons
-                        //tank.Weapons.Add(_weaponCreator.MachineGun(), int.MaxValue);
-                        //tank.Weapons.Add(_weaponCreator.Missile(), 5);
-                        //tank.Weapons.Add(_weaponCreator.AntiArmour(), 5);
+                        tank.Weapons.Add(_weaponCreator.MachineGun().Name, _weaponCreator.MachineGun());
+                        tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
+                        tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = _weaponCreator.MachineGun();
+                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
                         break;
                 }
             }

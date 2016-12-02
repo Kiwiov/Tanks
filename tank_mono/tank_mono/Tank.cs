@@ -28,7 +28,7 @@ namespace tank_mono
 
         private bool _isBot;
         
-        private Dictionary<Weapon, int> _weapons;
+        private Dictionary<string, Weapon> _weapons = new Dictionary<string, Weapon>();
 
         private Texture2D _spriteMain;
         private Texture2D _cannon;
@@ -91,7 +91,7 @@ namespace tank_mono
         }
 
 
-        public Dictionary<Weapon, int> Weapons
+        public Dictionary<string, Weapon> Weapons
         {
             get { return _weapons; }
             set { _weapons = value; }
