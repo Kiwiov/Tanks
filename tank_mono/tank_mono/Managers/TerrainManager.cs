@@ -83,7 +83,6 @@ namespace tank_mono
                     double tmp = (HeightMap[i * 2] + HeightMap[i * 2 + 1]) / 4.0;
                     //Beräkna en slumpvis förskjutning +-Max
                     double offset = (rnd.NextDouble() * 2.0 - 1.0) * Max / 0.85;
-
                     //Skapa ny punkt med medelvärde + slumvis förskjutning
                     HeightMap.Insert(i * 2 + 1, tmp + offset);
                 }
