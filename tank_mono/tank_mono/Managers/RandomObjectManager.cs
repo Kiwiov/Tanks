@@ -41,18 +41,10 @@ namespace tank_mono
 
         public void Draw(GameTime gameTime)
         {
-            var VectorsMap = _terrainManager.GetVectorGroup();
-
             foreach(var item in GetObjectsList())
             {
                 _spriteBatch.Draw(item.GetTexture(), item.GetPosition(), item.Color);
             }
-
-            string HighestPoint = VectorsMap.OrderByDescending(x => x.GetFirst().Y).First().GetFirst().Y.ToString();
-            string LowestPoint = VectorsMap.OrderByDescending(x => x.GetFirst().Y).Last().GetFirst().Y.ToString();
-
-            TextManager.Draw("HIGHEST POINT: " + HighestPoint, new Vector2(250, 250), Color.Black);
-            TextManager.Draw("LOWEST POINT: " + LowestPoint, new Vector2(250, 280), Color.Black);
         }
 
         public RandomObjectEntity AddObject(string assetName, object position = null)

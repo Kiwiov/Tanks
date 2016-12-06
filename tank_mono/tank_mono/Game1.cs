@@ -70,9 +70,9 @@ namespace tank_mono
 
             TextManager.Init(GraphicsDevice, Content, spriteBatch);
 
-            terrainManager = new TerrainManager(GraphicsDevice, Content, spriteBatch);
-
             randomObjectManager = new RandomObjectManager(GraphicsDevice, Content, spriteBatch, terrainManager);
+
+            terrainManager = new TerrainManager(GraphicsDevice, Content, spriteBatch, randomObjectManager);
 
             scrollingLayers = new ScrollingLayers(GraphicsDevice, Content, spriteBatch);
             scrollingLayers.AddLayer("cloud1");
@@ -110,7 +110,12 @@ namespace tank_mono
             var keyboardState = Keyboard.GetState();
             var currentMouseState = Mouse.GetState();
 
+
+            if (keyboardState.IsKeyDown(Keys.G))
+                terrainManager.Generate();
+
             // rotation
+            /*
             if (keyboardState.IsKeyDown(Keys.Q))
                 camera2D.Rotation -= deltaTime;
 
@@ -119,6 +124,7 @@ namespace tank_mono
 
             if (keyboardState.IsKeyDown(Keys.R))
                 camera2D.Rotation = 0;
+            */
 
             /*
              if (keyboardState.IsKeyDown(Keys.Up))
@@ -153,8 +159,8 @@ namespace tank_mono
             // TODO: Add your update logic here
 
             scrollingLayers.Update(gameTime,
-                delegate { scrollingLayers.GetLayerByName("cloud1").UpdateAxis(0.8f, 0.35f); },
-                delegate { scrollingLayers.GetLayerByName("cloud2").UpdateAxis(-0.5f, -0.35f); }
+                delegate { scrollingLayers.GetLayerByName("cloud1").UpdateAxis(0.8f, 0.35f); }, // todo: fix wind direction
+                delegate { scrollingLayers.GetLayerByName("cloud2").UpdateAxis(-0.5f, -0.35f); } // todo: fix wind direction
             );
 
             terrainManager.Update(gameTime);
@@ -189,7 +195,7 @@ namespace tank_mono
             randomObjectManager.Draw(gameTime);
 
             if(GameSettings.Debug)
-                TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 310), Color.Purple);
+                TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
 
             spriteBatch.End();
 
