@@ -34,7 +34,6 @@ namespace tank_mono
             _content = content;
 
             _texture = new Texture2D(device, GameSettings.ExtendedWidth, GameSettings.Height);
-
             Color[] tData = new Color[GameSettings.ExtendedWidth * GameSettings.Height];
 
             for (int i = 0; i < tData.Length; i++)

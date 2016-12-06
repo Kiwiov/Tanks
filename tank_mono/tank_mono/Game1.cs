@@ -119,7 +119,6 @@ namespace tank_mono
             if (keyboardState.IsKeyDown(Keys.W))
                 camera2D.Rotation += deltaTime;
 
-            if (keyboardState.IsKeyDown(Keys.R))
             if (_done == false)
             {
                 _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
@@ -185,28 +184,21 @@ namespace tank_mono
         {
             GraphicsDevice.Clear(Color.White);
 
-            // TODO: Add your drawing code here
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera2D.GetViewMatrix());
-
-            backgroundManager.Draw(gameTime, spriteBatch);
-
-            scrollingLayers.Draw(
-                gameTime, 
-                "cloud1",
-                "cloud2"
+            //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera2D.GetViewMatrix());
             spriteBatch.Begin(SpriteSortMode.Deferred,
                                 BlendState.AlphaBlend,
                                 SamplerState.PointClamp,
                                 DepthStencilState.Default,
                                 RasterizerState.CullNone);
+
+            backgroundManager.Draw(gameTime, spriteBatch);
+
+            scrollingLayers.Draw(gameTime, "cloud1", "cloud2");
+            
             _tankManager.Draw(spriteBatch);
             _projectileManager.Draw(spriteBatch);
-            spriteBatch.End();
-            );
 
             terrainManager.Draw(gameTime);
-
             randomObjectManager.Draw(gameTime);
 
             if(GameSettings.Debug)

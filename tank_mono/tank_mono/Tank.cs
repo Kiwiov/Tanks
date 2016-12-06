@@ -41,8 +41,6 @@ namespace tank_mono
             this.IsBot = IsBot;
             this.Colour = Colour;
         }
-
-        
         
         public float TankRotaion
         {
