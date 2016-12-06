@@ -38,6 +38,8 @@ namespace tank_mono
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 800;
         }
 
         /// <summary>
@@ -126,13 +128,13 @@ namespace tank_mono
 
             if (_done == false)
             {
-                _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(300,800),"Light",Color.OliveDrab,false);
                 _tankManager.SetStats();
                 _tankManager.SetWeapons();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];
             }
-            Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
+            
             _tankManager.MoveTank(_currentTank);
             _projectileManager.Shoot(_currentTank);
             _projectileManager.MoveProjectiles();
