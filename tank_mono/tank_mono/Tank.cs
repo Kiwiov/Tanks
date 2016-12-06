@@ -6,13 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace tank_mono
 {
-    class Tank
+    public class Tank
     {
-        private Vector2 _position;
+        public Vector2 Position;
         private Color _colour;
+        
 
         private string _tankType;
 
@@ -20,48 +22,27 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
-        private float _cannonRotation = 180;
-        private float _tankRotation = 180;
+        private float _cannonRotation;
+        private float _tankRotation;
+        private Weapon _currentWeapon;
 
         private bool _isBot;
         
-        private Dictionary<Weapon, int> _weapons;
+        private Dictionary<string, Weapon> _weapons = new Dictionary<string, Weapon>();
 
         private Texture2D _spriteMain;
         private Texture2D _cannon;
 
 
-        public Tank(Vector2 Position, string TankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon, Color Colour, bool IsBot)
+        public Tank(Vector2 Position, string TankType, Color Colour, bool IsBot)
         {
             this.Position = Position;
             this.TankType = TankType;
-            SetStats(this.TankType, HeavyTankBody, StandardTankBody, LightTankBody, TankCannon);
+            this.IsBot = IsBot;
+            this.Colour = Colour;
         }
+
         
-        private void SetStats(string tankType, Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody, Texture2D TankCannon)
-        {
-            switch (tankType)
-            {
-                case "Heavy":
-                    //tank stats
-                    //Add weapons
-                    SpriteMain = HeavyTankBody;
-                    Cannon = TankCannon;
-                    break;
-                case "Standard":
-                    //tank stats
-                    //Add weapons
-                    SpriteMain = StandardTankBody;
-                    Cannon = TankCannon;
-                    break;
-                case "Light":
-                    //tank stats
-                    //Add weapons
-                    SpriteMain = LightTankBody;
-                    Cannon = TankCannon;
-                    break;
-            }
-        }
         
         public float TankRotaion
         {
@@ -110,7 +91,7 @@ namespace tank_mono
         }
 
 
-        public Dictionary<Weapon, int> Weapons
+        public Dictionary<string, Weapon> Weapons
         {
             get { return _weapons; }
             set { _weapons = value; }
@@ -141,13 +122,11 @@ namespace tank_mono
             get { return _tankType; }
             set { _tankType = value; }
         }
-        
 
-        public Vector2 Position
+        public Weapon CurrentWeapon
         {
-            get { return _position; }
-            set { _position = value; }
+            get { return _currentWeapon; }
+            set { _currentWeapon = value; }
         }
-
     }
 }

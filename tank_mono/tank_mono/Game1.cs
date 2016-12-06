@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -14,10 +15,11 @@ namespace tank_mono
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Texture2D standardTankMain;
-        public Texture2D standardTankCannon;
-
+        TankManager _tankManager;
+        WeaponCreator _weaponCreator;
+        ProjectileManager _projectileManager;
         private BackgroundManager backgroundManager;
+        Tank _currentTank;
         private TerrainManager terrainManager;
 
         private RandomObjectManager randomObjectManager;
@@ -26,7 +28,8 @@ namespace tank_mono
         private Camera2D camera2D;
 
         private int previousScrollValue;
-
+        
+        bool _done = false;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -46,7 +49,7 @@ namespace tank_mono
         protected override void Initialize()
         {
             Window.Title = GameSettings.Title;
-
+            
             backgroundManager = new BackgroundManager(Content);
 
             camera2D = new Camera2D(GraphicsDevice);
@@ -62,8 +65,9 @@ namespace tank_mono
         /// </summary>
         protected override void LoadContent()
         {
-            standardTankMain = Content.Load<Texture2D>("TankStandardBody");
-            standardTankCannon = Content.Load<Texture2D>("TankStandardCannon");
+            _projectileManager = new ProjectileManager();
+            _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
+            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -103,8 +107,6 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var keyboardState = Keyboard.GetState();
@@ -118,6 +120,18 @@ namespace tank_mono
                 camera2D.Rotation += deltaTime;
 
             if (keyboardState.IsKeyDown(Keys.R))
+            if (_done == false)
+            {
+                _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
+                _tankManager.SetStats();
+                _tankManager.SetWeapons();
+                _done = true;
+                _currentTank = _tankManager.Tanks[0];
+            }
+            Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
+            _tankManager.MoveTank(_currentTank);
+            _projectileManager.Shoot(_currentTank);
+            _projectileManager.MoveProjectiles();
                 camera2D.Rotation = 0;
 
             /*
@@ -150,7 +164,6 @@ namespace tank_mono
 
             previousScrollValue = currentMouseState.ScrollWheelValue;
 
-            // TODO: Add your update logic here
 
             scrollingLayers.Update(gameTime,
                 delegate { scrollingLayers.GetLayerByName("cloud1").UpdateAxis(0.8f, 0.35f); },
@@ -182,6 +195,14 @@ namespace tank_mono
                 gameTime, 
                 "cloud1",
                 "cloud2"
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                                BlendState.AlphaBlend,
+                                SamplerState.PointClamp,
+                                DepthStencilState.Default,
+                                RasterizerState.CullNone);
+            _tankManager.Draw(spriteBatch);
+            _projectileManager.Draw(spriteBatch);
+            spriteBatch.End();
             );
 
             terrainManager.Draw(gameTime);
