@@ -106,7 +106,7 @@ namespace tank_mono
                     origin, 
                     1f, 
                     SpriteEffects.None,
-                    1);
+                    0);
             }
         }
 

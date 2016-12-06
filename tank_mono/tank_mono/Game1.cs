@@ -117,7 +117,7 @@ namespace tank_mono
                 terrainManager.Generate();
 
             // rotation
-            /*
+            
             if (keyboardState.IsKeyDown(Keys.Q))
                 camera2D.Rotation -= deltaTime;
 
@@ -137,7 +137,7 @@ namespace tank_mono
             _projectileManager.Shoot(_currentTank);
             _projectileManager.MoveProjectiles();
                 camera2D.Rotation = 0;
-            */
+            
 
             /*
              if (keyboardState.IsKeyDown(Keys.Up))
@@ -200,14 +200,14 @@ namespace tank_mono
             backgroundManager.Draw(gameTime, spriteBatch);
 
             scrollingLayers.Draw(gameTime, "cloud1", "cloud2");
-            
-            _tankManager.Draw(spriteBatch);
-            _projectileManager.Draw(spriteBatch);
 
             terrainManager.Draw(gameTime);
             randomObjectManager.Draw(gameTime);
 
-            if(GameSettings.Debug)
+            _tankManager.Draw(spriteBatch);
+            _projectileManager.Draw(spriteBatch);
+
+            if (GameSettings.Debug)
                 TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
 
             spriteBatch.End();
