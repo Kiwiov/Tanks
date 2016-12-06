@@ -62,7 +62,7 @@ namespace tank_mono
                     new Rectangle(
                     (int) (-_layer._scrollX),
                     (int) (-_layer._scrollY),
-                    GameSettings.ExtendedWidth,
+                    GameSettings.Width,
                     _device.Viewport.Height),
                     Color.White
                 );

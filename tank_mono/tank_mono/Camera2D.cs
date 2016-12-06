@@ -20,7 +20,7 @@ namespace tank_mono
             Zoom = GameSettings.DefaultCameraZoom;
 
             Origin   = new Vector2(_viewport.Width / 2f, _viewport.Height / 2f);
-            Position = new Vector2((GameSettings.ExtendedWidth - GameSettings.Width) / 2, 0);//Vector2.Zero;
+            Position = new Vector2((GameSettings.Width - GameSettings.Width) / 2, 0);//Vector2.Zero;
         }
 
         public Vector2 Position { get; set; }
