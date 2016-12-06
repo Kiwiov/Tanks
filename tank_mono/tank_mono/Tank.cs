@@ -22,7 +22,7 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
-        private float _cannonRotation;
+        private double _cannonRotation;
         private float _tankRotation;
         private Weapon _currentWeapon;
 
@@ -50,7 +50,7 @@ namespace tank_mono
             set { _tankRotation = value; }
         }
 
-        public float CannonRotation
+        public double CannonRotation
         {
             get { return _cannonRotation; }
             set { _cannonRotation = value; }

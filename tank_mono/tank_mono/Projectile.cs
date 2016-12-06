@@ -15,15 +15,33 @@ namespace tank_mono
         private Tank _owner;
         private Texture2D _texture;
         private float _rotation;
+        private Vector2 _velocity;
+        private float _power;
 
-        public Projectile(string Type, Vector2 Position, Tank Owner, Texture2D Texture, float Rotation)
+        public Projectile(string Type, Vector2 Position, Tank Owner, Texture2D Texture, float Rotation, Vector2 Velocity, float Power)
         {
             this.Type = Type;
             this.Position = Position;
             this.Owner = Owner;
             this.Texture = Texture;
             this.Rotation = Rotation;
+            this.Velocity = Velocity;
+            this.Power = Power;
         }
+        
+        public float Power
+        {
+            get { return _power; }
+            set { _power = value; }
+        }
+
+
+        public Vector2 Velocity
+        {
+            get { return _velocity; }
+            set { _velocity = value; }
+        }
+
 
         public float Rotation
         {

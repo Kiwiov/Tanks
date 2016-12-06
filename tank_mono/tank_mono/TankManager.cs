@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,7 +113,7 @@ namespace tank_mono
                         tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
                         tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
+                        tank.CurrentWeapon = tank.Weapons["MachineGun"];
                         break;
                 }
             }
@@ -173,7 +174,7 @@ namespace tank_mono
         {
             foreach (var tank in Tanks)
             {
-                spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
+                spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
             }
         }
