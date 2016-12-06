@@ -36,7 +36,7 @@ namespace tank_mono
         {
             foreach (var projectile in Projectiles)
             {
-                projectile.Position += new Vector2(2, 2);
+                projectile.Position += new Vector2(2, 0);
             }
         }
 

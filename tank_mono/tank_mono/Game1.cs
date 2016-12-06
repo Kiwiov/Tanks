@@ -77,6 +77,7 @@ namespace tank_mono
             Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
             _tankManager.MoveTank(_currentTank);
             _projectileManager.Shoot(_currentTank);
+            _projectileManager.MoveProjectiles();
 
             base.Update(gameTime);
         }
