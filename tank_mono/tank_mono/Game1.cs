@@ -16,18 +16,17 @@ namespace tank_mono
     public class Game1 : Game
     {
         public static GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        private Texture2D background;
         public static int width = 1920;
         public static int height = 1080;
 
-
-        private MainMenu main;
+        Texture2D background;
+        SpriteBatch spriteBatch;
+        MainMenu main;
         TankManager _tankManager;
         WeaponCreator _weaponCreator;
         Tank _currentTank;
-        
-        bool _done = false;
+        bool _done;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -46,6 +45,7 @@ namespace tank_mono
         protected override void Initialize()
         {
              main = new MainMenu(this);
+            Components.Add(new KeyboardComponent(this));
             base.Initialize();
         }
 
@@ -61,11 +61,7 @@ namespace tank_mono
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
             main.LoadContent(Content);
             
-
             background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
-
-            
-
         }
 
         /// <summary>

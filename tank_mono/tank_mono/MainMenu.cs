@@ -208,7 +208,7 @@ namespace tank_mono
                     {
                         element.Update();
                     }
-                    GetKeys();
+                    myName += KeyboardComponent.GetKeyInput();
                     break;
                 case GameState.inGame:
                     break;
@@ -325,21 +325,16 @@ namespace tank_mono
         }
 
 
-    public void OnClick(string element)
+        public void OnClick(string element)
         {
-
             if (element == "muted")
             {
-
                 MediaPlayer.Volume = 0;
-
             }
 
             if (element == "33")
             {
-
                 MediaPlayer.Volume = 0.33f;
-
             }
 
             if (element == "66")
@@ -352,58 +347,11 @@ namespace tank_mono
                 MediaPlayer.Volume = 1f;
             }
 
-
             if (element == "apply")
             {
                 gameState = GameState.mainMenum;
             }
         }
 
-        public void GetKeys()
-        {
-            KeyboardState kbState = Keyboard.GetState();
-
-            Keys[] pressedKeys = kbState.GetPressedKeys();
-
-            foreach (Keys key in lastpressedKeys)
-            {
-                if (!pressedKeys.Contains(key))
-                {
-                    //Key is no longer pressed
-                    OnKeyUp(key);
-                }
-            }
-
-            foreach (Keys key in pressedKeys)
-            {
-                if (!lastpressedKeys.Contains(key))
-                {
-                    OnKeyDown(key);
-                }
-            }
-            lastpressedKeys = pressedKeys;
-        }
-
-        public void OnKeyUp(Keys key)
-        {
-
-        }
-
-        public void OnKeyDown(Keys key)
-        {
-
-            if (key == Keys.Back && myName.Length > 0)
-            {
-                myName = myName.Remove(myName.Length - 1);
-            }
-            else
-            {
-                if (myName.Length <10)
-                {
-                    myName += key.ToString();
-                }
-
-            }
-        }
     }
 }

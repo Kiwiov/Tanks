@@ -61,8 +61,11 @@ namespace tank_mono
         public void Draw(SpriteBatch spriteBatch)
         {
             scale = Game1.graphics.PreferredBackBufferWidth / 1500f;
-            //spriteBatch.Draw(temp, GUIRect, Color.White);
+
             spriteBatch.Draw(GUITexture, new Vector2(GUIRect.X, GUIRect.Y), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+#if DEBUG
+            spriteBatch.Draw(temp, GUIRect, new Color(155, 155, 155, 0));
+#endif
 
         }
 
