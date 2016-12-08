@@ -112,7 +112,7 @@ namespace tank_mono
                         tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
                         tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
+                        tank.CurrentWeapon = tank.Weapons["MachineGun"];
 
                         break;
                     case "Standard":
@@ -121,7 +121,7 @@ namespace tank_mono
                         tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
                         tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
+                        tank.CurrentWeapon = tank.Weapons["MachineGun"];
                         break;
                     case "Light":
                         //weapons
@@ -129,7 +129,7 @@ namespace tank_mono
                         tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
                         tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
+                        tank.CurrentWeapon = tank.Weapons["MachineGun"];
                         break;
                 }
             }

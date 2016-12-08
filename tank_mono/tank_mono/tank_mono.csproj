@@ -48,6 +48,7 @@
     <Compile Include="GameSettings.cs" />
     <Compile Include="PerlinNoise.cs" />
     <Compile Include="PickUp.cs" />
+    <Compile Include="PickUpManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Managers\ProjectileManager.cs" />

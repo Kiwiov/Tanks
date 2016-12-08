@@ -61,7 +61,6 @@ namespace tank_mono
                     {
                         _power = 10;
                     }
-
                     else if (_power < 1)
                     {
                         _power = 1;
