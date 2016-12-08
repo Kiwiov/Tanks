@@ -12,14 +12,16 @@ namespace tank_mono
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
-        TankManager _tankManager;
-        WeaponCreator _weaponCreator;
-        ProjectileManager _projectileManager;
+        private TankManager _tankManager;
+        private WeaponCreator _weaponCreator;
+        private ProjectileManager _projectileManager;
+        private PickUpManager _pickUpManager;
+
         private BackgroundManager backgroundManager;
-        Tank _currentTank;
+        private Tank _currentTank;
         private TerrainManager terrainManager;
 
         private RandomObjectManager randomObjectManager;
@@ -32,9 +34,11 @@ namespace tank_mono
         bool _done = false;
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = GameSettings.Width;
-            graphics.PreferredBackBufferHeight = GameSettings.Height;
+            graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = GameSettings.Width,
+                PreferredBackBufferHeight = GameSettings.Height
+            };
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
@@ -70,6 +74,7 @@ namespace tank_mono
             _projectileManager = new ProjectileManager();
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
+            _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"));
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -138,7 +143,8 @@ namespace tank_mono
             _tankManager.MoveTank(_currentTank);
             _projectileManager.Shoot(_currentTank);
             _projectileManager.MoveProjectiles();
-                camera2D.Rotation = 0;
+            _pickUpManager.DetectPickup(_currentTank);
+            camera2D.Rotation = 0;
             
 
             /*
