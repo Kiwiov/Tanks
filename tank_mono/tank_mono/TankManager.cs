@@ -201,13 +201,11 @@ namespace tank_mono
                         {
                             _switchTimer = 15;
                             tank.CurrentWeapon = tank.Weapons.Values.ElementAt(0);
-                            
                         }
                         else
                         {
                             _switchTimer = 15;
                             tank.CurrentWeapon = tank.Weapons.Values.ElementAt(i + 1);
-                            
                         }
                         break;
                     }
