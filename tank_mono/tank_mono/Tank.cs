@@ -14,6 +14,7 @@ namespace tank_mono
     {
         public Vector2 Position;
         private Color _colour;
+        private Weapon _currentWeapon;
 
         private string _tankType;
 
@@ -21,12 +22,12 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
-        private double _cannonRotation;
         private float _tankRotation;
-        private Weapon _currentWeapon;
         private float _currentHealth;
         private float _currentFuel;
         private float _currentArmour;
+
+        private double _cannonRotation;
 
         private bool _isBot;
         

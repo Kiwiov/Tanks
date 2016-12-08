@@ -12,12 +12,14 @@ namespace tank_mono
         private Texture2D _bulletTexture;
         private Texture2D _rocketTexture;
         private Texture2D _solidAntiArmourTexture;
+        private Texture2D _mineTexture;
 
-        public WeaponCreator(Texture2D BulletTexture, Texture2D RocketTexture, Texture2D SolidAntiArmourTexture)
+        public WeaponCreator(Texture2D BulletTexture, Texture2D RocketTexture, Texture2D SolidAntiArmourTexture, Texture2D MineTexture)
         {
             _bulletTexture = BulletTexture;
             _rocketTexture = RocketTexture;
             _solidAntiArmourTexture = SolidAntiArmourTexture;
+            _mineTexture = MineTexture;
         }
 
         public Weapon MachineGun()
@@ -36,6 +38,12 @@ namespace tank_mono
         {
             Weapon missile = new Weapon("AntiArmour", 50, 5, false, "SolidAntiArmour", _solidAntiArmourTexture, 100, 1,5);
             return missile;
+        }
+
+        public Weapon Mine()
+        {
+            Weapon mine = new Weapon("Mine", 150, 20, true, "Mine", _mineTexture, 100, 1, 2);
+            return mine;
         }
     }
 }
