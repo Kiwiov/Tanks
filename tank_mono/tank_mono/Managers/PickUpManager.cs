@@ -24,13 +24,13 @@ namespace tank_mono
         {
             if (type == "Ammo")
             {
-                Pickups.Add(new PickUp(position, type, TextureAmmoBox));
+                PickUps.Add(new PickUp(position, type, TextureAmmoBox));
                 //Rotation
 
             }
             else
             {
-                Pickups.Add(new PickUp(position, type, TextureFuelBarrel));
+                PickUps.Add(new PickUp(position, type, TextureFuelBarrel));
                 //Rotation
 
             }
@@ -38,10 +38,29 @@ namespace tank_mono
 
         public void DetectPickup(Tank tank)
         {
+            for (int i = 0; i < PickUps.Count; i++)
+            {
+                if (false) //if PickUp and tank collide 
+                {
+                    if (PickUps[i].Type == "Ammo")
+                    {
+                        IfPickUpAmmo(tank);
+                        PickUps.RemoveAt(i);
+                        goto End;
+                    }
+                    else if (PickUps[i].Type == "Fuel")
+                    {
+                        IfPickUpFuel(tank);
+                        PickUps.RemoveAt(i);
+                        goto End;
+                    }
+                }
+            }
+            End:;
             
         }
 
-        private void IfPickupAmmo(Tank tank)
+        private void IfPickUpAmmo(Tank tank)
         {
             Random ran = new Random();
             int decision = ran.Next(1, tank.Weapons.Count);
@@ -51,9 +70,13 @@ namespace tank_mono
             {
                 tank.Weapons.Values.ElementAt(decision).CurrentAmmo = tank.Weapons.Values.ElementAt(decision).Ammo;
             }
-
         }
-        public List<PickUp> Pickups
+
+        private void IfPickUpFuel(Tank tank)
+        {
+                tank.CurrentFuel = tank.Fuel;
+        }
+        public List<PickUp> PickUps
         {
             get { return _pickUps; }
             set { _pickUps = value; }
