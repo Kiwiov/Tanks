@@ -28,62 +28,64 @@ namespace tank_mono
 
         public void Shoot(Tank tank)
         {
-
-
-
             KeyboardState ks = Keyboard.GetState();
 
-            if (ks.IsKeyDown(Keys.Space) && !shooting)
+            if (tank.CurrentWeapon.CurrentAmmo > 0)
             {
-
-                _nrOfShots = tank.CurrentWeapon.ShotsFired * firerate;
-                if (_power >= 10 && _upDown == 1)
+                if (ks.IsKeyDown(Keys.Space) && !shooting)
                 {
-                    _upDown = -1;
+
+                    _nrOfShots = tank.CurrentWeapon.ShotsFired*firerate;
+                    if (_power >= 10 && _upDown == 1)
+                    {
+                        _upDown = -1;
+                    }
+                    else if (_power <= 1 && _upDown == -1)
+                    {
+                        _upDown = 1;
+                    }
+
+                    _power += 0.1f*_upDown;
+
+                    Debug.WriteLine("Power: " + _power);
+
                 }
-                else if (_power <= 1 && _upDown == -1)
+                else if (ks.IsKeyUp((Keys.Space)) && _power != 0)
                 {
-                    _upDown = 1;
+                    fire = true;
                 }
-
-                _power += 0.1f * _upDown;
-
-                Debug.WriteLine("Power: " + _power);
-
-            }
-            else if (ks.IsKeyUp((Keys.Space)) && _power != 0)
-            {
-                fire = true;
-            }
-            if (fire)
-            {
-                shooting = true;
-                if (_power > 10)
+                if (fire)
                 {
-                    _power = 10;
-                }
+                    shooting = true;
+                    if (_power > 10)
+                    {
+                        _power = 10;
+                    }
 
-                else if (_power < 1)
-                {
-                    _power = 1;
-                }
+                    else if (_power < 1)
+                    {
+                        _power = 1;
+                    }
 
-                if (_nrOfShots > 0 && _nrOfShots % firerate == firerate - 1)
-                {
-                    Projectiles.Add(new Projectile(tank.CurrentWeapon.Type, tank.Position - new Vector2(0, 2),
-                    tank, tank.CurrentWeapon.Texture, 0,
-                    new Vector2((float)Math.Sin(tank.CannonRotation), -(float)Math.Cos(tank.CannonRotation)),
-                    _power));
-                }
+                    if (_nrOfShots > 0 && _nrOfShots%firerate == firerate - 1)
+                    {
+                        Projectiles.Add(new Projectile(tank.CurrentWeapon.Type, tank.Position - new Vector2(0, 2),
+                            tank, tank.CurrentWeapon.Texture, 0,
+                            new Vector2((float) Math.Sin(tank.CannonRotation), -(float) Math.Cos(tank.CannonRotation)),
+                            _power));
+                    }
 
-                else if (_nrOfShots <= 0)
-                {
-                    fire = false;
-                    _power = 0;
-                    _upDown = 1;
-                    shooting = false;
+                    else if (_nrOfShots <= 0)
+                    {
+                        fire = false;
+                        _power = 0;
+                        _upDown = 1;
+                        shooting = false;
+                        //tank.CurrentWeapon.CurrentAmmo--;
+                        tank.Weapons[tank.CurrentWeapon.Name].CurrentAmmo--;
+                    }
+                    _nrOfShots--;
                 }
-                _nrOfShots--;
             }
         }
 
@@ -95,8 +97,6 @@ namespace tank_mono
 
                 projectile.Velocity -= new Vector2(0, -0.006f);
                 projectile.Rotation = (float)Math.Atan2(projectile.Velocity.Y,projectile.Velocity.X);
-
-
             }
         }
 

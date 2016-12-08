@@ -104,7 +104,7 @@ namespace tank_mono
                     item.Color, 
                     0f, 
                     origin, 
-                    1f, 
+                    0.3f, 
                     SpriteEffects.None,
                     0);
             }

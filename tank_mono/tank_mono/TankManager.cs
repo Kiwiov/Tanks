@@ -18,6 +18,7 @@ namespace tank_mono
         private Texture2D _heavyCannon;
         private Texture2D _standardCannon;
         private Texture2D _lightCannon;
+        private int _switchTimer;
 
         private WeaponCreator _weaponCreator;
 
@@ -50,10 +51,15 @@ namespace tank_mono
                     case "Heavy":
                         //stats
                         tank.Health = 200;
-                        tank.Speed = 20;
                         tank.Fuel = 400;
                         tank.Armour = 300;
-                        
+
+                        tank.CurrentHealth = 200;
+                        tank.CurrentFuel = 400;
+                        tank.CurrentArmour = 300;
+
+                        tank.Speed = 20;
+
                         //Textures
                         tank.SpriteMain = _heavyTankMain;
                         tank.Cannon = _heavyCannon;
@@ -61,9 +67,14 @@ namespace tank_mono
                     case "Standard":
                         //stats
                         tank.Health = 150;
-                        tank.Speed = 40;
                         tank.Fuel = 400;
                         tank.Armour = 150;
+
+                        tank.CurrentHealth = 150;
+                        tank.CurrentFuel = 400;
+                        tank.CurrentArmour = 150;
+
+                        tank.Speed = 40;
 
                         //Textures
                         tank.SpriteMain = _standardTankMain;
@@ -72,9 +83,14 @@ namespace tank_mono
                     case "Light":
                         //stats
                         tank.Health = 100;
-                        tank.Speed = 60;
                         tank.Fuel = 400;
                         tank.Armour = 100;
+
+                        tank.CurrentHealth = 100;
+                        tank.CurrentFuel = 400;
+                        tank.CurrentArmour = 100;
+
+                        tank.Speed = 60;
 
                         //Textures
                         tank.SpriteMain = _lightTankMain;
@@ -113,7 +129,7 @@ namespace tank_mono
                         tank.Weapons.Add(_weaponCreator.Missile().Name, _weaponCreator.Missile());
                         tank.Weapons.Add(_weaponCreator.AntiArmour().Name, _weaponCreator.AntiArmour());
 
-                        tank.CurrentWeapon = tank.Weapons["MachineGun"];
+                        tank.CurrentWeapon = tank.Weapons["AntiArmour"];
                         break;
                 }
             }
@@ -126,12 +142,12 @@ namespace tank_mono
             if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && tank.Fuel > 0)
             {
                 tank.Position.X -= tank.Speed / 50;
-                tank.Fuel -= 1;
+                tank.CurrentFuel -= 1;
             }
             if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && tank.Fuel > 0)
             {
                 tank.Position.X += tank.Speed / 50;
-                tank.Fuel -= 1;
+                tank.CurrentFuel -= 1;
             }
             
             if ((ks.IsKeyDown(Keys.Up) | ks.IsKeyDown(Keys.W)) && ks.IsKeyUp(Keys.Down) && ks.IsKeyUp(Keys.S))
@@ -167,6 +183,45 @@ namespace tank_mono
                         tank.CannonRotation -= 0.01f;
                     }
                 }
+            }
+
+            if (ks.IsKeyDown(Keys.Q) && _switchTimer == 0 )
+            {
+                List<string> temp = new List<string>();
+
+                foreach (var var in tank.Weapons)
+                {
+                    temp.Add(var.Key);
+                }
+                for (int i = 0; i < temp.Count; i++)
+                {
+                    if (temp[i] == tank.CurrentWeapon.Name)
+                    {
+                        if (i == temp.Count - 1)
+                        {
+                            _switchTimer = 15;
+                            tank.CurrentWeapon = tank.Weapons.Values.ElementAt(0);
+                            
+                        }
+                        else
+                        {
+                            _switchTimer = 15;
+                            tank.CurrentWeapon = tank.Weapons.Values.ElementAt(i + 1);
+                            
+                        }
+                        break;
+                    }
+                }
+                
+                
+            }
+            else
+            {
+                if (_switchTimer != 0)
+                {
+                    _switchTimer--;
+                }
+
             }
         } 
 

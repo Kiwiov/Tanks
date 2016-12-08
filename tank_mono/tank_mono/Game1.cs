@@ -128,7 +128,7 @@ namespace tank_mono
 
             if (_done == false)
             {
-                _tankManager.CreateTank(new Vector2(300,800),"Light",Color.OliveDrab,false);
+                _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
                 _tankManager.SetStats();
                 _tankManager.SetWeapons();
                 _done = true;

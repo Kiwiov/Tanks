@@ -14,7 +14,6 @@ namespace tank_mono
     {
         public Vector2 Position;
         private Color _colour;
-        
 
         private string _tankType;
 
@@ -25,6 +24,9 @@ namespace tank_mono
         private double _cannonRotation;
         private float _tankRotation;
         private Weapon _currentWeapon;
+        private float _currentHealth;
+        private float _currentFuel;
+        private float _currentArmour;
 
         private bool _isBot;
         
@@ -42,6 +44,26 @@ namespace tank_mono
             this.Colour = Colour;
         }
         
+        public float CurrentArmour
+        {
+            get { return _currentArmour; }
+            set { _currentArmour = value; }
+        }
+
+
+        public float CurrentFuel
+        {
+            get { return _currentFuel; }
+            set { _currentFuel = value; }
+        }
+        
+        public float CurrentHealth
+        {
+            get { return _currentHealth; }
+            set { _currentHealth = value; }
+        }
+
+
         public float TankRotaion
         {
             get { return _tankRotation; }
