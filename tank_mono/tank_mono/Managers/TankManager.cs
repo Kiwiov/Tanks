@@ -63,6 +63,9 @@ namespace tank_mono
                         //Textures
                         tank.SpriteMain = _heavyTankMain;
                         tank.Cannon = _heavyCannon;
+
+                        //Hitbox
+                        tank.Hitbox = tank.SpriteMain.Bounds;
                         break;
                     case "Standard":
                         //stats
@@ -79,6 +82,9 @@ namespace tank_mono
                         //Textures
                         tank.SpriteMain = _standardTankMain;
                         tank.Cannon = _standardCannon;
+
+                        //Hitbox
+                        tank.Hitbox = tank.SpriteMain.Bounds;
                         break;
                     case "Light":
                         //stats
@@ -95,6 +101,9 @@ namespace tank_mono
                         //Textures
                         tank.SpriteMain = _lightTankMain;
                         tank.Cannon = _lightCannon;
+
+                        //Hitbox
+                        tank.Hitbox = tank.SpriteMain.Bounds;
                         break;
                 }
             }
@@ -135,16 +144,21 @@ namespace tank_mono
             }
         }
 
+        public void MoveHitbox(Tank tank)
+        {
+            tank.HitboxPosition = tank.Position - new Vector2(tank.SpriteMain.Width/2, tank.SpriteMain.Height/2);
+        }
+
         public void MoveTank(Tank tank)
         {
             KeyboardState ks = Keyboard.GetState();
             
-            if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && tank.Fuel > 0)
+            if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && tank.CurrentFuel > 0)
             {
                 tank.Position.X -= tank.Speed / 50;
                 tank.CurrentFuel -= 1;
             }
-            if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && tank.Fuel > 0)
+            if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && tank.CurrentFuel > 0)
             {
                 tank.Position.X += tank.Speed / 50;
                 tank.CurrentFuel -= 1;
@@ -210,8 +224,6 @@ namespace tank_mono
                         break;
                     }
                 }
-                
-                
             }
             else
             {
@@ -229,6 +241,7 @@ namespace tank_mono
             {
                 spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
+                spriteBatch.Draw(tank.SpriteMain, tank.HitboxPosition, tank.Hitbox, Color.Red);
             }
         }
 

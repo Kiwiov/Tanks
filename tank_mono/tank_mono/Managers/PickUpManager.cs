@@ -72,6 +72,15 @@ namespace tank_mono
             }
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var pickUp in PickUps)
+            {
+                spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: 0, origin: new Vector2(pickUp.Texture.Width / 2, pickUp.Texture.Height / 2 ));
+                //spriteBatch.Draw(pickUp.Texture, pickUp.HitboxPosition, pickUp.Hitbox, Color.Blue);
+            }
+        }
+
         private void IfPickUpFuel(Tank tank)
         {
                 tank.CurrentFuel = tank.Fuel;

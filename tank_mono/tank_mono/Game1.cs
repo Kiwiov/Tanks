@@ -138,9 +138,12 @@ namespace tank_mono
                 _tankManager.SetWeapons();
                 _done = true;
                 _currentTank = _tankManager.Tanks[0];
+                _pickUpManager.CreatePickup(new Vector2(310, 300), "Fuel");
+                _pickUpManager.CreatePickup(new Vector2(320, 300), "Ammo");
             }
             
             _tankManager.MoveTank(_currentTank);
+            _tankManager.MoveHitbox(_currentTank);
             _projectileManager.Shoot(_currentTank);
             _projectileManager.MoveProjectiles();
             _pickUpManager.DetectPickup(_currentTank);
@@ -212,8 +215,10 @@ namespace tank_mono
             terrainManager.Draw(gameTime);
             randomObjectManager.Draw(gameTime);
 
-            _tankManager.Draw(spriteBatch);
             _projectileManager.Draw(spriteBatch);
+            _pickUpManager.Draw(spriteBatch);
+            _tankManager.Draw(spriteBatch);
+            
 
             if (GameSettings.Debug)
                 TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
