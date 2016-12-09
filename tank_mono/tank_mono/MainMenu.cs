@@ -15,7 +15,6 @@ namespace tank_mono
     enum GameState { mainMenum, enterName, inGame, settings }
     class MainMenu : DrawableGameComponent
     {
-        private GraphicsDevice graphics;
         
 
         public static GameState gameState;
@@ -30,6 +29,7 @@ namespace tank_mono
         private Keys[] lastpressedKeys = new Keys[5];
         private string myName = string.Empty;
         private SpriteFont sf;
+        SpriteBatch spriteBatch;
 
         public MainMenu(Game game): base (game)
         {
@@ -40,6 +40,7 @@ namespace tank_mono
 
             enterName.Add(new Menu("name"));
             enterName.Add(new Menu("done"));
+            enterName.Add(new Menu("back"));
 
 
             resolution.Add(new Menu("resolution"));
@@ -59,6 +60,14 @@ namespace tank_mono
 
         }
 
+
+
+
+        public void loadText(SpriteBatch spriteBatch)
+        {
+            
+            spriteBatch.DrawString(sf, myName, new Vector2(450 / 1920.0f * Game1.graphics.PreferredBackBufferWidth, 1050/ 1920.0f * Game1.graphics.PreferredBackBufferHeight), Color.Black, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+        }
         public void loadmenu()
         {
             int moverange = 0;
@@ -141,8 +150,11 @@ namespace tank_mono
                 element.CenterElement(Game1.width / 4, Game1.height/4);
             }
             enterName[1].ClickEvent += onClickDone;
+            enterName[2].ClickEvent += onClickBack;
             moverange -= 75;
             enterName.Find(x => x.AssetName == "done").MoveElement(0, moverange);
+            moverange += 75;
+            enterName.Find(x => x.AssetName == "back").MoveElement(0, moverange);
 
             foreach (Menu element in resolution)
             {
@@ -251,7 +263,7 @@ namespace tank_mono
                     {
                         element.Draw(spriteBatch);
                     }
-                    spriteBatch.DrawString(sf,myName, new Vector2(450,550), Color.Black,0,Vector2.Zero,1f,SpriteEffects.None,0);
+                    loadText(spriteBatch);
                     break;
                 case GameState.inGame:
                     break;
@@ -302,6 +314,7 @@ namespace tank_mono
             Game1.graphics.PreferredBackBufferWidth = 800;
             Game1.graphics.ApplyChanges();
             RecalcMenu();
+
         }
 
         public void onClickDone(string element)
@@ -309,6 +322,10 @@ namespace tank_mono
             gameState = GameState.inGame;
         }
 
+        public void onClickBack(string element)
+        {
+            gameState = GameState.mainMenum;
+        }
         public void onClickStart(string element)
         {
                 gameState = GameState.enterName;
@@ -321,7 +338,7 @@ namespace tank_mono
 
         public void onClickQuit(string element)
         {
-                System.Environment.Exit(1);
+                Environment.Exit(1);
         }
 
 
@@ -351,6 +368,8 @@ namespace tank_mono
             {
                 gameState = GameState.mainMenum;
             }
+
+
         }
 
     }

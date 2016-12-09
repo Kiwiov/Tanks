@@ -71,7 +71,8 @@ namespace tank_mono
 
         public void CenterElement(int width, int height)
         {
-            GUIRect = new Rectangle((width) - (GUITexture.Width/2), (height) -(GUITexture.Height/2), GUITexture.Width, GUITexture.Height);
+            //TODO: LÖSNING WIDTH 42, ska fixas i framtiden
+            GUIRect = new Rectangle((width) - (GUITexture.Width/2), (height) -(GUITexture.Height/2), GUITexture.Width +42, GUITexture.Height);
         }
 
         public void MoveElement(int x, int y)
