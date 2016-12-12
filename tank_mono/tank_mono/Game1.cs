@@ -19,6 +19,19 @@ namespace tank_mono
         public static int width = 1920;
         public static int height = 1080;
 
+        private UI ui;
+
+
+        //UI BAR
+        private Texture2D healthTexture;
+        private Rectangle healthRectangle;
+        private Texture2D fuelTexture;
+        private Rectangle fuelRectangle;
+        private Texture2D weaponTexture;
+        private Rectangle weaponRectangle;
+
+        private MouseState pastMouse;
+
         Texture2D background;
         SpriteBatch spriteBatch;
         MainMenu main;
@@ -55,12 +68,17 @@ namespace tank_mono
         /// </summary>
         protected override void LoadContent()
         {
+            IsMouseVisible = true;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
             main.LoadContent(Content);
             
+
+            ui = new UI(Content.Load<Texture2D>("TankHeavyBody"), new Vector2(400,400), 100);
+
+            healthTexture = Content.Load<Texture2D>("health");
             background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
         }
 
@@ -80,8 +98,18 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            MouseState mouse = Mouse.GetState();
+            Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
+            healthRectangle = new Rectangle(50, 20, (int)_currentTank.Health, 20);
+
+            ui.Update();
+            pastMouse = mouse;
+            base.Update(gameTime);
+
+
             width = graphics.PreferredBackBufferWidth;
             height = graphics.PreferredBackBufferHeight;
+
 
             if (MainMenu.gameState != GameState.inGame)
             {
@@ -101,6 +129,12 @@ namespace tank_mono
             }
             base.Update(gameTime);
 
+            if (mouse.MiddleButton == ButtonState.Pressed && pastMouse.MiddleButton == ButtonState.Released)
+            {
+                _currentTank.Health -= 10;
+
+            }
+
         }
 
         /// <summary>
@@ -115,6 +149,12 @@ namespace tank_mono
 
             if (MainMenu.gameState == GameState.inGame)
             {
+
+                spriteBatch.Begin();
+                spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
+                ui.Draw(spriteBatch);
+                spriteBatch.End();
+
                 spriteBatch.Begin(SpriteSortMode.Deferred,
                           BlendState.AlphaBlend,
                           SamplerState.PointClamp,
@@ -123,6 +163,8 @@ namespace tank_mono
                 
                 _tankManager.Draw(spriteBatch);
                 spriteBatch.End();
+
+
             }
 
             if (MainMenu.gameState == GameState.mainMenum || MainMenu.gameState == GameState.enterName || MainMenu.gameState == GameState.settings)
