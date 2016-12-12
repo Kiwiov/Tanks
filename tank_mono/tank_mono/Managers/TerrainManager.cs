@@ -21,7 +21,7 @@ namespace tank_mono
 
         private RandomObjectManager _randomObjectManager;
 
-        private Texture2D terrainTexture;
+        public Texture2D terrainTexture;
         private Texture2D terrainBackgroundTexture;
         private Texture2D treeTexture;
         private Texture2D palmTexture;

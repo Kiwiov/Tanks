@@ -39,6 +39,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collision.cs" />
     <Compile Include="Entities\LayerEntity.cs" />
     <Compile Include="Entities\RandomObjectEntity.cs" />
     <Compile Include="Entities\VectorGroupEntity.cs" />

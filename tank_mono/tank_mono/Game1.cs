@@ -141,7 +141,7 @@ namespace tank_mono
                 _pickUpManager.CreatePickup(new Vector2(310, 300), "Fuel");
                 _pickUpManager.CreatePickup(new Vector2(320, 300), "Ammo");
             }
-            
+            //_tankManager.MapHit(_currentTank.Hitbox, new Rectangle(0, 0, GameSettings.Width, GameSettings.Height),_currentTank,terrainManager);
             _tankManager.MoveTank(_currentTank);
             _tankManager.MoveHitbox(_currentTank);
             _projectileManager.Shoot(_currentTank);

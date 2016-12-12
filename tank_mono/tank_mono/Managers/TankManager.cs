@@ -143,6 +143,39 @@ namespace tank_mono
                 }
             }
         }
+        public void MapHit(Rectangle TankHitbox, Rectangle MapRectagle, Tank Tank, TerrainManager Terrain)
+        {
+            Rectangle _coll;
+            bool _bHit;
+            
+
+            _coll = Collision.Intersection(TankHitbox, MapRectagle);
+
+            if (_coll.Width > 0 && _coll.Height > 0)
+            {
+                Rectangle _r1 = Collision.Normalize(TankHitbox, _coll);
+                Rectangle _r2 = Collision.Normalize(MapRectagle, _coll);
+                _r1 = Collision.Normalize(TankHitbox, _coll);
+                _r2 = Collision.Normalize(MapRectagle, _coll);
+                _bHit = Collision.TestCollision(Tank.SpriteMain, _r1, Terrain.terrainTexture, _r2);
+            }
+            else
+            {
+                _bHit = false;
+            }
+            if (!_bHit)
+            {
+                Tank.Position.Y += 1f;
+                Tank.Falling = true;
+            }
+
+            else
+            {
+                Tank.Position.Y -= 1f;
+                Tank.Falling = false;
+            }
+        }
+
 
         public void MoveHitbox(Tank tank)
         {
@@ -152,19 +185,24 @@ namespace tank_mono
         public void MoveTank(Tank tank)
         {
             KeyboardState ks = Keyboard.GetState();
-            
-            if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && tank.CurrentFuel > 0)
+
+            if (tank.Falling == true)
+            {
+                tank.Position.Y++;
+            }
+
+            if ((ks.IsKeyDown(Keys.Left) | ks.IsKeyDown(Keys.A)) && ks.IsKeyUp(Keys.Right) && ks.IsKeyUp(Keys.D) && tank.CurrentFuel > 0 && tank.Falling == false)
             {
                 tank.Position.X -= tank.Speed / 50;
                 tank.CurrentFuel -= 1;
             }
-            if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && tank.CurrentFuel > 0)
+            if ((ks.IsKeyDown(Keys.Right) | ks.IsKeyDown(Keys.D)) && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.A) && tank.CurrentFuel > 0 && tank.Falling == false)
             {
                 tank.Position.X += tank.Speed / 50;
                 tank.CurrentFuel -= 1;
             }
             
-            if ((ks.IsKeyDown(Keys.Up) | ks.IsKeyDown(Keys.W)) && ks.IsKeyUp(Keys.Down) && ks.IsKeyUp(Keys.S))
+            if ((ks.IsKeyDown(Keys.Up) | ks.IsKeyDown(Keys.W)) && ks.IsKeyUp(Keys.Down) && ks.IsKeyUp(Keys.S) && tank.Falling == false)
             {
                 if (tank.TankType == "Light")
                 {
@@ -181,7 +219,7 @@ namespace tank_mono
                     }
                 }
             }
-            if ((ks.IsKeyDown(Keys.Down) | ks.IsKeyDown(Keys.S)) && ks.IsKeyUp(Keys.Up) && ks.IsKeyUp(Keys.W))
+            if ((ks.IsKeyDown(Keys.Down) | ks.IsKeyDown(Keys.S)) && ks.IsKeyUp(Keys.Up) && ks.IsKeyUp(Keys.W) && tank.Falling == false)
             {
                 if (tank.TankType == "Light")
                 {
@@ -199,7 +237,7 @@ namespace tank_mono
                 }
             }
 
-            if (ks.IsKeyDown(Keys.Q) && _switchTimer == 0 )
+            if (ks.IsKeyDown(Keys.Q) && _switchTimer == 0 && tank.Falling == false)
             {
                 List<string> temp = new List<string>();
 

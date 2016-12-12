@@ -29,7 +29,8 @@ namespace tank_mono
         private float _currentArmour;
 
         private bool _isBot;
-        
+        private bool _falling;
+
         private Dictionary<string, Weapon> _weapons = new Dictionary<string, Weapon>();
 
         private Texture2D _spriteMain;
@@ -44,8 +45,17 @@ namespace tank_mono
             this.IsBot = IsBot;
             this.Colour = Colour;
             HitboxPosition = this.Position;
+            Falling = false;
         }
-        
+
+
+        public bool Falling
+        {
+            get { return _falling; }
+            set { _falling = value; }
+        }
+
+
         public Vector2 HitboxPosition
         {
             get { return _hitboxPosition; }
