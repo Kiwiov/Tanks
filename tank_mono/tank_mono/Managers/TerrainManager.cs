@@ -65,7 +65,7 @@ namespace tank_mono
 
             trees = new TreeData[3]; // number of trees
 
-            for(int i = 0; i < 3; i++) // number of trees
+            for (int i = 0; i < 3; i++) // number of trees
             {
                 trees[i].Color = TreeColors[i];
 
@@ -84,13 +84,13 @@ namespace tank_mono
 
         public void Draw(GameTime gameTime)
         {
-            if(GameSettings.Debug)
+            if (GameSettings.Debug)
                 TextManager.Draw(gameTime.TotalGameTime.Seconds.ToString(), new Vector2(250, 10), Color.Red);
 
             _spriteBatch.Draw(terrainTexture, Vector2.Zero, Color.White);
 
             // Draw the trees
-            foreach(var item in trees)
+            foreach (var item in trees)
             {
                 int posX = (int)item.Position.X;
                 int posY = (int)item.Position.Y;
@@ -100,11 +100,11 @@ namespace tank_mono
                 _spriteBatch.Draw(
                     treeTexture,
                     new Vector2(posX + 20, posY + 5),
-                    null, 
-                    item.Color, 
-                    0f, 
-                    origin, 
-                    0.3f, 
+                    null,
+                    item.Color,
+                    0f,
+                    origin,
+                    0.3f,
                     SpriteEffects.None,
                     0);
             }
@@ -124,8 +124,8 @@ namespace tank_mono
 
             for (int x = 0; x < GameSettings.Width; x++)
             {
-                var height = 
-                    peakheight   / rand1 * Math.Sin(x / flatness * rand1 + rand1)
+                var height =
+                    peakheight / rand1 * Math.Sin(x / flatness * rand1 + rand1)
                     + peakheight / rand2 * Math.Sin(x / flatness * rand2 + rand2)
                     + peakheight / rand3 * Math.Sin(x / flatness * rand3 + rand3)
                     + offset;
