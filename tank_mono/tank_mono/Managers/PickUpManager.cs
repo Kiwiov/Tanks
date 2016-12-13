@@ -63,13 +63,23 @@ namespace tank_mono
         private void IfPickUpAmmo(Tank tank)
         {
             Random ran = new Random();
+            TryAgain:
             int decision = ran.Next(1, tank.Weapons.Count);
 
-            tank.Weapons.Values.ElementAt(decision).CurrentAmmo += tank.Weapons.Values.ElementAt(decision).Ammo / 2;
-            if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo > tank.Weapons.Values.ElementAt(decision).Ammo)
+            
+            if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo != tank.Weapons.Values.ElementAt(decision).Ammo)
             {
-                tank.Weapons.Values.ElementAt(decision).CurrentAmmo = tank.Weapons.Values.ElementAt(decision).Ammo;
+                tank.Weapons.Values.ElementAt(decision).CurrentAmmo += tank.Weapons.Values.ElementAt(decision).Ammo / 2;
+                if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo > tank.Weapons.Values.ElementAt(decision).Ammo)
+                {
+                    tank.Weapons.Values.ElementAt(decision).CurrentAmmo = tank.Weapons.Values.ElementAt(decision).Ammo;
+                }
             }
+            else
+            {
+                goto TryAgain;
+            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
