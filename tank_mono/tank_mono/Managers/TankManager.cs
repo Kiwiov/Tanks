@@ -152,6 +152,7 @@ namespace tank_mono
 
         public void MoveHitbox()
         {
+            
             foreach (var tank in Tanks)
             {
                 tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
@@ -257,7 +258,7 @@ namespace tank_mono
             {
                 spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
-                spriteBatch.Draw(tank.SpriteMain, new Vector2(tank.Hitbox.X, tank.Hitbox.Y),tank.Hitbox, Color.Blue);
+                spriteBatch.Draw(tank.SpriteMain, tank.Position,tank.Hitbox, Color.Blue);
             }
         }
 
