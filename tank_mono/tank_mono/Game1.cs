@@ -168,30 +168,34 @@ namespace tank_mono
                 if (_done == false)
                 {
                     _tankManager.CreateTank(new Vector2(300, 300), "Light", Color.OliveDrab, false);
+                    _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.Pink, false);
                     _tankManager.SetStats();
                     _tankManager.SetWeapons();
                     _done = true;
                     _currentTank = _tankManager.Tanks[0];
                     _pickUpManager.CreatePickup(new Vector2(250, 300), "Fuel");
                     _pickUpManager.CreatePickup(new Vector2(200, 300), "Ammo");
-                    _tankManager.MoveHitbox(_currentTank);
+                    _tankManager.MoveHitbox();
                 }
-
+                else
+                {
                 _ui.Update(_currentTank);
 
-                _tankManager.MoveTank(_currentTank);
-                _tankManager.MoveHitbox(_currentTank);
-                _projectileManager.Shoot(_currentTank);
-                _projectileManager.MoveProjectiles();
-                _pickUpManager.DetectPickup(_currentTank);
-                camera2D.Rotation = 0;
-
+                    _tankManager.MoveTank(_currentTank);
+                    _tankManager.MoveHitbox();
+                    _projectileManager.Shoot(_currentTank);
+                    _projectileManager.MoveProjectiles();
+                    _projectileManager.MoveProjectileHitboxes();
+                    _pickUpManager.DetectPickup(_currentTank);
+                    _projectileManager.DetectCollisionProjectileTank(_tankManager, _currentTank);
+                    camera2D.Rotation = 0;
+                }
 
 
                 /*
                  if (keyboardState.IsKeyDown(Keys.Up))
                     camera2D.Position -= new Vector2(0, 250) * deltaTime;
-
+    
                  if (keyboardState.IsKeyDown(Keys.Down))
                     camera2D.Position += new Vector2(0, 250) * deltaTime;
                 */

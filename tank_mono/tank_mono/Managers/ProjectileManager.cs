@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,6 +89,22 @@ namespace tank_mono
             }
         }
 
+        public void DetectCollisionProjectileTank(TankManager tankManager, Tank currentTank)
+        {
+            for (int i = 0; i < Projectiles.Count; i++)
+            {
+                for (int j = 0; j < tankManager.Tanks.Count; j++)
+                {
+                    if (Collision.TestIfCollision(Projectiles[i].Hitbox,tankManager.Tanks[j].Hitbox,Projectiles[i].Texture,tankManager.Tanks[j].SpriteMain) && tankManager.Tanks[j] != Projectiles[i].Owner)
+                    {
+                        Projectiles.RemoveAt(i);
+                        goto End;
+                    }
+                }
+            }
+            End:;
+        }
+
         public void MoveProjectiles()
         {
             foreach (var projectile in Projectiles)
@@ -97,6 +114,16 @@ namespace tank_mono
                 projectile.Velocity -= new Vector2(0, -0.006f);
                 projectile.Rotation = (float)Math.Atan2(projectile.Velocity.Y,projectile.Velocity.X);
             }
+        }
+
+        public void MoveProjectileHitboxes()
+        {
+            foreach (var projectile in Projectiles)
+            {
+                projectile.Hitbox.X = (int)(projectile.Position.X - projectile.Texture.Width / 2);
+                projectile.Hitbox.Y = (int)(projectile.Position.Y - projectile.Texture.Height / 2);
+            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
