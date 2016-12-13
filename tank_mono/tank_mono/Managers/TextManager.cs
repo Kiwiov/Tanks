@@ -30,6 +30,7 @@ namespace tank_mono
 
         public static void Draw(string text, Vector2 position, Color color)
         {
+            
             _spriteBatch.DrawString(_font, text, position, color);
         }
     }

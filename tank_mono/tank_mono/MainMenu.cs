@@ -12,14 +12,13 @@ using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
-    enum GameState { mainMenum, enterName, inGame, settings }
+    enum GameState { mainMenum, inGame, settings }
     class MainMenu : DrawableGameComponent
     {
         
 
         public static GameState gameState;
         List<Menu> main = new List<Menu>();
-        List<Menu> enterName = new List<Menu>();
         List<Menu> resolution = new List<Menu>();
         List<Menu> confirm = new List<Menu>();
         List<Menu> volume = new List<Menu>();
@@ -37,11 +36,6 @@ namespace tank_mono
             main.Add(new Menu("start"));
             main.Add(new Menu("settings"));
             main.Add(new Menu("quit"));
-
-            enterName.Add(new Menu("name"));
-            enterName.Add(new Menu("done"));
-            enterName.Add(new Menu("back"));
-
 
             resolution.Add(new Menu("resolution"));
             resolution.Add(new Menu("1920"));
@@ -83,14 +77,6 @@ namespace tank_mono
             moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "quit").MoveElement(0, moverange);
 
-            foreach (Menu element in enterName)
-            {
-                element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 2);
-            }
-
-            moverange -= (int)(75 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
-            enterName.Find(x => x.AssetName == "done").MoveElement(0, moverange);
-
             foreach (Menu element in resolution)
             {
                 element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 4);
@@ -99,23 +85,25 @@ namespace tank_mono
             resolution.Find(x => x.AssetName == "resolution").MoveElement(moverange, 0);
             moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             resolution.Find(x => x.AssetName == "1920").MoveElement(moverange, 0);
-            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); ;
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); 
             resolution.Find(x => x.AssetName == "720").MoveElement(moverange, 0);
-            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); ;
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); 
             resolution.Find(x => x.AssetName == "800").MoveElement(moverange, 0);
 
             foreach (Menu element in volume)
             {
                 element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 4, Game1.graphics.PreferredBackBufferHeight / 4);
             }
+
+            moverange = 0;
             volume.Find(x => x.AssetName == "volume").MoveElement(0, 75);
-            volume.Find(x => x.AssetName == "muted").MoveElement(moverangeleft, 75);
-            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
-            volume.Find(x => x.AssetName == "33").MoveElement(moverangeleft, 75);
-            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
-            volume.Find(x => x.AssetName == "66").MoveElement(moverangeleft, 75);
-            moverangeleft += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
-            volume.Find(x => x.AssetName == "100").MoveElement(moverangeleft, 75);
+            volume.Find(x => x.AssetName == "muted").MoveElement(moverange, 75);
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            volume.Find(x => x.AssetName == "33").MoveElement(moverange, 75);
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth); 
+            volume.Find(x => x.AssetName == "66").MoveElement(moverange, 75);
+            moverange += (int)(200 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
+            volume.Find(x => x.AssetName == "100").MoveElement(moverange, 75);
 
 
             foreach (Menu element in confirm)
@@ -143,18 +131,6 @@ namespace tank_mono
             main.Find(x => x.AssetName == "settings").MoveElement(0, moverange);
             moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "quit").MoveElement(0, moverange);
-
-            foreach (Menu element in enterName)
-            {
-                element.LoadContent(content);
-                element.CenterElement(Game1.width / 4, Game1.height/4);
-            }
-            enterName[1].ClickEvent += onClickDone;
-            enterName[2].ClickEvent += onClickBack;
-            moverange -= 75;
-            enterName.Find(x => x.AssetName == "done").MoveElement(0, moverange);
-            moverange += 75;
-            enterName.Find(x => x.AssetName == "back").MoveElement(0, moverange);
 
             foreach (Menu element in resolution)
             {
@@ -215,13 +191,6 @@ namespace tank_mono
                         element.Update();
                     }
                     break;
-                case GameState.enterName:
-                    foreach (Menu element in enterName)
-                    {
-                        element.Update();
-                    }
-                    myName += KeyboardComponent.GetKeyInput();
-                    break;
                 case GameState.inGame:
                     break;
                 case GameState.settings:
@@ -257,13 +226,6 @@ namespace tank_mono
                     {
                         element.Draw(spriteBatch);
                     }
-                    break;
-                case GameState.enterName:
-                    foreach (Menu element in enterName)
-                    {
-                        element.Draw(spriteBatch);
-                    }
-                    loadText(spriteBatch);
                     break;
                 case GameState.inGame:
                     break;
@@ -317,7 +279,7 @@ namespace tank_mono
 
         }
 
-        public void onClickDone(string element)
+        public void onClickStart(string element)
         {
             gameState = GameState.inGame;
         }
@@ -325,10 +287,6 @@ namespace tank_mono
         public void onClickBack(string element)
         {
             gameState = GameState.mainMenum;
-        }
-        public void onClickStart(string element)
-        {
-                gameState = GameState.enterName;
         }
 
         public void onClicketting(string element)

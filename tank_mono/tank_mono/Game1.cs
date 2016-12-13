@@ -19,8 +19,6 @@ namespace tank_mono
     {
         public static GraphicsDeviceManager graphics;
         public static int width = 1920;
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
         public static int height = 1080;
 
         private UI ui;
@@ -67,7 +65,7 @@ namespace tank_mono
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferHeight = 1080;
         }
 
         /// <summary>
@@ -231,7 +229,7 @@ namespace tank_mono
             randomObjectManager.Update(gameTime);
 
                 if (MainMenu.gameState == GameState.inGame)
-                    healthRectangle = new Rectangle(50, 20, (int)_currentTank.Health, 20);
+                    healthRectangle = new Rectangle(50, 20, (int)_currentTank.CurrentHealth, 20);
             }
 
             
@@ -250,13 +248,7 @@ namespace tank_mono
             //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera2D.GetViewMatrix());
             if (MainMenu.gameState == GameState.inGame)
             {
-
-                spriteBatch.Begin();
-                spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
-                
-                spriteBatch.End();
-
-                spriteBatch.Begin(SpriteSortMode.Deferred,
+            spriteBatch.Begin(SpriteSortMode.Deferred,
                           BlendState.AlphaBlend,
                           SamplerState.PointClamp,
                           DepthStencilState.Default,
@@ -272,14 +264,18 @@ namespace tank_mono
             _projectileManager.Draw(spriteBatch);
             _pickUpManager.Draw(spriteBatch);
                 _tankManager.Draw(spriteBatch);
+
+                
+                spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
+                
+
+                if (GameSettings.Debug)
+                    TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
+                spriteBatch.End();
+            }
             
 
-
-            }
-            if (GameSettings.Debug)
-                TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
-
-            if (MainMenu.gameState == GameState.mainMenum || MainMenu.gameState == GameState.enterName || MainMenu.gameState == GameState.settings)
+            if (MainMenu.gameState == GameState.mainMenum || MainMenu.gameState == GameState.settings)
             {
 
                 spriteBatch.Begin();

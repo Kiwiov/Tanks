@@ -46,6 +46,7 @@
     <Compile Include="Managers\BackgroundManager.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Game1.cs" />
+<<<<<<< HEAD
     <Compile Include="KeyboardComponent.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Menu.cs" />
@@ -54,10 +55,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>menu.settings</DependentUpon>
     </Compile>
+=======
     <Compile Include="GameSettings.cs" />
     <Compile Include="PerlinNoise.cs" />
     <Compile Include="PickUp.cs" />
     <Compile Include="Managers\PickUpManager.cs" />
+>>>>>>> origin/PickUps-Branch
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Managers\ProjectileManager.cs" />
@@ -65,10 +68,14 @@
     <Compile Include="Managers\RandomObjectManager.cs" />
     <Compile Include="ScrollingLayers.cs" />
     <Compile Include="Tank.cs" />
-    <Compile Include="Managers\TankManager.cs" />
+<<<<<<< HEAD
+    <Compile Include="TankManager.cs" />
     <Compile Include="UI.cs" />
+=======
+    <Compile Include="Managers\TankManager.cs" />
     <Compile Include="Managers\TerrainManager.cs" />
     <Compile Include="Managers\TextManager.cs" />
+>>>>>>> origin/PickUps-Branch
     <Compile Include="Weapon.cs" />
     <Compile Include="Managers\WeaponCreator.cs" />
   </ItemGroup>
@@ -84,7 +91,9 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </MonoGameContentReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
