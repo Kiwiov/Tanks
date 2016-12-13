@@ -17,6 +17,7 @@ namespace tank_mono
         private float _rotation;
         private Vector2 _velocity;
         private float _power;
+        public Rectangle Hitbox;
 
         public Projectile(string Type, Vector2 Position, Tank Owner, Texture2D Texture, float Rotation, Vector2 Velocity, float Power)
         {
@@ -27,6 +28,9 @@ namespace tank_mono
             this.Rotation = Rotation;
             this.Velocity = Velocity;
             this.Power = Power;
+            Hitbox = Texture.Bounds;
+            Hitbox.X = (int)(Position.X - Texture.Width / 2);
+            Hitbox.Y = (int)(Position.Y - Texture.Height / 2);
         }
         
         public float Power

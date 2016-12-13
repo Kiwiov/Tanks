@@ -66,6 +66,8 @@ namespace tank_mono
 
                         //Hitbox
                         tank.Hitbox = tank.SpriteMain.Bounds;
+                        tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
+                        tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
                         break;
                     case "Standard":
                         //stats
@@ -85,6 +87,8 @@ namespace tank_mono
 
                         //Hitbox
                         tank.Hitbox = tank.SpriteMain.Bounds;
+                        tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
+                        tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
                         break;
                     case "Light":
                         //stats
@@ -104,6 +108,8 @@ namespace tank_mono
 
                         //Hitbox
                         tank.Hitbox = tank.SpriteMain.Bounds;
+                        tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
+                        tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
                         break;
                 }
             }
@@ -144,10 +150,14 @@ namespace tank_mono
             }
         }
 
-        public void MoveHitbox(Tank tank)
+        public void MoveHitbox()
         {
-            tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
-            tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
+            foreach (var tank in Tanks)
+            {
+                tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
+                tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
+            }
+            
         }
 
         public void MoveTank(Tank tank)
@@ -247,7 +257,7 @@ namespace tank_mono
             {
                 spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
-                spriteBatch.Draw(tank.SpriteMain, new Vector2(tank.Position.X, tank.Position.Y), tank.Hitbox, Color.Red);
+                spriteBatch.Draw(tank.SpriteMain, new Vector2(tank.Hitbox.X, tank.Hitbox.Y),tank.Hitbox, Color.Blue);
             }
         }
 

@@ -21,7 +21,7 @@ namespace tank_mono
             this.Type = Type;
             this.Texture = Texture;
             Hitbox = Texture.Bounds;
-            Hitbox.X = (int)(Position.X - Texture.Width/2);
+            Hitbox.X = (int)(Position.X - Texture.Width / 2);
             Hitbox.Y = (int)(Position.Y - Texture.Height / 2);
         }
         
