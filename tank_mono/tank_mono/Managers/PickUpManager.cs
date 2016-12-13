@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,7 +78,13 @@ namespace tank_mono
             }
             else
             {
-                goto TryAgain;
+                foreach (var weapon in tank.Weapons)
+                {
+                    if (weapon.Value.CurrentAmmo != weapon.Value.Ammo)
+                    {
+                        goto TryAgain;
+                    }
+                }
             }
             
         }
