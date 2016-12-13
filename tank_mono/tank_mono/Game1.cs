@@ -74,9 +74,6 @@ namespace tank_mono
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
             main.LoadContent(Content);
-            
-
-            ui = new UI(Content.Load<Texture2D>("TankHeavyBody"), new Vector2(400,400), 100);
 
             healthTexture = Content.Load<Texture2D>("health");
             background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
@@ -98,13 +95,7 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            MouseState mouse = Mouse.GetState();
-            Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
-            healthRectangle = new Rectangle(50, 20, (int)_currentTank.Health, 20);
-
-            ui.Update();
-            pastMouse = mouse;
-            base.Update(gameTime);
+            
 
 
             width = graphics.PreferredBackBufferWidth;
@@ -126,15 +117,14 @@ namespace tank_mono
                 }
                 Debug.WriteLine("Cannon Rotation: " + _currentTank.CannonRotation);
                 _tankManager.MoveTank(_currentTank);
+
+                if (MainMenu.gameState == GameState.inGame)
+                    healthRectangle = new Rectangle(50, 20, (int)_currentTank.Health, 20);
             }
+
+            
             base.Update(gameTime);
-
-            if (mouse.MiddleButton == ButtonState.Pressed && pastMouse.MiddleButton == ButtonState.Released)
-            {
-                _currentTank.Health -= 10;
-
-            }
-
+            
         }
 
         /// <summary>
@@ -152,7 +142,7 @@ namespace tank_mono
 
                 spriteBatch.Begin();
                 spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
-                ui.Draw(spriteBatch);
+                
                 spriteBatch.End();
 
                 spriteBatch.Begin(SpriteSortMode.Deferred,
