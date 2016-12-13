@@ -57,7 +57,7 @@ namespace tank_mono
             spriteBatch.DrawString(fontLoader, "Gun : ", new Vector2(50, 75), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             spriteBatch.DrawString(fontLoader, "Ammo : ", new Vector2(50, 105), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(fontLoader, _currentTank.CurrentWeapon.Name, new Vector2(130, 70), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(fontLoader, _currentTank.CurrentWeapon.Name, new Vector2(130, 75), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             if (_currentTank.CurrentWeapon.Name == "MachineGun")
             {
                 spriteBatch.DrawString(fontLoader, "Inf.", new Vector2(130, 105), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
