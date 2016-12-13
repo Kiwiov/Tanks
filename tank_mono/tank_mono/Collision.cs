@@ -27,7 +27,11 @@ namespace tank_mono
 
         public static Rectangle Normalize(Rectangle reference, Rectangle overlap)
         {
-            return new Rectangle(overlap.X - reference.X, overlap.Y - reference.Y, overlap.Width, overlap.Height);
+            return new Rectangle(
+              overlap.X - reference.X,
+              overlap.Y - reference.Y,
+              overlap.Width,
+              overlap.Height);
         }
 
         public static bool TestCollision(Texture2D t1, Rectangle r1, Texture2D t2, Rectangle r2)
@@ -35,11 +39,11 @@ namespace tank_mono
             int pixelCount = r1.Width * r1.Height;
             uint[] texture1Pixels = new uint[pixelCount];
             uint[] texture2Pixels = new uint[pixelCount];
-
+            
             t1.GetData(0, r1, texture1Pixels, 0, pixelCount);
             t2.GetData(0, r2, texture2Pixels, 0, pixelCount);
-
-            for (int i = 0; i < pixelCount; i++)
+            
+            for (int i = 0; i < pixelCount; ++i)
             {
                 if (((texture1Pixels[i] & 0xff000000) > 0) && ((texture2Pixels[i] & 0xff000000) > 0))
                 {
@@ -47,6 +51,24 @@ namespace tank_mono
                 }
             }
             return false;
+        }
+
+        public static bool TestIfCollision(Rectangle HitboxOne, Rectangle HitboxTwo, Texture2D TextureOne, Texture2D TextureTwo)
+        {
+            Rectangle _coll;
+            bool _bHit = false;
+
+            _coll = Intersection(HitboxOne, HitboxTwo);
+
+            if (_coll.Width > 0 && _coll.Height > 0)
+            {
+                var r1 = Normalize(HitboxOne, _coll);
+                var r2 = Normalize(HitboxTwo, _coll);
+                _bHit = TestCollision(TextureOne, r1, TextureTwo, r2);
+                
+            }
+            return _bHit;
+
         }
 
     }

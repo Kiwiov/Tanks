@@ -14,33 +14,17 @@ namespace tank_mono
         private string _type;
         private Texture2D _texture;
         private Double _rotation;
-        private Vector2 _hitboxPosition;
-        private Rectangle _hitbox;
+        public Rectangle Hitbox;
         public PickUp(Vector2 Position, string Type, Texture2D Texture)
         {
             this.Position = Position;
             this.Type = Type;
             this.Texture = Texture;
             Hitbox = Texture.Bounds;
-            HitboxPosition = Position - new Vector2(Texture.Width/2, Texture.Height/2);
+            Hitbox.X = (int)(Position.X - Texture.Width/2);
+            Hitbox.Y = (int)(Position.Y - Texture.Height / 2);
         }
-
         
-
-        public Rectangle Hitbox
-        {
-            get { return _hitbox; }
-            set { _hitbox = value; }
-        }
-
-
-        public Vector2 HitboxPosition
-        {
-            get { return _hitboxPosition; }
-            set { _hitboxPosition = value; }
-        }
-
-
         public Double Rotation
         {
             get { return _rotation; }

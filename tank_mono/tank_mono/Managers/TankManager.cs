@@ -59,6 +59,7 @@ namespace tank_mono
                         tank.CurrentArmour = 300;
 
                         tank.Speed = 20;
+
                         //Textures
                         tank.SpriteMain = _heavyTankMain;
                         tank.Cannon = _heavyCannon;
@@ -77,6 +78,7 @@ namespace tank_mono
                         tank.CurrentArmour = 150;
 
                         tank.Speed = 40;
+
                         //Textures
                         tank.SpriteMain = _standardTankMain;
                         tank.Cannon = _standardCannon;
@@ -95,9 +97,13 @@ namespace tank_mono
                         tank.CurrentArmour = 100;
 
                         tank.Speed = 60;
+
                         //Textures
                         tank.SpriteMain = _lightTankMain;
                         tank.Cannon = _lightCannon;
+
+                        //Hitbox
+                        tank.Hitbox = tank.SpriteMain.Bounds;
                         break;
                 }
             }
@@ -137,50 +143,18 @@ namespace tank_mono
                 }
             }
         }
-        public void MapHit(Rectangle TankHitbox, Rectangle MapRectagle, Tank Tank, TerrainManager Terrain)
-        {
-            Rectangle _coll;
-            bool _bHit;
-            
-
-            _coll = Collision.Intersection(TankHitbox, MapRectagle);
-
-            if (_coll.Width > 0 && _coll.Height > 0)
-            {
-                Rectangle _r1 = Collision.Normalize(TankHitbox, _coll);
-                Rectangle _r2 = Collision.Normalize(MapRectagle, _coll);
-                _r1 = Collision.Normalize(TankHitbox, _coll);
-                _r2 = Collision.Normalize(MapRectagle, _coll);
-                _bHit = Collision.TestCollision(Tank.SpriteMain, _r1, Terrain.terrainTexture, _r2);
-            }
-            else
-            {
-                _bHit = false;
-            }
-            if (!_bHit)
-            {
-                Tank.Position.Y += 1f;
-                Tank.Falling = true;
-            }
-
-            else
-            {
-                Tank.Position.Y -= 1f;
-                Tank.Falling = false;
-            }
-        }
-
 
         public void MoveHitbox(Tank tank)
         {
-            tank.HitboxPosition = tank.Position - new Vector2(tank.SpriteMain.Width/2, tank.SpriteMain.Height/2);
+            tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
+            tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
         }
 
         public void MoveTank(Tank tank)
         {
             KeyboardState ks = Keyboard.GetState();
 
-            if (tank.Falling == true)
+            if (tank.Falling)
             {
                 tank.Position.Y++;
             }
@@ -273,7 +247,7 @@ namespace tank_mono
             {
                 spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
-                spriteBatch.Draw(tank.SpriteMain, tank.HitboxPosition, tank.Hitbox, Color.Red);
+                spriteBatch.Draw(tank.SpriteMain, new Vector2(tank.Position.X, tank.Position.Y), tank.Hitbox, Color.Red);
             }
         }
 

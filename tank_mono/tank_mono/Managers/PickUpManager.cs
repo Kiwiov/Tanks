@@ -40,7 +40,7 @@ namespace tank_mono
         {
             for (int i = 0; i < PickUps.Count; i++)
             {
-                if (false) //if PickUp and tank collide 
+                if (Collision.TestIfCollision(tank.Hitbox,PickUps[i].Hitbox,tank.SpriteMain,PickUps[i].Texture)) 
                 {
                     if (PickUps[i].Type == "Ammo")
                     {
@@ -77,7 +77,7 @@ namespace tank_mono
             foreach (var pickUp in PickUps)
             {
                 spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: 0, origin: new Vector2(pickUp.Texture.Width / 2, pickUp.Texture.Height / 2 ));
-                //spriteBatch.Draw(pickUp.Texture, pickUp.HitboxPosition, pickUp.Hitbox, Color.Blue);
+                //spriteBatch.Draw(pickUp.Texture, new Vector2(pickUp.Hitbox.X, pickUp.Hitbox.Y), pickUp.Hitbox, Color.Blue);
             }
         }
 

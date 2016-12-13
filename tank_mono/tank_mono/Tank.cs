@@ -35,8 +35,7 @@ namespace tank_mono
 
         private Texture2D _spriteMain;
         private Texture2D _cannon;
-        private Rectangle _hitbox;
-        private Vector2 _hitboxPosition;
+        public Rectangle Hitbox;
 
         public Tank(Vector2 Position, string TankType, Color Colour, bool IsBot)
         {
@@ -44,7 +43,6 @@ namespace tank_mono
             this.TankType = TankType;
             this.IsBot = IsBot;
             this.Colour = Colour;
-            HitboxPosition = this.Position;
             Falling = false;
         }
 
@@ -54,20 +52,6 @@ namespace tank_mono
             get { return _falling; }
             set { _falling = value; }
         }
-
-
-        public Vector2 HitboxPosition
-        {
-            get { return _hitboxPosition; }
-            set { _hitboxPosition = value; }
-        }
-
-        public Rectangle Hitbox
-        {
-            get { return _hitbox; }
-            set { _hitbox = value; }
-        }
-
 
         public float CurrentArmour
         {
