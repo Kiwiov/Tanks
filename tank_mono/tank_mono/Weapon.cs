@@ -17,7 +17,10 @@ namespace tank_mono
         private float _armourDamage;
         private string _name;
         private int _shotFired;
-        public Weapon(string Name, float Power, int Radius, bool IsExploding, string Type, Texture2D Texture, float ArmourDamage, int ShotsFired)
+        private int _ammo;
+        private int _currentAmmo;
+
+        public Weapon(string Name, float Power, int Radius, bool IsExploding, string Type, Texture2D Texture, float ArmourDamage, int ShotsFired, int Ammo)
         {
             this.Name = Name;
             this.Power = Power;
@@ -27,8 +30,25 @@ namespace tank_mono
             this.Texture = Texture;
             this.ArmourDamage = ArmourDamage;
             this.ShotsFired = ShotsFired;
+            this.Ammo = Ammo;
+
+            CurrentAmmo = Ammo;
         }
-        
+
+
+        public int CurrentAmmo
+        {
+            get { return _currentAmmo; }
+            set { _currentAmmo = value; }
+        }
+
+
+        public int Ammo
+        {
+            get { return _ammo; }
+            set { _ammo = value; }
+        }
+
         public int ShotsFired
         {
             get { return _shotFired; }

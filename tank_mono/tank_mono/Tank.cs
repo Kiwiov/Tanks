@@ -14,7 +14,6 @@ namespace tank_mono
     {
         public Vector2 Position;
         private Color _colour;
-        
 
         private string _tankType;
 
@@ -22,17 +21,22 @@ namespace tank_mono
         private float _armour;
         private float _speed;
         private float _fuel;
-        private float _cannonRotation;
+        private double _cannonRotation;
         private float _tankRotation;
-
+        private Weapon _currentWeapon;
+        private float _currentHealth;
+        private float _currentFuel;
+        private float _currentArmour;
 
         private bool _isBot;
-        
-        private Dictionary<Weapon, int> _weapons;
+        private bool _falling;
+
+        private Dictionary<string, Weapon> _weapons = new Dictionary<string, Weapon>();
 
         private Texture2D _spriteMain;
         private Texture2D _cannon;
-
+        private Rectangle _hitbox;
+        private Vector2 _hitboxPosition;
 
         public Tank(Vector2 Position, string TankType, Color Colour, bool IsBot)
         {
@@ -40,17 +44,58 @@ namespace tank_mono
             this.TankType = TankType;
             this.IsBot = IsBot;
             this.Colour = Colour;
+            HitboxPosition = this.Position;
+            Falling = false;
         }
 
+
+        public bool Falling
+        {
+            get { return _falling; }
+            set { _falling = value; }
+        }
+
+
+        public Vector2 HitboxPosition
+        {
+            get { return _hitboxPosition; }
+            set { _hitboxPosition = value; }
+        }
+
+        public Rectangle Hitbox
+        {
+            get { return _hitbox; }
+            set { _hitbox = value; }
+        }
+
+
+        public float CurrentArmour
+        {
+            get { return _currentArmour; }
+            set { _currentArmour = value; }
+        }
+
+
+        public float CurrentFuel
+        {
+            get { return _currentFuel; }
+            set { _currentFuel = value; }
+        }
         
-        
+        public float CurrentHealth
+        {
+            get { return _currentHealth; }
+            set { _currentHealth = value; }
+        }
+
+
         public float TankRotaion
         {
             get { return _tankRotation; }
             set { _tankRotation = value; }
         }
 
-        public float CannonRotation
+        public double CannonRotation
         {
             get { return _cannonRotation; }
             set { _cannonRotation = value; }
@@ -91,7 +136,7 @@ namespace tank_mono
         }
 
 
-        public Dictionary<Weapon, int> Weapons
+        public Dictionary<string, Weapon> Weapons
         {
             get { return _weapons; }
             set { _weapons = value; }
@@ -122,6 +167,11 @@ namespace tank_mono
             get { return _tankType; }
             set { _tankType = value; }
         }
-        
+
+        public Weapon CurrentWeapon
+        {
+            get { return _currentWeapon; }
+            set { _currentWeapon = value; }
+        }
     }
 }

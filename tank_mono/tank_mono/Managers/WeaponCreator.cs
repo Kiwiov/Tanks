@@ -22,19 +22,19 @@ namespace tank_mono
 
         public Weapon MachineGun()
         {
-            Weapon machineGun = new Weapon("MachineGun",20,1,false,"Bullet",_bulletTexture,2,10);
+            Weapon machineGun = new Weapon("MachineGun",20,1,false,"Bullet",_bulletTexture,2,10,int.MaxValue);
             return machineGun;
         }
 
         public Weapon Missile()
         {
-            Weapon missile = new Weapon("Missile", 100, 15, true, "Rocket", _rocketTexture, 50, 1);
+            Weapon missile = new Weapon("Missile", 100, 15, true, "Rocket", _rocketTexture, 50, 1,5);
             return missile;
         }
 
         public Weapon AntiArmour()
         {
-            Weapon missile = new Weapon("AntiArmour", 50, 5, false, "SolidAntiArmour", _solidAntiArmourTexture, 100, 1);
+            Weapon missile = new Weapon("AntiArmour", 50, 5, false, "SolidAntiArmour", _solidAntiArmourTexture, 100, 1,5);
             return missile;
         }
     }
