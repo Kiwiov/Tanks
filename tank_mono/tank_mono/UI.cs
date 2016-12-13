@@ -4,35 +4,72 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
     class UI
     {
-        private Texture2D texture;
+        //UI BAR
+        private Texture2D healthTexture;
+        private Rectangle healthRectangle;
+        private Texture2D fuelTexture;
+        private Rectangle fuelRectangle;
+        private SpriteFont fontLoader;
+        private SpriteFont weaponAmmo;
         public Rectangle rectangle;
         private Vector2 position;
 
-        public int health;
-
-        public UI(Texture2D newTexture, Vector2 newPosition, int NewHealth)
+        public void LoadContent(ContentManager content)
         {
-            texture = newTexture;
-            position = newPosition;
 
-            health = NewHealth;
+            fontLoader = content.Load<SpriteFont>("Menu/MyFont");
+            healthTexture = content.Load<Texture2D>("health");
+            fuelTexture = content.Load<Texture2D>("fuel");
+
         }
 
-        public void Update()
+        public void Update(Tank _currentTank)
         {
-            rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            if (MainMenu.gameState == GameState.inGame)
+            {
+                healthRectangle = new Rectangle(130, 20, (int)(100 * (_currentTank.CurrentHealth / _currentTank.Health)), 20);
+                fuelRectangle = new Rectangle(130, 45, (int)(100 * (_currentTank.CurrentFuel / _currentTank.Fuel)), 20);
+
+            }
+
+            //rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Tank _currentTank)
         {
-            if(health > 0)
-                spriteBatch.Draw(texture, rectangle, Color.White);
+            if(_currentTank == null)
+                return;
+            //if(health > 0)
+            //    spriteBatch.Draw(texture, rectangle, Color.White);
+
+            //if (fuel > 0)
+            //    spriteBatch.Draw(texture, rectangle, Color.White);
+
+            spriteBatch.DrawString(fontLoader, "Health: ", new Vector2(50, 15), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(fontLoader, "Fuel: ", new Vector2(50, 45), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(fontLoader, "Gun : ", new Vector2(50, 75), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(fontLoader, "Ammo : ", new Vector2(50, 105), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+            spriteBatch.DrawString(fontLoader, _currentTank.CurrentWeapon.Name, new Vector2(130, 70), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            if (_currentTank.CurrentWeapon.Name == "MachineGun")
+            {
+                spriteBatch.DrawString(fontLoader, "Inf.", new Vector2(130, 105), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.DrawString(fontLoader, _currentTank.CurrentWeapon.CurrentAmmo.ToString(), new Vector2(130, 105), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            }
+
+
+            spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
+            spriteBatch.Draw(fuelTexture, fuelRectangle, Color.White);
         }
     }
 }

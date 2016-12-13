@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
+
 namespace tank_mono
 {
 
@@ -20,22 +21,16 @@ namespace tank_mono
         public static GraphicsDeviceManager graphics;
         public static int width = 1920;
         public static int height = 1080;
+        
 
-        private UI ui;
 
 
-        //UI BAR
-        private Texture2D healthTexture;
-        private Rectangle healthRectangle;
-        private Texture2D fuelTexture;
-        private Rectangle fuelRectangle;
-        private Texture2D weaponTexture;
-        private Rectangle weaponRectangle;
 
         private TankManager _tankManager;
         private WeaponCreator _weaponCreator;
         private ProjectileManager _projectileManager;
         private PickUpManager _pickUpManager;
+        private UI _ui;
 
         private MouseState pastMouse;
 
@@ -101,7 +96,8 @@ namespace tank_mono
             _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"));
             main.LoadContent(Content);
 
-            healthTexture = Content.Load<Texture2D>("health");
+            _ui = new UI();
+            _ui.LoadContent(Content);
             background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -158,20 +154,20 @@ namespace tank_mono
             }
             else
             {
-            if (keyboardState.IsKeyDown(Keys.G))
-                terrainManager.Generate();
+                if (keyboardState.IsKeyDown(Keys.G))
+                    terrainManager.Generate();
 
-            // rotation
-            
-            if (keyboardState.IsKeyDown(Keys.Q))
-                camera2D.Rotation -= deltaTime;
+                // rotation
 
-            if (keyboardState.IsKeyDown(Keys.W))
-                camera2D.Rotation += deltaTime;
+                if (keyboardState.IsKeyDown(Keys.Q))
+                    camera2D.Rotation -= deltaTime;
+
+                if (keyboardState.IsKeyDown(Keys.W))
+                    camera2D.Rotation += deltaTime;
 
                 if (_done == false)
                 {
-                    _tankManager.CreateTank(new Vector2(300,300),"Light",Color.OliveDrab,false);
+                    _tankManager.CreateTank(new Vector2(300, 300), "Light", Color.OliveDrab, false);
                     _tankManager.SetStats();
                     _tankManager.SetWeapons();
                     _done = true;
@@ -180,60 +176,63 @@ namespace tank_mono
                     _pickUpManager.CreatePickup(new Vector2(200, 300), "Ammo");
                     _tankManager.MoveHitbox(_currentTank);
                 }
-                
+
+                _ui.Update(_currentTank);
+
                 _tankManager.MoveTank(_currentTank);
                 _tankManager.MoveHitbox(_currentTank);
                 _projectileManager.Shoot(_currentTank);
                 _projectileManager.MoveProjectiles();
                 _pickUpManager.DetectPickup(_currentTank);
                 camera2D.Rotation = 0;
-            
-
-            /*
-             if (keyboardState.IsKeyDown(Keys.Up))
-                camera2D.Position -= new Vector2(0, 250) * deltaTime;
-
-             if (keyboardState.IsKeyDown(Keys.Down))
-                camera2D.Position += new Vector2(0, 250) * deltaTime;
-            */
-
-            if (keyboardState.IsKeyDown(Keys.Left))
-                camera2D.Position -= new Vector2(250, 0) * deltaTime;
-
-            if (keyboardState.IsKeyDown(Keys.Right))
-                camera2D.Position += new Vector2(250, 0) * deltaTime;
 
 
-            float thisZoom = camera2D.Zoom;
 
-            if (currentMouseState.ScrollWheelValue < previousScrollValue)
-            {
-                if ((!GameSettings.Debug && thisZoom > 0.8f) || GameSettings.Debug)
-                    camera2D.Zoom -= 0.1f;
+                /*
+                 if (keyboardState.IsKeyDown(Keys.Up))
+                    camera2D.Position -= new Vector2(0, 250) * deltaTime;
+
+                 if (keyboardState.IsKeyDown(Keys.Down))
+                    camera2D.Position += new Vector2(0, 250) * deltaTime;
+                */
+
+                if (keyboardState.IsKeyDown(Keys.Left))
+                    camera2D.Position -= new Vector2(250, 0)*deltaTime;
+
+                if (keyboardState.IsKeyDown(Keys.Right))
+                    camera2D.Position += new Vector2(250, 0)*deltaTime;
+
+
+                float thisZoom = camera2D.Zoom;
+
+                if (currentMouseState.ScrollWheelValue < previousScrollValue)
+                {
+                    if ((!GameSettings.Debug && thisZoom > 0.8f) || GameSettings.Debug)
+                        camera2D.Zoom -= 0.1f;
+                }
+                else if (currentMouseState.ScrollWheelValue > previousScrollValue)
+                {
+                    if ((!GameSettings.Debug && thisZoom < 1.5f) || GameSettings.Debug)
+                        camera2D.Zoom += 0.1f;
+                }
+
+                previousScrollValue = currentMouseState.ScrollWheelValue;
+
+
+                scrollingLayers.Update(gameTime,
+                    delegate { scrollingLayers.GetLayerByName("cloud1").UpdateAxis(0.8f, 0.35f); },
+                    // todo: fix wind direction
+                    delegate { scrollingLayers.GetLayerByName("cloud2").UpdateAxis(-0.5f, -0.35f); }
+                    // todo: fix wind direction
+                );
+
+                terrainManager.Update(gameTime);
+
+                randomObjectManager.Update(gameTime);
+
             }
-            else if (currentMouseState.ScrollWheelValue > previousScrollValue)
-            {
-                if((!GameSettings.Debug && thisZoom < 1.5f) || GameSettings.Debug)
-                    camera2D.Zoom += 0.1f;
-            }
-
-            previousScrollValue = currentMouseState.ScrollWheelValue;
 
 
-            scrollingLayers.Update(gameTime,
-                delegate { scrollingLayers.GetLayerByName("cloud1").UpdateAxis(0.8f, 0.35f); }, // todo: fix wind direction
-                delegate { scrollingLayers.GetLayerByName("cloud2").UpdateAxis(-0.5f, -0.35f); } // todo: fix wind direction
-            );
-
-            terrainManager.Update(gameTime);
-
-            randomObjectManager.Update(gameTime);
-
-                if (MainMenu.gameState == GameState.inGame)
-                    healthRectangle = new Rectangle(50, 20, (int)_currentTank.CurrentHealth, 20);
-            }
-
-            
             base.Update(gameTime);
             
         }
@@ -249,32 +248,31 @@ namespace tank_mono
             //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera2D.GetViewMatrix());
             if (MainMenu.gameState == GameState.inGame)
             {
-            spriteBatch.Begin(SpriteSortMode.Deferred,
-                          BlendState.AlphaBlend,
-                          SamplerState.PointClamp,
-                          DepthStencilState.Default,
-                          RasterizerState.CullNone);
-                
-            backgroundManager.Draw(gameTime, spriteBatch);
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.Default,
+                    RasterizerState.CullNone);
 
-            scrollingLayers.Draw(gameTime, "cloud1", "cloud2");
+                backgroundManager.Draw(gameTime, spriteBatch);
 
-            terrainManager.Draw(gameTime);
-            randomObjectManager.Draw(gameTime);
+                scrollingLayers.Draw(gameTime, "cloud1", "cloud2");
 
-            _projectileManager.Draw(spriteBatch);
-            _pickUpManager.Draw(spriteBatch);
+                terrainManager.Draw(gameTime);
+                randomObjectManager.Draw(gameTime);
+
+                _projectileManager.Draw(spriteBatch);
+                _pickUpManager.Draw(spriteBatch);
                 _tankManager.Draw(spriteBatch);
 
-                
-                spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
-                
+                _ui.Draw(spriteBatch, _currentTank);
+
 
                 if (GameSettings.Debug)
                     TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
                 spriteBatch.End();
             }
-            
+
 
             if (MainMenu.gameState == GameState.mainMenum || MainMenu.gameState == GameState.settings)
             {
