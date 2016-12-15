@@ -22,14 +22,11 @@ namespace tank_mono
         public static int width = 1920;
         public static int height = 1080;
         
-
-
-
-
         private TankManager _tankManager;
         private WeaponCreator _weaponCreator;
         private ProjectileManager _projectileManager;
         private PickUpManager _pickUpManager;
+        private GameLogic _gameLogic;
         private UI _ui;
 
         private MouseState pastMouse;
@@ -90,10 +87,12 @@ namespace tank_mono
         /// </summary>
         protected override void LoadContent()
         {
-            _projectileManager = new ProjectileManager();
+            
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
             _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"));
+            _gameLogic = new GameLogic();
+            _projectileManager = new ProjectileManager(_gameLogic);
             main.LoadContent(Content);
 
             _ui = new UI();

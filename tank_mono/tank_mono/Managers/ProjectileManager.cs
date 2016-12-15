@@ -14,17 +14,16 @@ namespace tank_mono
     class ProjectileManager
     {
         private int firerate = 5;
-        int _nrOfShots;
-        float _power = 0;
-        int _upDown = 1;
-        bool shooting;
+        private int _nrOfShots;
+        private float _power = 0;
+        private int _upDown = 1;
+        private bool shooting;
         private bool fire;
-        List<Projectile> _projectiles = new List<Projectile>();
-
-        public List<Projectile> Projectiles
+        private List<Projectile> _projectiles = new List<Projectile>();
+        private Vector2 _wind;
+        public ProjectileManager(GameLogic GameLogic)
         {
-            get { return _projectiles; }
-            set { _projectiles = value; }
+            this.Wind = new Vector2((float)GameLogic.Wind / 20000,0);
         }
 
         public void Shoot(Tank tank)
@@ -109,9 +108,10 @@ namespace tank_mono
         {
             foreach (var projectile in Projectiles)
             {
-                projectile.Position += projectile.Power * projectile.Velocity;
+                projectile.Position += projectile.Power * projectile.Velocity ;
 
                 projectile.Velocity -= new Vector2(0, -0.006f);
+                projectile.Velocity += Wind;
                 projectile.Rotation = (float)Math.Atan2(projectile.Velocity.Y,projectile.Velocity.X);
             }
         }
@@ -138,6 +138,17 @@ namespace tank_mono
 
         }
 
+        public List<Projectile> Projectiles
+        {
+            get { return _projectiles; }
+            set { _projectiles = value; }
+        }
+
+        public Vector2 Wind
+        {
+            get { return _wind; }
+            set { _wind = value; }
+        }
 
     }
 }
