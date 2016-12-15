@@ -94,9 +94,8 @@ namespace tank_mono
             foreach (var pickUp in PickUps)
             {
                 spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: 0, origin: new Vector2(pickUp.Texture.Width / 2, pickUp.Texture.Height / 2 ));
-#if DEBUG
-                spriteBatch.Draw(pickUp.Texture, new Vector2(pickUp.Hitbox.X, pickUp.Hitbox.Y), pickUp.Hitbox, Color.Blue);
-#endif
+                //spriteBatch.Draw(pickUp.Texture, new Vector2(pickUp.Hitbox.X, pickUp.Hitbox.Y), pickUp.Hitbox, Color.Blue);
+
             }
         }
 

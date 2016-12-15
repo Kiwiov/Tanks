@@ -42,7 +42,7 @@ namespace tank_mono
             temp = content.Load<Texture2D>("Menu/temp");
             GUITexture = content.Load<Texture2D>("Menu/"+AssetName);
             GUIRect = new Rectangle(0, 0, GUITexture.Width, GUITexture.Height);
-            song = content.Load<Song>("Menu/bgmusic");
+            song = content.Load<Song>(/*"Menu/bgmusic"*/"Menu/StormVind");
             MediaPlayer.Play(song); // this will start the song playing
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 1f;

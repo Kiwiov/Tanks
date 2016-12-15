@@ -35,7 +35,6 @@ namespace tank_mono
         SpriteBatch spriteBatch;
         MainMenu main;
         private BackgroundManager backgroundManager;
-        private Tank _currentTank;
         private TerrainManager terrainManager;
         bool _done;
         private RandomObjectManager randomObjectManager;
@@ -167,26 +166,28 @@ namespace tank_mono
                 if (_done == false)
                 {
                     _tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false);
-                    _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.Pink, false);
+                    _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.HotPink, false);
+                    _tankManager.CreateTank(new Vector2(700, 300), "Light", Color.CadetBlue, false);
                     _tankManager.SetStats();
                     _tankManager.SetWeapons();
                     _done = true;
-                    _currentTank = _tankManager.Tanks[0];
+                    _gameLogic.CurrentTank = _tankManager.Tanks[0];
                     _pickUpManager.CreatePickup(new Vector2(250, 300), "Fuel");
                     _pickUpManager.CreatePickup(new Vector2(200, 300), "Ammo");
                     _tankManager.MoveHitbox();
                 }
                 else
                 {
-                _ui.Update(_currentTank);
+                _ui.Update(_gameLogic.CurrentTank);
 
-                    _tankManager.MoveTank(_currentTank);
+                    _tankManager.MoveTank(_gameLogic.CurrentTank);
                     _tankManager.MoveHitbox();
-                    _projectileManager.Shoot(_currentTank);
+                    _projectileManager.Shoot(_gameLogic.CurrentTank);
                     _projectileManager.MoveProjectiles();
                     _projectileManager.MoveProjectileHitboxes();
-                    _pickUpManager.DetectPickup(_currentTank);
-                    _projectileManager.DetectCollisionProjectileTank(_tankManager, _currentTank);
+                    _pickUpManager.DetectPickup(_gameLogic.CurrentTank);
+                    _projectileManager.DetectCollisionProjectileTank(_tankManager, _gameLogic.CurrentTank);
+                    _gameLogic.ChangeTank(_tankManager);
                     camera2D.Rotation = 0;
                 }
 
@@ -268,7 +269,7 @@ namespace tank_mono
                 _pickUpManager.Draw(spriteBatch);
                 _tankManager.Draw(spriteBatch);
 
-                _ui.Draw(spriteBatch, _currentTank);
+                _ui.Draw(spriteBatch, _gameLogic.CurrentTank);
 
 
                 if (GameSettings.Debug)

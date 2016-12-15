@@ -517,3 +517,9 @@
 /processorParam:TextureFormat=Color
 /build:fuel.png
 
+#begin menu/StormVind.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:menu/StormVind.ogg
+
