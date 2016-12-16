@@ -165,9 +165,9 @@ namespace tank_mono
 
                 if (_done == false)
                 {
-                    _tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false);
-                    _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.HotPink, false);
-                    _tankManager.CreateTank(new Vector2(700, 300), "Light", Color.CadetBlue, false);
+                    _tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false, "Hillarp Persson");
+                    _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.HotPink, false, "Gudrun Schyman");
+                    _tankManager.CreateTank(new Vector2(700, 300), "Light", Color.CadetBlue, false, "Åkesson");
                     _tankManager.SetStats();
                     _tankManager.SetWeapons();
                     _done = true;
@@ -273,7 +273,7 @@ namespace tank_mono
 
 
                 if (GameSettings.Debug)
-                    TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
+                   //TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
                 spriteBatch.End();
             }
 

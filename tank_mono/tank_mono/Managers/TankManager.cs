@@ -36,9 +36,9 @@ namespace tank_mono
             _weaponCreator = WeaponCreator;
         }
 
-        public void CreateTank(Vector2 Position, string TankType, Color Colour, bool IsBot)
+        public void CreateTank(Vector2 Position, string TankType, Color Colour, bool IsBot, string Name)
         {
-            Tanks.Add(new Tank(Position, TankType, Colour, IsBot));
+            Tanks.Add(new Tank(Position, TankType, Colour, IsBot, Name));
 
         }
 

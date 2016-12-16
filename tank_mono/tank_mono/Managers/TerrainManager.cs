@@ -85,7 +85,7 @@ namespace tank_mono
         public void Draw(GameTime gameTime)
         {
             if (GameSettings.Debug)
-                TextManager.Draw(gameTime.TotalGameTime.Seconds.ToString(), new Vector2(250, 10), Color.Red);
+                //TextManager.Draw(gameTime.TotalGameTime.Seconds.ToString(), new Vector2(250, 10), Color.Red);
 
             _spriteBatch.Draw(terrainTexture, Vector2.Zero, Color.White);
 

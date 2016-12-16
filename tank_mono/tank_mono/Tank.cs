@@ -16,6 +16,7 @@ namespace tank_mono
         private Color _colour;
 
         private string _tankType;
+        private string _name;
 
         private float _health;
         private float _armour;
@@ -37,13 +38,22 @@ namespace tank_mono
         private Texture2D _cannon;
         public Rectangle Hitbox;
 
-        public Tank(Vector2 Position, string TankType, Color Colour, bool IsBot)
+        public Tank(Vector2 Position, string TankType, Color Colour, bool IsBot, string Name)
         {
             this.Position = Position;
             this.TankType = TankType;
             this.IsBot = IsBot;
             this.Colour = Colour;
             Falling = false;
+            this.Name = Name;
+        }
+
+        
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
 
