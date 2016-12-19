@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +21,12 @@ namespace tank_mono
         private Texture2D _lightCannon;
         private int _switchTimer;
 
+        private TerrainManager _terrainManager;
         private WeaponCreator _weaponCreator;
-
+        
         private List<Tank> _tanks;
 
-        public TankManager(Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody,Texture2D HeavyCannon, Texture2D StandardCannon, Texture2D LightCannon, WeaponCreator WeaponCreator)
+        public TankManager(Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody,Texture2D HeavyCannon, Texture2D StandardCannon, Texture2D LightCannon, WeaponCreator WeaponCreator, TerrainManager TerrainManager)
         {
             _heavyTankMain = HeavyTankBody;
             _lightTankMain = LightTankBody;
@@ -34,6 +36,7 @@ namespace tank_mono
             _lightCannon = LightCannon;
             Tanks = new List<Tank>();
             _weaponCreator = WeaponCreator;
+            _terrainManager = TerrainManager;
         }
 
         public void CreateTank(Vector2 Position, string TankType, Color Colour, bool IsBot, string Name)
@@ -256,8 +259,8 @@ namespace tank_mono
         {
             foreach (var tank in Tanks)
             {
-                spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 2), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
-                spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height / 2));
+                spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 4), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
+                spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height - 3));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position,tank.Hitbox, Color.Blue);
             }
         }
@@ -266,6 +269,23 @@ namespace tank_mono
         {
             get { return _tanks; }
             set { _tanks = value; }
+        }
+
+        public void FindLandPosition()
+        {
+            foreach (var tank in Tanks)
+            {
+                int x1 = (int)tank.Position.X - _heavyTankMain.Width / 2 + 4;
+                int x2 = (int)tank.Position.X + _heavyTankMain.Width / 2 - 4;
+                int y1 = _terrainManager.FindLand(new Vector2(x1, tank.Position.Y));
+                int y2 = _terrainManager.FindLand(new Vector2(x2, tank.Position.Y));
+
+                tank.TankRotaion = (float)Math.Atan2(y2 - y1, x2 - x1);
+                tank.Position = new Vector2(tank.Position.X, (y1 + y2) / 2);
+            }
+            
+            
+
         }
     }
 }

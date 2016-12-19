@@ -21,9 +21,11 @@ namespace tank_mono
         private bool fire;
         private List<Projectile> _projectiles = new List<Projectile>();
         private Vector2 _wind;
-        public ProjectileManager(GameLogic GameLogic)
+        private TerrainManager _terrainManager;
+        public ProjectileManager(GameLogic gameLogic, TerrainManager terrainManager)
         {
-            this.Wind = new Vector2((float)GameLogic.Wind / 20000,0);
+            this.Wind = new Vector2((float)gameLogic.Wind / 20000,0);
+            _terrainManager = terrainManager;
         }
 
         public void Shoot(Tank tank)
@@ -123,6 +125,19 @@ namespace tank_mono
                 projectile.Hitbox.X = (int)(projectile.Position.X - projectile.Texture.Width / 2);
                 projectile.Hitbox.Y = (int)(projectile.Position.Y - projectile.Texture.Height / 2);
             }
+        }
+
+        public void DestroyOrNot()
+        {
+            for (int i = 0; i < Projectiles.Count; i++)
+            {
+                if (Projectiles[i].Position.Y >= _terrainManager.FindLand(Projectiles[i].Position))
+                {
+                    Projectiles.RemoveAt(i);
+                    break;
+                }
+            }
+                
             
         }
 

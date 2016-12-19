@@ -14,7 +14,7 @@ namespace tank_mono
         private KeyboardState pks;
         public GameLogic()
         {
-            Wind = -100;
+            Wind =0;
         }
 
         public void ChangeTank(TankManager TankManager)

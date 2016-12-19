@@ -29,6 +29,7 @@ namespace tank_mono
         private int[] terrainContour;
 
         private TreeData[] trees;
+        private Color[] ColorData;
 
         private float flatness = 375;
         private float peakheight = 200;
@@ -140,7 +141,7 @@ namespace tank_mono
         private void CreateTerrainGround()
         {
             var GroundColorData = ConvertTextureToArray(terrainBackgroundTexture);
-            var ColorData = new Color[GameSettings.Width * GameSettings.Height];
+            ColorData = new Color[GameSettings.Width * GameSettings.Height];
 
             for (int x = 0; x < GameSettings.Width; x++)
             {
@@ -169,5 +170,27 @@ namespace tank_mono
 
             return NewColorData;
         }
+
+        public int FindLand(Vector2 pos)
+        {
+            int x = (int) MathHelper.Clamp(pos.X, 0, GameSettings.Width - 1);
+            int y = (int) MathHelper.Clamp(pos.Y, 0, GameSettings.Height - 1);
+
+            if (ColorData[x + y*GameSettings.Width] == Color.Transparent)
+            {
+                for (int i = 0; i < GameSettings.Height; i++)
+                    if (ColorData[x + i*GameSettings.Width] != Color.Transparent)
+                        return i;
+                    return GameSettings.Height;
+            }
+            else
+            {
+                for (int i = y; i >=0; i--)
+                    if (ColorData[x + i *GameSettings.Width] == Color.Transparent)
+                        return i;
+                    return 0;
+            }
+        }
+        }
     }
-}
+

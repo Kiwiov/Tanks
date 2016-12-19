@@ -86,22 +86,7 @@ namespace tank_mono
         /// </summary>
         protected override void LoadContent()
         {
-            
-            _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
-            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator);
-            _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"));
-            _gameLogic = new GameLogic();
-            _projectileManager = new ProjectileManager(_gameLogic);
-            main.LoadContent(Content);
-
-            _ui = new UI();
-            _ui.LoadContent(Content);
-            background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            TextManager.Init(GraphicsDevice, Content, spriteBatch);
-
             randomObjectManager = new RandomObjectManager(GraphicsDevice, Content, spriteBatch, terrainManager);
 
             terrainManager = new TerrainManager(GraphicsDevice, Content, spriteBatch, randomObjectManager);
@@ -110,6 +95,7 @@ namespace tank_mono
             scrollingLayers.AddLayer("cloud1");
             scrollingLayers.AddLayer("cloud2");
 
+            TextManager.Init(GraphicsDevice, Content, spriteBatch);
             TextManager.Load(GraphicsDevice);
 
             backgroundManager.Load(GraphicsDevice);
@@ -118,6 +104,24 @@ namespace tank_mono
             terrainManager.Generate();
 
             randomObjectManager.Load(GraphicsDevice);
+
+            _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
+            _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator, terrainManager);
+            _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"));
+            _gameLogic = new GameLogic();
+            _projectileManager = new ProjectileManager(_gameLogic, terrainManager);
+
+            main.LoadContent(Content);
+
+            _ui = new UI();
+            _ui.LoadContent(Content);
+            background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
+            // Create a new SpriteBatch, which can be used to draw textures.
+
+
+            
+
+           
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -165,6 +169,7 @@ namespace tank_mono
 
                 if (_done == false)
                 {
+                    
                     _tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false, "Hillarp Persson");
                     _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.HotPink, false, "Gudrun Schyman");
                     _tankManager.CreateTank(new Vector2(700, 300), "Light", Color.CadetBlue, false, "Åkesson");
@@ -181,10 +186,12 @@ namespace tank_mono
                 _ui.Update(_gameLogic.CurrentTank);
 
                     _tankManager.MoveTank(_gameLogic.CurrentTank);
+                    _tankManager.FindLandPosition();
                     _tankManager.MoveHitbox();
                     _projectileManager.Shoot(_gameLogic.CurrentTank);
                     _projectileManager.MoveProjectiles();
                     _projectileManager.MoveProjectileHitboxes();
+                    _projectileManager.DestroyOrNot();
                     _pickUpManager.DetectPickup(_gameLogic.CurrentTank);
                     _projectileManager.DetectCollisionProjectileTank(_tankManager, _gameLogic.CurrentTank);
                     _gameLogic.ChangeTank(_tankManager);
@@ -235,8 +242,7 @@ namespace tank_mono
                 randomObjectManager.Update(gameTime);
 
             }
-
-
+            
             base.Update(gameTime);
             
         }
