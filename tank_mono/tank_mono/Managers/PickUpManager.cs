@@ -14,6 +14,7 @@ namespace tank_mono
         private Texture2D _textureAmmoBox;
         private Texture2D _textureFuelBarrel;
         private List<PickUp> _pickUps = new List<PickUp>();
+        Random _ran = new Random();
 
         public PickUpManager(Texture2D TextureAmmoBox, Texture2D TextureFuelBarrel)
         {
@@ -21,17 +22,36 @@ namespace tank_mono
             this.TextureFuelBarrel = TextureFuelBarrel;
         }
 
-        public void CreatePickup(Vector2 position, string type)
+        private Vector2 RandomLocation()
         {
-            if (type == "Ammo")
+            Vector2 vector = new Vector2(_ran.Next(Game1.width),300);
+            return vector;
+        }
+        public void CreatePickup(string type)
+        {
+            if (type == "Random")
             {
-                PickUps.Add(new PickUp(position, type, TextureAmmoBox));
+                if (_ran.Next(2) == 1)
+                {
+                    PickUps.Add(new PickUp(RandomLocation(), "Ammo", TextureAmmoBox));
+                }
+                else
+                {
+                    PickUps.Add(new PickUp(RandomLocation(), "Fuel", TextureFuelBarrel));
+                }
+
+                
+                //Rotation
+            }
+            else if (type == "Ammo")
+            {
+                PickUps.Add(new PickUp(RandomLocation(), type, TextureAmmoBox));
                 //Rotation
 
             }
-            else
+            else if (type == "Fuel")
             {
-                PickUps.Add(new PickUp(position, type, TextureFuelBarrel));
+                PickUps.Add(new PickUp(RandomLocation(), type, TextureFuelBarrel));
                 //Rotation
 
             }

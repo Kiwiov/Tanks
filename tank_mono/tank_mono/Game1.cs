@@ -172,8 +172,8 @@ namespace tank_mono
                     _tankManager.SetWeapons();
                     _done = true;
                     _gameLogic.CurrentTank = _tankManager.Tanks[0];
-                    _pickUpManager.CreatePickup(new Vector2(250, 300), "Fuel");
-                    _pickUpManager.CreatePickup(new Vector2(200, 300), "Ammo");
+                    _pickUpManager.CreatePickup("Random");
+                    _pickUpManager.CreatePickup("Random");
                     _tankManager.MoveHitbox();
                 }
                 else
@@ -187,7 +187,8 @@ namespace tank_mono
                     _projectileManager.MoveProjectileHitboxes();
                     _pickUpManager.DetectPickup(_gameLogic.CurrentTank);
                     _projectileManager.DetectCollisionProjectileTank(_tankManager, _gameLogic.CurrentTank);
-                    _gameLogic.ChangeTank(_tankManager);
+                    
+                    _gameLogic.CheckTime(_tankManager);
                     camera2D.Rotation = 0;
                 }
 

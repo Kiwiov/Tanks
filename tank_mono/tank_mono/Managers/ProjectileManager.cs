@@ -17,22 +17,25 @@ namespace tank_mono
         private int _nrOfShots;
         private float _power = 0;
         private int _upDown = 1;
-        private bool shooting;
-        private bool fire;
+        private static bool _shooting;
+        private bool _fire;
+        public static bool _fired;
+
         private List<Projectile> _projectiles = new List<Projectile>();
         private Vector2 _wind;
         public ProjectileManager(GameLogic GameLogic)
         {
-            this.Wind = new Vector2((float)GameLogic.Wind / 20000,0);
+            Wind = new Vector2((float)GameLogic.Wind / 20000,0);
+            _fired = false;
         }
 
         public void Shoot(Tank tank)
         {
             KeyboardState ks = Keyboard.GetState();
 
-            if (tank.CurrentWeapon.CurrentAmmo > 0)
+            if (tank.CurrentWeapon.CurrentAmmo > 0 && !_fired)
             {
-                if (ks.IsKeyDown(Keys.Space) && !shooting)
+                if (ks.IsKeyDown(Keys.Space) && !_shooting)
                 {
 
                     _nrOfShots = tank.CurrentWeapon.ShotsFired*firerate;
@@ -52,11 +55,11 @@ namespace tank_mono
                 }
                 else if (ks.IsKeyUp((Keys.Space)) && _power != 0)
                 {
-                    fire = true;
+                    _fire = true;
                 }
-                if (fire)
+                if (_fire)
                 {
-                    shooting = true;
+                    _shooting = true;
                     if (_power > 10)
                     {
                         _power = 10;
@@ -76,12 +79,13 @@ namespace tank_mono
 
                     else if (_nrOfShots <= 0)
                     {
-                        fire = false;
+                        _fire = false;
                         _power = 0;
                         _upDown = 1;
-                        shooting = false;
+                        _shooting = false;
                         //tank.CurrentWeapon.CurrentAmmo--;
                         tank.Weapons[tank.CurrentWeapon.Name].CurrentAmmo--;
+                        _fired = true;
                     }
                     _nrOfShots--;
                 }
@@ -138,6 +142,11 @@ namespace tank_mono
 
         }
 
+        public static bool IsShooting()
+        {
+            return _shooting;
+        }
+            
         public List<Projectile> Projectiles
         {
             get { return _projectiles; }
@@ -149,6 +158,7 @@ namespace tank_mono
             get { return _wind; }
             set { _wind = value; }
         }
+        
 
     }
 }
