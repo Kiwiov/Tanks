@@ -15,11 +15,13 @@ namespace tank_mono
         private Texture2D _textureFuelBarrel;
         private List<PickUp> _pickUps = new List<PickUp>();
         Random _ran = new Random();
+        TerrainManager _terrainManager;
 
-        public PickUpManager(Texture2D TextureAmmoBox, Texture2D TextureFuelBarrel)
+        public PickUpManager(Texture2D TextureAmmoBox, Texture2D TextureFuelBarrel, TerrainManager terrainManager)
         {
             this.TextureAmmoBox = TextureAmmoBox;
             this.TextureFuelBarrel = TextureFuelBarrel;
+            _terrainManager = terrainManager;
         }
 
         private Vector2 RandomLocation()
@@ -81,6 +83,17 @@ namespace tank_mono
             
         }
 
+        public void MoveHitbox(PickUp pickUp)
+        {
+
+            
+            pickUp.Hitbox.X = (int)(pickUp.Position.X - pickUp.Texture.Width / 2);
+            pickUp.Hitbox.Y = (int)(pickUp.Position.Y - pickUp.Texture.Height / 2);
+            
+
+        }
+
+
         private void IfPickUpAmmo(Tank tank)
         {
             Random ran = new Random();
@@ -109,11 +122,26 @@ namespace tank_mono
             
         }
 
+        public void FindLandPosition()
+        {
+            foreach (var pickUp in PickUps)
+            {
+                int x1 = (int)pickUp.Position.X - pickUp.Texture.Width / 2 + 10;
+                int x2 = (int)pickUp.Position.X + pickUp.Texture.Width / 2 - 10;
+                int y1 = _terrainManager.FindLand(new Vector2(x1, pickUp.Position.Y));
+                int y2 = _terrainManager.FindLand(new Vector2(x2, pickUp.Position.Y));
+
+                pickUp.Rotation = (float)Math.Atan2(y2 - y1, x2 - x1);
+                pickUp.Position = new Vector2(pickUp.Position.X, (y1 + y2) / 2);
+                MoveHitbox(pickUp);
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var pickUp in PickUps)
             {
-                spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: 0, origin: new Vector2(pickUp.Texture.Width / 2, pickUp.Texture.Height / 2 ));
+                spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: (float)pickUp.Rotation, origin: new Vector2(pickUp.Texture.Width / 2, 2 ));
                 //spriteBatch.Draw(pickUp.Texture, new Vector2(pickUp.Hitbox.X, pickUp.Hitbox.Y), pickUp.Hitbox, Color.Blue);
 
             }

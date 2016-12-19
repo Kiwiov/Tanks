@@ -26,9 +26,9 @@ namespace tank_mono
         private TerrainManager _terrainManager;
         public ProjectileManager(GameLogic gameLogic, TerrainManager terrainManager)
         {
-            Wind = new Vector2((float)GameLogic.Wind / 20000,0);
+            Wind = new Vector2((float)gameLogic.Wind / 20000,0);
             _fired = false;
-            this.Wind = new Vector2((float)gameLogic.Wind / 20000,0);
+            
             _terrainManager = terrainManager;
         }
 

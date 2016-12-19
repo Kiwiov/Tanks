@@ -16,7 +16,7 @@ namespace tank_mono
 
         public GameLogic()
         {
-            Wind = -100;
+            Wind = 0;
             TimeMax = 10;
             TimeLeft = TimeMax * 60;
         }

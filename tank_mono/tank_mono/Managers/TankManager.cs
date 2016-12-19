@@ -253,7 +253,21 @@ namespace tank_mono
                 }
 
             }
-        } 
+        }
+
+        public void FindLandPosition()
+        {
+            foreach (var tank in Tanks)
+            {
+                int x1 = (int)tank.Position.X - tank.SpriteMain.Width / 2 + 0;
+                int x2 = (int)tank.Position.X + tank.SpriteMain.Width / 2 - 0;
+                int y1 = _terrainManager.FindLand(new Vector2(x1, tank.Position.Y));
+                int y2 = _terrainManager.FindLand(new Vector2(x2, tank.Position.Y));
+
+                tank.TankRotaion = (float)Math.Atan2(y2 - y1, x2 - x1);
+                tank.Position = new Vector2(tank.Position.X, (y1 + y2) / 2);
+            }
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -271,21 +285,6 @@ namespace tank_mono
             set { _tanks = value; }
         }
 
-        public void FindLandPosition()
-        {
-            foreach (var tank in Tanks)
-            {
-                int x1 = (int)tank.Position.X - _heavyTankMain.Width / 2 + 4;
-                int x2 = (int)tank.Position.X + _heavyTankMain.Width / 2 - 4;
-                int y1 = _terrainManager.FindLand(new Vector2(x1, tank.Position.Y));
-                int y2 = _terrainManager.FindLand(new Vector2(x2, tank.Position.Y));
-
-                tank.TankRotaion = (float)Math.Atan2(y2 - y1, x2 - x1);
-                tank.Position = new Vector2(tank.Position.X, (y1 + y2) / 2);
-            }
-            
-            
-
-        }
+        
     }
 }

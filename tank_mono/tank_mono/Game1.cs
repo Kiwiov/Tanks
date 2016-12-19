@@ -90,7 +90,8 @@ namespace tank_mono
         /// </summary>
         protected override void LoadContent()
         {
-            main.RecalcMenu();
+            
+            _gameLogic = new GameLogic();
             _ui = new UI(_gameLogic);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             randomObjectManager = new RandomObjectManager(GraphicsDevice, Content, spriteBatch, terrainManager);
@@ -113,14 +114,15 @@ namespace tank_mono
 
             _weaponCreator = new WeaponCreator(Content.Load<Texture2D>("Projectile"), Content.Load<Texture2D>("Missile"),Content.Load<Texture2D>("AntiArmour"));
             _tankManager = new TankManager(Content.Load<Texture2D>("TankHeavyBody"), Content.Load<Texture2D>("TankStandardBody"), Content.Load<Texture2D>("TankLightBody"), Content.Load<Texture2D>("TankHeavyCannon"), Content.Load<Texture2D>("TankStandardCannon"), Content.Load<Texture2D>("TankLightCannon"),_weaponCreator, terrainManager);
-            _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"));
-            _gameLogic = new GameLogic();
+            _pickUpManager = new PickUpManager(Content.Load<Texture2D>("AmmoBox"),Content.Load<Texture2D>("FuelBarrel"), terrainManager);
+            
             _projectileManager = new ProjectileManager(_gameLogic, terrainManager);
 
             main.LoadContent(Content);
 
-            _ui = new UI();
+            _ui = new UI(_gameLogic);
             _ui.LoadContent(Content);
+            main.RecalcMenu();
             background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
             // Create a new SpriteBatch, which can be used to draw textures.
 
@@ -199,6 +201,7 @@ namespace tank_mono
                     _projectileManager.MoveProjectiles();
                     _projectileManager.MoveProjectileHitboxes();
                     _projectileManager.DestroyOrNot();
+                    _pickUpManager.FindLandPosition();
                     _pickUpManager.DetectPickup(_gameLogic.CurrentTank);
                     _projectileManager.DetectCollisionProjectileTank(_tankManager, _gameLogic.CurrentTank);
                     
