@@ -21,13 +21,16 @@ namespace tank_mono
         public static GraphicsDeviceManager graphics;
         public static int width = 1920;
         public static int height = 1080;
-        
+        public static bool inGame = false;
+        private KeyboardState OldKeyState;
+
         private TankManager _tankManager;
         private WeaponCreator _weaponCreator;
         private ProjectileManager _projectileManager;
         private PickUpManager _pickUpManager;
         private GameLogic _gameLogic;
         private UI _ui;
+
 
         private MouseState pastMouse;
 
@@ -68,8 +71,9 @@ namespace tank_mono
         protected override void Initialize()
         {
             Window.Title = GameSettings.Title;
-            
-             main = new MainMenu(this);
+
+            OldKeyState = Keyboard.GetState();
+            main = new MainMenu(this);
             Components.Add(new KeyboardComponent(this));
             backgroundManager = new BackgroundManager(Content);
 
@@ -93,8 +97,9 @@ namespace tank_mono
             _gameLogic = new GameLogic();
             _projectileManager = new ProjectileManager(_gameLogic);
             main.LoadContent(Content);
+            main.RecalcMenu();
 
-            _ui = new UI();
+            _ui = new UI(_gameLogic);
             _ui.LoadContent(Content);
             background = Content.Load<Texture2D>("Menu/bg"); // change these names to the names of your images
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -135,9 +140,10 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
 
 
+
+            KeyboardState NewKeyState = Keyboard.GetState();
             width = graphics.PreferredBackBufferWidth;
             height = graphics.PreferredBackBufferHeight;
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -235,6 +241,26 @@ namespace tank_mono
 
                 randomObjectManager.Update(gameTime);
 
+                if (NewKeyState.IsKeyDown(Keys.P) && OldKeyState.IsKeyUp(Keys.P))
+                {
+                    if (MainMenu.gameState == GameState.inGame)
+                    {
+                        if (inGame)
+                        {
+                            MainMenu.gameState = GameState.mainMenum;
+                        }
+                    }
+
+                   else
+                    {
+                        MainMenu.gameState = GameState.inGame;
+                    }
+
+                }
+
+
+                OldKeyState = NewKeyState;
+
             }
 
 
@@ -248,6 +274,7 @@ namespace tank_mono
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+
             GraphicsDevice.Clear(Color.White);
 
             //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera2D.GetViewMatrix());
@@ -276,6 +303,7 @@ namespace tank_mono
                 if (GameSettings.Debug)
                    //TextManager.Draw("Camera zoom: " + camera2D.Zoom.ToString(), new Vector2(250, 50), Color.Purple);
                 spriteBatch.End();
+
             }
 
 
@@ -289,7 +317,7 @@ namespace tank_mono
 
             }
 
-            base.Draw(gameTime);
+                base.Draw(gameTime);
         }
         public void Quit()
         {

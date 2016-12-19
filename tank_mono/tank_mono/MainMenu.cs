@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace tank_mono
 {
-    enum GameState { mainMenum, inGame, settings }
+    enum GameState { mainMenum, inGame, settings, pause}
     class MainMenu : DrawableGameComponent
     {
         
@@ -22,18 +22,18 @@ namespace tank_mono
         List<Menu> resolution = new List<Menu>();
         List<Menu> confirm = new List<Menu>();
         List<Menu> volume = new List<Menu>();
+        
 
         public float Volume { get; set; }
-
-        private Keys[] lastpressedKeys = new Keys[5];
+        
         private string myName = string.Empty;
         private SpriteFont sf;
         SpriteBatch spriteBatch;
 
         public MainMenu(Game game): base (game)
         {
-            
             main.Add(new Menu("start"));
+            main.Add(new Menu("resume"));
             main.Add(new Menu("settings"));
             main.Add(new Menu("quit"));
 
@@ -42,20 +42,14 @@ namespace tank_mono
             resolution.Add(new Menu("720"));
             resolution.Add(new Menu("800"));
 
-
             volume.Add(new Menu("volume"));
             volume.Add(new Menu("33"));
             volume.Add(new Menu("66"));
             volume.Add(new Menu("100"));
             volume.Add(new Menu("muted"));
 
-
             confirm.Add(new Menu("apply"));
-
         }
-
-
-
 
         public void loadText(SpriteBatch spriteBatch)
         {
@@ -71,7 +65,15 @@ namespace tank_mono
             {
                 element.CenterElement(Game1.graphics.PreferredBackBufferWidth / 2, Game1.graphics.PreferredBackBufferHeight/ 2);
             }
-            main.Find(x => x.AssetName == "start").MoveElement(0, moverange);
+
+
+            var start = main.Find(x => x.AssetName == "start");
+            start.isActive = !Game1.inGame;
+            start.MoveElement(0, moverange);
+            var resume = main.Find(x => x.AssetName == "resume");
+            resume.isActive = Game1.inGame;
+            resume.MoveElement(0, moverange);
+
             moverange += (int)(100/1920.0* Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "settings").MoveElement(0, moverange);
             moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
@@ -123,10 +125,15 @@ namespace tank_mono
                 element.LoadContent(content);
                 element.CenterElement(Game1.width / 2, Game1.height/ 2);
             }
-            main[0].ClickEvent += onClickStart;
-            main[1].ClickEvent += onClicketting;
-            main[2].ClickEvent += onClickQuit;
+            if (Game1.inGame == false)
+                main[0].ClickEvent += onClickStart;
+            else
+                main[1].ClickEvent += onClickResume;
+            main[2].ClickEvent += onClicketting;
+            main[3].ClickEvent += onClickQuit;
+
             main.Find(x => x.AssetName == "start").MoveElement(0, moverange);
+            main.Find(x => x.AssetName == "resume").MoveElement(0, moverange);
             moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
             main.Find(x => x.AssetName == "settings").MoveElement(0, moverange);
             moverange += (int)(100 / 1920.0 * Game1.graphics.PreferredBackBufferWidth);
@@ -209,6 +216,13 @@ namespace tank_mono
                         element.Update();
                     }
                     break;
+
+                case GameState.pause:
+                    foreach (Menu element in main)
+                    {
+                        element.Update();
+                    }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
 
@@ -224,7 +238,8 @@ namespace tank_mono
                 case GameState.mainMenum:
                     foreach (Menu element in main)
                     {
-                        element.Draw(spriteBatch);
+                        if(element.isActive)
+                            element.Draw(spriteBatch);
                     }
                     break;
                 case GameState.inGame:
@@ -241,6 +256,12 @@ namespace tank_mono
                     }
 
                     foreach (Menu element in confirm)
+                    {
+                        element.Draw(spriteBatch);
+                    }
+                    break;
+                case GameState.pause:
+                    foreach (Menu element in main)
                     {
                         element.Draw(spriteBatch);
                     }
@@ -282,6 +303,13 @@ namespace tank_mono
         public void onClickStart(string element)
         {
             gameState = GameState.inGame;
+            Game1.inGame = true;
+            RecalcMenu();
+        }
+
+        public void onClickResume(string element)
+        {
+            gameState = GameState.mainMenum;
         }
 
         public void onClickBack(string element)
