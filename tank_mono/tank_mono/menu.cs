@@ -27,6 +27,8 @@ namespace tank_mono
             set { assetName = value; }
         }
 
+        public bool isActive { get; set; }
+
 
         public delegate void ElementClicked(string element);
 
@@ -35,6 +37,7 @@ namespace tank_mono
         public Menu(string assetName)
         {
             this.AssetName = assetName;
+            isActive = true;
         }
 
         public void LoadContent(ContentManager content)

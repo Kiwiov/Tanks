@@ -43,7 +43,7 @@
     <Compile Include="Entities\LayerEntity.cs" />
     <Compile Include="Entities\RandomObjectEntity.cs" />
     <Compile Include="Entities\VectorGroupEntity.cs" />
-    <Compile Include="GameLogic.cs" />
+    <Compile Include="Managers\GameLogic.cs" />
     <Compile Include="Managers\BackgroundManager.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Game1.cs" />
