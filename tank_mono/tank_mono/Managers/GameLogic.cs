@@ -13,20 +13,19 @@ namespace tank_mono
         private Tank _currentTank;
         private int _timeMax;
         private int _timeLeft;
-
+        private Random ran = new Random();
         public GameLogic()
         {
-            Wind = 0;
+            Wind = ran.Next(-100,101);
             TimeMax = 10;
             TimeLeft = TimeMax * 60;
         }
 
-        public void CheckTime(TankManager tankManager)
+        public void CheckTime(TankManager tankManager, PickUpManager pickUpManager)
         {
             if (TimeLeft <= 0 && !ProjectileManager.IsShooting())
             {
-                ChangeTank(tankManager);
-                
+                ChangeTank(tankManager, pickUpManager);
             }
             else
             {
@@ -34,7 +33,15 @@ namespace tank_mono
             }
         }
 
-        public void ChangeTank(TankManager tankManager)
+        private void SpawnPickUps(PickUpManager pickUpManager)
+        {
+            if (ran.Next(1, 101) <= 100)
+            {
+                pickUpManager.CreatePickup("Random");
+            }
+        }
+
+        public void ChangeTank(TankManager tankManager, PickUpManager pickUpManager)
         {
 
             for (int i = 0; i < tankManager.Tanks.Count; i++)
@@ -48,6 +55,8 @@ namespace tank_mono
             }
             TimeLeft = TimeMax * 60;
             ProjectileManager._fired = false;
+            SpawnPickUps(pickUpManager);
+            Wind = ran.Next(-100, 101);
         }
 
         public int TimeLeft

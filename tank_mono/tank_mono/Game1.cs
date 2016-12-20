@@ -193,7 +193,7 @@ namespace tank_mono
                 }
                 else
                 {
-                _ui.Update(_gameLogic.CurrentTank);
+                
 
                     _tankManager.MoveTank(_gameLogic.CurrentTank);
                     _tankManager.FindLandPosition();
@@ -206,7 +206,8 @@ namespace tank_mono
                     _pickUpManager.DetectPickup(_gameLogic.CurrentTank);
                     _projectileManager.DetectCollisionProjectileTank(_tankManager, _gameLogic.CurrentTank);
                     
-                    _gameLogic.CheckTime(_tankManager);
+                    _gameLogic.CheckTime(_tankManager, _pickUpManager);
+                    _ui.Update(_gameLogic.CurrentTank);
                     camera2D.Rotation = 0;
                 }
 

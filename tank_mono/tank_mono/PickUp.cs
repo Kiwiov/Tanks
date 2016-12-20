@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    class PickUp
+    public class PickUp
     {
         private Vector2 _position;
         private string _type;

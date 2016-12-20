@@ -88,7 +88,7 @@ namespace tank_mono
             if (GameSettings.Debug)
                 //TextManager.Draw(gameTime.TotalGameTime.Seconds.ToString(), new Vector2(250, 10), Color.Red);
 
-            _spriteBatch.Draw(terrainTexture, Vector2.Zero, Color.White);
+            _spriteBatch.Draw( terrainTexture, Vector2.Zero, Color.Green);
 
             // Draw the trees
             foreach (var item in trees)

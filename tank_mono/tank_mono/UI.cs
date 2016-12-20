@@ -37,19 +37,15 @@ namespace tank_mono
             fontLoader = content.Load<SpriteFont>("Menu/MyFont");
             healthTexture = content.Load<Texture2D>("health");
             fuelTexture = content.Load<Texture2D>("fuel");
-            if(gameLogic.Wind < 0)
-                windTextureLeft = content.Load<Texture2D>("windleft");
-            if (gameLogic.Wind > 0)
-                windTextureRight = content.Load<Texture2D>("windright");
 
         }
 
-        public void Update(Tank _currentTank)
+        public void Update(Tank currentTank)
         {
             if (MainMenu.gameState == GameState.inGame)
             {
-                healthRectangle = new Rectangle(130, 20, (int)(100 * (_currentTank.CurrentHealth / _currentTank.Health)), 20);
-                fuelRectangle = new Rectangle(130, 45, (int)(100 * (_currentTank.CurrentFuel / _currentTank.Fuel)), 20);
+                healthRectangle = new Rectangle(130, 20, (int)(100 * (currentTank.CurrentHealth / currentTank.Health)), 20);
+                fuelRectangle = new Rectangle(130, 45, (int)(100 * (currentTank.CurrentFuel / currentTank.Fuel)), 20);
 
                 if (gameLogic.Wind > 0)
                 {
@@ -82,7 +78,15 @@ namespace tank_mono
             spriteBatch.DrawString(fontLoader, "Gun : ", new Vector2(50, 75), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             spriteBatch.DrawString(fontLoader, "Ammo : ", new Vector2(50, 105), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             spriteBatch.DrawString(fontLoader, "Wind : ", new Vector2(50, 135), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(fontLoader, gameLogic.Wind.ToString(), new Vector2(130, 135), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            if (gameLogic.Wind < 0)
+            {
+                spriteBatch.DrawString(fontLoader, "<-- " + Math.Abs(gameLogic.Wind), new Vector2(130, 135), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.DrawString(fontLoader, Math.Abs(gameLogic.Wind) + " -->", new Vector2(130, 135), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            }
+            
 
             spriteBatch.DrawString(fontLoader, _currentTank.CurrentWeapon.Name, new Vector2(130, 75), Color.BlueViolet, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             if (_currentTank.CurrentWeapon.Name == "MachineGun")
@@ -97,10 +101,7 @@ namespace tank_mono
 
             spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
             spriteBatch.Draw(fuelTexture, fuelRectangle, Color.White);
-            if (gameLogic.Wind < 0)
-                spriteBatch.Draw(windTextureLeft, windRectangle, Color.White);
-            if (gameLogic.Wind > 0)
-                spriteBatch.Draw(windTextureRight, windRectangle, Color.White);
+            
         }
     }
 }

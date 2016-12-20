@@ -24,9 +24,11 @@ namespace tank_mono
         private List<Projectile> _projectiles = new List<Projectile>();
         private Vector2 _wind;
         private TerrainManager _terrainManager;
+        private GameLogic _gameLogic;
         public ProjectileManager(GameLogic gameLogic, TerrainManager terrainManager)
         {
-            Wind = new Vector2((float)gameLogic.Wind / 20000,0);
+            _gameLogic = gameLogic;
+             
             _fired = false;
             
             _terrainManager = terrainManager;
@@ -117,8 +119,8 @@ namespace tank_mono
             {
                 projectile.Position += projectile.Power * projectile.Velocity ;
 
-                projectile.Velocity -= new Vector2(0, -0.006f);
-                projectile.Velocity += Wind;
+                projectile.Velocity -= new Vector2(0, -0.008f);
+                projectile.Velocity += new Vector2((float)_gameLogic.Wind / 40000, 0); ;
                 projectile.Rotation = (float)Math.Atan2(projectile.Velocity.Y,projectile.Velocity.X);
             }
         }
@@ -179,6 +181,12 @@ namespace tank_mono
         {
             get { return _shooting; }
             set { _shooting = value; }
+        }
+
+        public float Power
+        {
+            get { return _power; }
+            set { _power =  value;}
         }
 
     }

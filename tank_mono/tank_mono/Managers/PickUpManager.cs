@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    class PickUpManager
+    public class PickUpManager
     {
         private Texture2D _textureAmmoBox;
         private Texture2D _textureFuelBarrel;
@@ -26,7 +26,7 @@ namespace tank_mono
 
         private Vector2 RandomLocation()
         {
-            Vector2 vector = new Vector2(_ran.Next(Game1.width),300);
+            Vector2 vector = new Vector2(_ran.Next(Game1.width), 300);
             return vector;
         }
         public void CreatePickup(string type)
@@ -42,7 +42,7 @@ namespace tank_mono
                     PickUps.Add(new PickUp(RandomLocation(), "Fuel", TextureFuelBarrel));
                 }
 
-                
+
                 //Rotation
             }
             else if (type == "Ammo")
@@ -63,7 +63,7 @@ namespace tank_mono
         {
             for (int i = 0; i < PickUps.Count; i++)
             {
-                if (Collision.TestIfCollision(tank.Hitbox,PickUps[i].Hitbox,tank.SpriteMain,PickUps[i].Texture)) 
+                if (Collision.TestIfCollision(tank.Hitbox, PickUps[i].Hitbox, tank.SpriteMain, PickUps[i].Texture))
                 {
                     if (PickUps[i].Type == "Ammo")
                     {
@@ -80,16 +80,16 @@ namespace tank_mono
                 }
             }
             End:;
-            
+
         }
 
         public void MoveHitbox(PickUp pickUp)
         {
 
-            
+
             pickUp.Hitbox.X = (int)(pickUp.Position.X - pickUp.Texture.Width / 2);
             pickUp.Hitbox.Y = (int)(pickUp.Position.Y - pickUp.Texture.Height / 2);
-            
+
 
         }
 
@@ -100,13 +100,15 @@ namespace tank_mono
             TryAgain:
             int decision = ran.Next(1, tank.Weapons.Count);
 
-            
-            if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo != tank.Weapons.Values.ElementAt(decision).Ammo)
+            if (tank.Weapons.Values.ElementAt(decision).Name != "MachineGun")
             {
-                tank.Weapons.Values.ElementAt(decision).CurrentAmmo += tank.Weapons.Values.ElementAt(decision).Ammo / 2;
-                if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo > tank.Weapons.Values.ElementAt(decision).Ammo)
+                if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo != tank.Weapons.Values.ElementAt(decision).Ammo)
                 {
-                    tank.Weapons.Values.ElementAt(decision).CurrentAmmo = tank.Weapons.Values.ElementAt(decision).Ammo;
+                    tank.Weapons.Values.ElementAt(decision).CurrentAmmo += tank.Weapons.Values.ElementAt(decision).Ammo / 2;
+                    if (tank.Weapons.Values.ElementAt(decision).CurrentAmmo > tank.Weapons.Values.ElementAt(decision).Ammo)
+                    {
+                        tank.Weapons.Values.ElementAt(decision).CurrentAmmo = tank.Weapons.Values.ElementAt(decision).Ammo;
+                    }
                 }
             }
             else
@@ -119,7 +121,7 @@ namespace tank_mono
                     }
                 }
             }
-            
+
         }
 
         public void FindLandPosition()
@@ -141,7 +143,7 @@ namespace tank_mono
         {
             foreach (var pickUp in PickUps)
             {
-                spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: (float)pickUp.Rotation, origin: new Vector2(pickUp.Texture.Width / 2, 2 ));
+                spriteBatch.Draw(pickUp.Texture, pickUp.Position, null, rotation: (float)pickUp.Rotation, origin: new Vector2(pickUp.Texture.Width / 2, 2));
                 //spriteBatch.Draw(pickUp.Texture, new Vector2(pickUp.Hitbox.X, pickUp.Hitbox.Y), pickUp.Hitbox, Color.Blue);
 
             }
@@ -149,7 +151,7 @@ namespace tank_mono
 
         private void IfPickUpFuel(Tank tank)
         {
-                tank.CurrentFuel = tank.Fuel;
+            tank.CurrentFuel = tank.Fuel;
         }
         public List<PickUp> PickUps
         {
@@ -157,7 +159,7 @@ namespace tank_mono
             set { _pickUps = value; }
         }
 
-        public Texture2D TextureAmmoBox 
+        public Texture2D TextureAmmoBox
         {
             get { return _textureAmmoBox; }
             set { _textureAmmoBox = value; }
