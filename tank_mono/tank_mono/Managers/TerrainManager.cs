@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +14,7 @@ namespace tank_mono
     }
     public class TerrainManager
     {
-        private static Random rnd = new Random();
+        private static Random _rnd = new Random();
 
         private GraphicsDevice _device;
         private SpriteBatch _spriteBatch;
@@ -21,20 +22,20 @@ namespace tank_mono
 
         private RandomObjectManager _randomObjectManager;
 
-        public Texture2D terrainTexture;
-        public Texture2D terrainBackgroundTexture;
-        private Texture2D treeTexture;
-        private Texture2D palmTexture;
+        public Texture2D TerrainTexture;
+        public Texture2D TerrainBackgroundTexture;
+        private Texture2D _treeTexture;
+        private Texture2D _palmTexture;
 
-        private int[] terrainContour;
+        private int[] _terrainContour;
 
-        private TreeData[] trees;
-        private Color[] ColorData;
+        private TreeData[] _trees;
+        private Color[] _colorData;
 
-        private float flatness = 375;
-        private float peakheight = 200;
-        private float offset = GameSettings.Height / 2;
-        private int currentTime; // for testing only
+        private float _flatness = 375;
+        private float _peakheight = 200;
+        private float _offset = GameSettings.Height * 0.70000f;
+        private int _currentTime; // for testing only
 
         public TerrainManager(GraphicsDevice device, ContentManager content, SpriteBatch spriteBatch, RandomObjectManager randomObjectManager)
         {
@@ -43,15 +44,15 @@ namespace tank_mono
             _device = device;
             _randomObjectManager = randomObjectManager;
 
-            terrainTexture = new Texture2D(_device, GameSettings.Width, GameSettings.Height, false, SurfaceFormat.Color);
+            TerrainTexture = new Texture2D(_device, GameSettings.Width, GameSettings.Height, false, SurfaceFormat.Color);
         }
 
         public void Load(GraphicsDevice device)
         {
-            terrainBackgroundTexture = _content.Load<Texture2D>("terrainBackground");
+            TerrainBackgroundTexture = _content.Load<Texture2D>(/*"terrainBackground"*/"Grass");
 
-            treeTexture = _content.Load<Texture2D>("tree");
-            palmTexture = _content.Load<Texture2D>("palm");
+            _treeTexture = _content.Load<Texture2D>("EverGran");
+            _palmTexture = _content.Load<Texture2D>("palm");
         }
 
         public void Generate()
@@ -59,28 +60,30 @@ namespace tank_mono
             GenerateRandomTerrain();
 
             // setup trees :)
-            var TreeColors = new Color[3];
-            TreeColors[0] = Color.RosyBrown;
-            TreeColors[1] = Color.Green;
-            TreeColors[2] = Color.RoyalBlue;
+            Color[] treeColors = new Color[5];
+            treeColors[0] = Color.Green;
+            treeColors[1] = Color.RoyalBlue;
+            treeColors[2] = Color.YellowGreen;
+            treeColors[3] = Color.DarkSeaGreen;
 
-            trees = new TreeData[3]; // number of trees
-
-            for (int i = 0; i < 3; i++) // number of trees
+            _trees = new TreeData[20]; // number of trees
+            
+            for (int i = 0; i < _trees.Length; i++) // number of trees
             {
-                trees[i].Color = TreeColors[i];
+                _trees[i].Color = treeColors[i % treeColors.Length];
 
-                trees[i].Position = new Vector2();
-                trees[i].Position.X = GameSettings.Width / 4 * (i + 1) * 0.8f + rnd.Next(5, 95);
-                trees[i].Position.Y = terrainContour[(int)trees[i].Position.X];
-            }
+                _trees[i].Position = new Vector2();
+                _trees[i].Position.X = GameSettings.Width / (float)_trees.Length * (i + 1) + _rnd.Next(-50, 50);
+                _trees[i].Position.X = MathHelper.Clamp(_trees[i].Position.X, 20, 1900);
+                _trees[i].Position.Y = _terrainContour[(int)_trees[i].Position.X];
+             }
 
-            CreateTerrainGround();
+                CreateTerrainGround();
         }
 
         public void Update(GameTime gameTime)
         {
-            currentTime = gameTime.TotalGameTime.Seconds;
+            _currentTime = gameTime.TotalGameTime.Seconds;
         }
 
         public void Draw(GameTime gameTime)
@@ -88,24 +91,23 @@ namespace tank_mono
             if (GameSettings.Debug)
                 //TextManager.Draw(gameTime.TotalGameTime.Seconds.ToString(), new Vector2(250, 10), Color.Red);
 
-            _spriteBatch.Draw( terrainTexture, Vector2.Zero, Color.Green);
+            _spriteBatch.Draw( TerrainTexture, Vector2.Zero, Color.White);
 
             // Draw the trees
-            foreach (var item in trees)
+            foreach (var item in _trees)
             {
                 int posX = (int)item.Position.X;
                 int posY = (int)item.Position.Y;
 
-                var origin = new Vector2(80, 180);
-
+                
                 _spriteBatch.Draw(
-                    treeTexture,
-                    new Vector2(posX + 20, posY + 5),
+                    _treeTexture,
+                    new Vector2(posX, posY + 5),
                     null,
                     item.Color,
                     0f,
-                    origin,
-                    0.3f,
+                    new Vector2(_treeTexture.Width/2 , _treeTexture.Height), 
+                    1f,
                     SpriteEffects.None,
                     0);
             }
@@ -113,62 +115,62 @@ namespace tank_mono
 
         public static double GetRandomDouble(double minimum, double maximum)
         {
-            return rnd.NextDouble() * (maximum - minimum) + minimum;
+            return _rnd.NextDouble() * (maximum - minimum) + minimum;
         }
         private void GenerateRandomTerrain()
         {
-            terrainContour = new int[GameSettings.Width];
+            _terrainContour = new int[GameSettings.Width];
 
-            var rand1 = rnd.NextDouble() + 1;
-            var rand2 = rnd.NextDouble() + 2;
-            var rand3 = rnd.NextDouble() + 3;
+            var rand1 = _rnd.NextDouble() + 1;
+            var rand2 = _rnd.NextDouble() + 2;
+            var rand3 = _rnd.NextDouble() + 3;
 
             for (int x = 0; x < GameSettings.Width; x++)
             {
                 var height =
-                    peakheight / rand1 * Math.Sin(x / flatness * rand1 + rand1)
-                    + peakheight / rand2 * Math.Sin(x / flatness * rand2 + rand2)
-                    + peakheight / rand3 * Math.Sin(x / flatness * rand3 + rand3)
-                    + offset;
+                    _peakheight / rand1 * Math.Sin(x / _flatness * rand1 + rand1)
+                    + _peakheight / rand2 * Math.Sin(x / _flatness * rand2 + rand2)
+                    + _peakheight / rand3 * Math.Sin(x / _flatness * rand3 + rand3)
+                    + _offset;
 
                 if (height < 0)
-                    height = rnd.Next(10, 100);
+                    height = _rnd.Next(10, 100);
 
-                terrainContour[x] = (int)height;
+                _terrainContour[x] = (int)height;
             }
         }
 
         private void CreateTerrainGround()
         {
-            var GroundColorData = ConvertTextureToArray(terrainBackgroundTexture);
-            ColorData = new Color[GameSettings.Width * GameSettings.Height];
+            var groundColorData = ConvertTextureToArray(TerrainBackgroundTexture);
+            _colorData = new Color[GameSettings.Width * GameSettings.Height];
 
             for (int x = 0; x < GameSettings.Width; x++)
             {
                 for (int y = 0; y < GameSettings.Height; y++)
                 {
-                    if (y > terrainContour[x])
-                        ColorData[x + y * GameSettings.Width] = GroundColorData[x % terrainBackgroundTexture.Width, y % terrainBackgroundTexture.Height];
+                    if (y > _terrainContour[x])
+                        _colorData[x + y * GameSettings.Width] = groundColorData[x % TerrainBackgroundTexture.Width, y % TerrainBackgroundTexture.Height];
                     else
-                        ColorData[x + y * GameSettings.Width] = Color.Transparent;
+                        _colorData[x + y * GameSettings.Width] = Color.Transparent;
                 }
             }
 
-            terrainTexture.SetData(ColorData);
+            TerrainTexture.SetData(_colorData);
         }
 
         private Color[,] ConvertTextureToArray(Texture2D texture)
         {
             var ColorData = new Color[texture.Width * texture.Height];
-            var NewColorData = new Color[texture.Width, texture.Height];
+            var newColorData = new Color[texture.Width, texture.Height];
 
             texture.GetData(ColorData);
 
             for (int x = 0; x < texture.Width; x++)
                 for (int y = 0; y < texture.Height; y++)
-                    NewColorData[x, y] = ColorData[x + y * texture.Width];
+                    newColorData[x, y] = ColorData[x + y * texture.Width];
 
-            return NewColorData;
+            return newColorData;
         }
 
         public int FindLand(Vector2 pos)
@@ -176,17 +178,17 @@ namespace tank_mono
             int x = (int) MathHelper.Clamp(pos.X, 0, GameSettings.Width - 1);
             int y = (int) MathHelper.Clamp(pos.Y, 0, GameSettings.Height - 1);
 
-            if (ColorData[x + y*GameSettings.Width] == Color.Transparent)
+            if (_colorData[x + y*GameSettings.Width] == Color.Transparent)
             {
                 for (int i = 0; i < GameSettings.Height; i++)
-                    if (ColorData[x + i*GameSettings.Width] != Color.Transparent)
+                    if (_colorData[x + i*GameSettings.Width] != Color.Transparent)
                         return i;
                     return GameSettings.Height;
             }
             else
             {
                 for (int i = y; i >=0; i--)
-                    if (ColorData[x + i *GameSettings.Width] == Color.Transparent)
+                    if (_colorData[x + i *GameSettings.Width] == Color.Transparent)
                         return i;
                     return 0;
             }

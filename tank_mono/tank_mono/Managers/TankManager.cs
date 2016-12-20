@@ -270,7 +270,7 @@ namespace tank_mono
                 int y2 = _terrainManager.FindLand(new Vector2(x2, tank.Position.Y));
 
                 tank.TankRotaion = (float)Math.Atan2(y2 - y1, x2 - x1);
-                tank.Position = new Vector2(tank.Position.X, (y1 + y2) / 2);
+                tank.Position = new Vector2(tank.Position.X, (y1 + y2) / 2 - 1);
             }
         }
 
@@ -280,7 +280,6 @@ namespace tank_mono
             {
                 spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 4), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height - 3));
-                spriteBatch.Draw(tank.SpriteMain, tank.Position, tank.Hitbox, Color.Blue);
             }
         }
 

@@ -302,12 +302,13 @@ namespace tank_mono
 
                 scrollingLayers.Draw(gameTime, "cloud1", "cloud2");
 
-                terrainManager.Draw(gameTime);
-                randomObjectManager.Draw(gameTime);
-
                 _projectileManager.Draw(spriteBatch);
                 _pickUpManager.Draw(spriteBatch);
                 _tankManager.Draw(spriteBatch);
+                terrainManager.Draw(gameTime);
+                randomObjectManager.Draw(gameTime);
+
+                
 
                 _ui.Draw(spriteBatch, _gameLogic.CurrentTank);
 

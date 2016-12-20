@@ -10,8 +10,8 @@ namespace tank_mono
     {
         public static bool Debug = true;
 
-        public static int Width = 1980;
-        public static int Height = 890;
+        public static int Width = 1920;
+        public static int Height = 1080;
 
         public static string Title = "Topkek Tanks v1";
         public static string Theme = "Cloud";
