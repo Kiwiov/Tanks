@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace tank_mono
 {
-    class Projectile
+    public class Projectile
     {
         private string _type;
         private Vector2 _position;
@@ -79,5 +79,6 @@ namespace tank_mono
             set { _type = value; }
         }
 
+        
     }
 }

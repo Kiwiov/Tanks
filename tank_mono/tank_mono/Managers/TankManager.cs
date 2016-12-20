@@ -23,20 +23,22 @@ namespace tank_mono
 
         private TerrainManager _terrainManager;
         private WeaponCreator _weaponCreator;
-        
+        private ProjectileManager _projectileManager;
+
         private List<Tank> _tanks;
 
-        public TankManager(Texture2D HeavyTankBody, Texture2D StandardTankBody, Texture2D LightTankBody,Texture2D HeavyCannon, Texture2D StandardCannon, Texture2D LightCannon, WeaponCreator WeaponCreator, TerrainManager TerrainManager)
+        public TankManager(Texture2D heavyTankBody, Texture2D standardTankBody, Texture2D lightTankBody, Texture2D heavyCannon, Texture2D standardCannon, Texture2D lightCannon, WeaponCreator weaponCreator, TerrainManager terrainManager, ProjectileManager projectileManager)
         {
-            _heavyTankMain = HeavyTankBody;
-            _lightTankMain = LightTankBody;
-            _standardTankMain = StandardTankBody;
-            _heavyCannon = HeavyCannon;
-            _standardCannon = StandardCannon;
-            _lightCannon = LightCannon;
+            _heavyTankMain = heavyTankBody;
+            _lightTankMain = lightTankBody;
+            _standardTankMain = standardTankBody;
+            _heavyCannon = heavyCannon;
+            _standardCannon = standardCannon;
+            _lightCannon = lightCannon;
             Tanks = new List<Tank>();
-            _weaponCreator = WeaponCreator;
-            _terrainManager = TerrainManager;
+            _weaponCreator = weaponCreator;
+            _terrainManager = terrainManager;
+            _projectileManager = projectileManager;
         }
 
         public void CreateTank(Vector2 Position, string TankType, Color Colour, bool IsBot, string Name)
@@ -77,7 +79,7 @@ namespace tank_mono
                         tank.Health = 150;
                         tank.Fuel = 400;
                         tank.Armour = 150;
-                        
+
                         tank.CurrentHealth = 150;
                         tank.CurrentFuel = 400;
                         tank.CurrentArmour = 150;
@@ -155,13 +157,13 @@ namespace tank_mono
 
         public void MoveHitbox()
         {
-            
+
             foreach (var tank in Tanks)
             {
                 tank.Hitbox.X = (int)(tank.Position.X - tank.SpriteMain.Width / 2);
                 tank.Hitbox.Y = (int)(tank.Position.Y - tank.SpriteMain.Height / 2);
             }
-            
+
         }
 
         public void MoveTank(Tank tank)
@@ -183,7 +185,7 @@ namespace tank_mono
                 tank.Position.X += tank.Speed / 50;
                 tank.CurrentFuel -= 1;
             }
-            
+
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && ks.IsKeyUp(Keys.Down) && ks.IsKeyUp(Keys.S) && tank.Falling == false)
             {
                 if (tank.TankType == "Light")
@@ -218,40 +220,43 @@ namespace tank_mono
                     }
                 }
             }
-
-            if (ks.IsKeyDown(Keys.Q) && _switchTimer == 0 && tank.Falling == false)
+            if (!_projectileManager.Shooting)
             {
-                List<string> temp = new List<string>();
+                if (ks.IsKeyDown(Keys.Q) && _switchTimer == 0 && tank.Falling == false)
+                {
 
-                foreach (var var in tank.Weapons)
-                {
-                    temp.Add(var.Key);
-                }
-                for (int i = 0; i < temp.Count; i++)
-                {
-                    if (temp[i] == tank.CurrentWeapon.Name)
+                    List<string> temp = new List<string>();
+
+                    foreach (var var in tank.Weapons)
                     {
-                        if (i == temp.Count - 1)
+                        temp.Add(var.Key);
+                    }
+                    for (int i = 0; i < temp.Count; i++)
+                    {
+                        if (temp[i] == tank.CurrentWeapon.Name)
                         {
-                            _switchTimer = 15;
-                            tank.CurrentWeapon = tank.Weapons.Values.ElementAt(0);
+                            if (i == temp.Count - 1)
+                            {
+                                _switchTimer = 15;
+                                tank.CurrentWeapon = tank.Weapons.Values.ElementAt(0);
+                            }
+                            else
+                            {
+                                _switchTimer = 15;
+                                tank.CurrentWeapon = tank.Weapons.Values.ElementAt(i + 1);
+                            }
+                            break;
                         }
-                        else
-                        {
-                            _switchTimer = 15;
-                            tank.CurrentWeapon = tank.Weapons.Values.ElementAt(i + 1);
-                        }
-                        break;
                     }
                 }
-            }
-            else
-            {
-                if (_switchTimer != 0)
+                else
                 {
-                    _switchTimer--;
-                }
+                    if (_switchTimer != 0)
+                    {
+                        _switchTimer--;
+                    }
 
+                }
             }
         }
 
@@ -275,7 +280,7 @@ namespace tank_mono
             {
                 spriteBatch.Draw(tank.Cannon, tank.Position - new Vector2(0, 4), null, color: tank.Colour, rotation: (float)tank.CannonRotation, origin: new Vector2(tank.Cannon.Width / 2, tank.Cannon.Height));
                 spriteBatch.Draw(tank.SpriteMain, tank.Position, null, color: tank.Colour, rotation: tank.TankRotaion, origin: new Vector2(tank.SpriteMain.Width / 2, tank.SpriteMain.Height - 3));
-                spriteBatch.Draw(tank.SpriteMain, tank.Position,tank.Hitbox, Color.Blue);
+                spriteBatch.Draw(tank.SpriteMain, tank.Position, tank.Hitbox, Color.Blue);
             }
         }
 
@@ -285,6 +290,6 @@ namespace tank_mono
             set { _tanks = value; }
         }
 
-        
+
     }
 }

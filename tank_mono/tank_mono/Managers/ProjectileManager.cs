@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace tank_mono
 {
-    class ProjectileManager
+    public class ProjectileManager
     {
         private int firerate = 5;
         private int _nrOfShots;
@@ -174,7 +174,12 @@ namespace tank_mono
             get { return _wind; }
             set { _wind = value; }
         }
-        
+
+        public bool Shooting
+        {
+            get { return _shooting; }
+            set { _shooting = value; }
+        }
 
     }
 }
