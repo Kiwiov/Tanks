@@ -60,13 +60,13 @@ namespace tank_mono
             GenerateRandomTerrain();
 
             // setup trees :)
-            Color[] treeColors = new Color[5];
+            Color[] treeColors = new Color[4];
             treeColors[0] = Color.Green;
             treeColors[1] = Color.RoyalBlue;
             treeColors[2] = Color.YellowGreen;
             treeColors[3] = Color.DarkSeaGreen;
 
-            _trees = new TreeData[20]; // number of trees
+            _trees = new TreeData[30]; // number of trees
             
             for (int i = 0; i < _trees.Length; i++) // number of trees
             {
@@ -74,7 +74,7 @@ namespace tank_mono
 
                 _trees[i].Position = new Vector2();
                 _trees[i].Position.X = GameSettings.Width / (float)_trees.Length * (i + 1) + _rnd.Next(-50, 50);
-                _trees[i].Position.X = MathHelper.Clamp(_trees[i].Position.X, 20, 1900);
+                _trees[i].Position.X = MathHelper.Clamp(_trees[i].Position.X, 10, 1910);
                 _trees[i].Position.Y = _terrainContour[(int)_trees[i].Position.X];
              }
 
