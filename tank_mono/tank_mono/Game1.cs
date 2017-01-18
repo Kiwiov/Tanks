@@ -168,19 +168,12 @@ namespace tank_mono
             {
                 if (keyboardState.IsKeyDown(Keys.G))
                     terrainManager.Generate();
-
-                // rotation
-
-                if (keyboardState.IsKeyDown(Keys.Q))
-                    camera2D.Rotation -= deltaTime;
-
-                if (keyboardState.IsKeyDown(Keys.W))
-                    camera2D.Rotation += deltaTime;
+                
 
                 if (_done == false)
                 {
                     
-                    _tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false, "Hillarp Persson");
+                    //_tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false, "Hillarp Persson");
                     _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.HotPink, false, "Gudrun Schyman");
                     _tankManager.CreateTank(new Vector2(700, 300), "Light", Color.CadetBlue, false, "Åkesson");
                     _tankManager.SetStats();

@@ -18,8 +18,12 @@ namespace tank_mono
         private Vector2 _velocity;
         private float _power;
         public Rectangle Hitbox;
+        private bool _isExplosive;
+        private float _damage;
+        private float _armourDamage;
+        private int _radius;
 
-        public Projectile(string Type, Vector2 Position, Tank Owner, Texture2D Texture, float Rotation, Vector2 Velocity, float Power)
+        public Projectile(string Type, Vector2 Position, Tank Owner, Texture2D Texture, float Rotation, Vector2 Velocity, float Power, bool IsExplosive, float Damage, float ArmourDamage, int Radius)
         {
             this.Type = Type;
             this.Position = Position;
@@ -28,11 +32,43 @@ namespace tank_mono
             this.Rotation = Rotation;
             this.Velocity = Velocity;
             this.Power = Power;
+            this.IsExplosive = IsExplosive;
+            this.Damage = Damage;
+            this.ArmourDamage = ArmourDamage;
+            this.Radius = Radius;
             Hitbox = Texture.Bounds;
             Hitbox.X = (int)(Position.X - Texture.Width / 2);
             Hitbox.Y = (int)(Position.Y - Texture.Height / 2);
         }
         
+        public int Radius
+        {
+            get { return _radius; }
+            set { _radius = value; }
+        }
+
+
+        public float ArmourDamage
+        {
+            get { return _armourDamage; }
+            set { _armourDamage = value; }
+        }
+
+
+        public float Damage
+        {
+            get { return _damage; }
+            set { _damage = value; }
+        }
+
+
+        public bool IsExplosive
+        {
+            get { return _isExplosive; }
+            set { _isExplosive = value; }
+        }
+
+
         public float Power
         {
             get { return _power; }

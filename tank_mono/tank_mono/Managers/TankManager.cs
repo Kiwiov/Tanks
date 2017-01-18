@@ -76,9 +76,9 @@ namespace tank_mono
                         break;
                     case "Standard":
                         //stats
-                        tank.Health = 150;
+                        tank.Health = 200;
                         tank.Fuel = 400;
-                        tank.Armour = 150;
+                        tank.Armour = 200;
 
                         tank.CurrentHealth = 150;
                         tank.CurrentFuel = 400;
@@ -97,9 +97,9 @@ namespace tank_mono
                         break;
                     case "Light":
                         //stats
-                        tank.Health = 100;
+                        tank.Health = 150;
                         tank.Fuel = 400;
-                        tank.Armour = 100;
+                        tank.Armour = 150;
 
                         tank.CurrentHealth = 100;
                         tank.CurrentFuel = 400;

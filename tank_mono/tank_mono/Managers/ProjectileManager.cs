@@ -15,7 +15,7 @@ namespace tank_mono
     {
         private int firerate = 5;
         private int _nrOfShots;
-        private float _power = 0;
+        private float _power;
         private int _upDown = 1;
         private static bool _shooting;
         private bool _fire;
@@ -79,7 +79,7 @@ namespace tank_mono
                         Projectiles.Add(new Projectile(tank.CurrentWeapon.Type, tank.Position - new Vector2(0, 2),
                             tank, tank.CurrentWeapon.Texture, 0,
                             new Vector2((float) Math.Sin(tank.CannonRotation), -(float) Math.Cos(tank.CannonRotation)),
-                            _power));
+                            _power,tank.CurrentWeapon.IsExploding,tank.CurrentWeapon.Power,tank.CurrentWeapon.ArmourDamage, tank.CurrentWeapon.Radius));
                     }
 
                     else if (_nrOfShots <= 0)
@@ -105,6 +105,30 @@ namespace tank_mono
                 {
                     if (Collision.TestIfCollision(Projectiles[i].Hitbox,tankManager.Tanks[j].Hitbox,Projectiles[i].Texture,tankManager.Tanks[j].SpriteMain) && tankManager.Tanks[j] != Projectiles[i].Owner)
                     {
+                        if (Projectiles[i].IsExplosive)
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                            if (tankManager.Tanks[j].CurrentHealth > 0)
+                            {
+                                tankManager.Tanks[j].CurrentHealth = tankManager.Tanks[j].CurrentHealth - Projectiles[i].Damage / (0.22f * tankManager.Tanks[j].CurrentArmour);
+                            }
+                            else
+                            {
+                                tankManager.Tanks[j].CurrentHealth = 0;
+                            }
+                            if (tankManager.Tanks[j].CurrentArmour > 0)
+                            {
+                                tankManager.Tanks[j].CurrentArmour = tankManager.Tanks[j].CurrentArmour - Projectiles[i].ArmourDamage;
+                            }
+                            else
+                            {
+                                tankManager.Tanks[j].CurrentArmour = 0;
+                            }
+                        }
                         Projectiles.RemoveAt(i);
                         goto End;
                     }
