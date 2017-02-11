@@ -111,15 +111,6 @@ namespace tank_mono
                         }
                         else
                         {
-                            
-                            if (tankManager.Tanks[j].CurrentHealth > 0)
-                            {
-                                tankManager.Tanks[j].CurrentHealth = tankManager.Tanks[j].CurrentHealth - Projectiles[i].Damage / (0.22f * tankManager.Tanks[j].CurrentArmour);
-                            }
-                            else
-                            {
-                                tankManager.Tanks[j].CurrentHealth = 0;
-                            }
                             if (tankManager.Tanks[j].CurrentArmour > 0)
                             {
                                 tankManager.Tanks[j].CurrentArmour = tankManager.Tanks[j].CurrentArmour - Projectiles[i].ArmourDamage;
@@ -128,6 +119,15 @@ namespace tank_mono
                             {
                                 tankManager.Tanks[j].CurrentArmour = 0;
                             }
+                            if (tankManager.Tanks[j].CurrentHealth > 0)
+                            {
+                                tankManager.Tanks[j].CurrentHealth = tankManager.Tanks[j].CurrentHealth - Projectiles[i].Damage / (0.22f * tankManager.Tanks[j].CurrentArmour);
+                            }
+                            else
+                            {
+                                tankManager.Tanks[j].CurrentHealth = 0;
+                            }
+                            
                         }
                         Projectiles.RemoveAt(i);
                         goto End;

@@ -173,9 +173,10 @@ namespace tank_mono
                 if (_done == false)
                 {
                     
-                    //_tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false, "Hillarp Persson");
+                    _tankManager.CreateTank(new Vector2(300, 300), "Standard", Color.OliveDrab, false, "Hillarp Persson");
                     _tankManager.CreateTank(new Vector2(500, 300), "Heavy", Color.HotPink, false, "Gudrun Schyman");
                     _tankManager.CreateTank(new Vector2(700, 300), "Light", Color.CadetBlue, false, "Åkesson");
+                    _tankManager.CreateTank(new Vector2(900, 300), "Standard", Color.Red, false, "Sven");
                     _tankManager.SetStats();
                     _tankManager.SetWeapons();
                     _done = true;
@@ -191,6 +192,7 @@ namespace tank_mono
                     _tankManager.MoveTank(_gameLogic.CurrentTank);
                     _tankManager.FindLandPosition();
                     _tankManager.MoveHitbox();
+                    _tankManager.DestroyTank();
                     _projectileManager.Shoot(_gameLogic.CurrentTank);
                     _projectileManager.MoveProjectiles();
                     _projectileManager.MoveProjectileHitboxes();

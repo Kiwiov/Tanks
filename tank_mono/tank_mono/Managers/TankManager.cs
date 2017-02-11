@@ -274,6 +274,19 @@ namespace tank_mono
             }
         }
 
+        public void DestroyTank()
+        {
+            for (int i = 0; i < Tanks.Count; i++)
+            {
+                if (Tanks[i].CurrentHealth <= 0)
+                {
+                    Tanks.RemoveAt(i);
+                    break;
+                }
+            }
+
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var tank in Tanks)
